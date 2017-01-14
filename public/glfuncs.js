@@ -1,10 +1,10 @@
-function create_shader(id) {
+function create_shader(id, gl) {
     var shader;
 
     var shaderEle = document.getElementById(id);
     if (!shaderEle) return;
-    switch (shaderEle) {
-        case 'x-shader/x-vertex':
+    switch (shaderEle.type) {
+        case 'x-shader/v-vertex':
             shader = gl.createShader(gl.VERTEX_SHADER);
             break;
 
@@ -25,7 +25,7 @@ function create_shader(id) {
 
 }
 
-function create_program(vs, fs) {
+function create_program(vs, fs, gl) {
     var program = gl.createProgram();
 
     gl.attachShader(program, vs);
@@ -33,10 +33,12 @@ function create_program(vs, fs) {
 
     gl.linkProgram(program);
 
+    gl.useProgram(program);
+
     return program;
 }
 
-function create_vbo(data) {
+function create_vbo(data, gl) {
     var vbo = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
