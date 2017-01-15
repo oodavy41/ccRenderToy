@@ -1,13 +1,9 @@
 onload = function() {
-
     var glc = document.getElementById('wobaglccc');
-    var gl = glc.getContext('webgl');
+    var gl = initgl('wobaglccc');
 
-    gl.clearColor(0, 0, 0, 1);
-    gl.clearDepth(1);
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    var vs = create_shader('vs', gl);
-    var fs = create_shader('fs', gl);
+    var vs = create_shader('shaders/base_vx.glsl', gl, gl.VERTEX_SHADER);
+    var fs = create_shader('shaders/base_ft.glsl', gl, gl.FRAGMENT_SHADER);
 
     var prog = create_program(vs, fs, gl);
 
@@ -29,16 +25,16 @@ onload = function() {
 
 
     var mMat = mat4.identity(mat4.create());
-    var vMat = mat4.create();
-    var pMat = mat4.create();
-    var mvp = mat4.create();
+    var vMat = mat4.identity(mat4.create());
+    var pMat = mat4.identity(mat4.create());
+    var mvp = mat4.identity(mat4.create());
 
-    mat4.lookAt([0, 1, 3], [0, 1, 0], [0, 1, 0], vMat);
+    mat4.lookAt(vMat, [0, 1, 3], [0, 1, 0], [0, 1, 0]);
 
-    mat4.perspective(90, glc.width / glc.height, 0.1, 100, pMat);
+    mat4.perspective(pMat, 90, glc.width / glc.height, 0.1, 100);
 
-    mat4.multiply(pMat, vMat, mvp);
-    mat4.multiply(mvp, mMat, mvp);
+    mat4.multiply(mvp, pMat, vMat);
+    mat4.multiply(mvp, mvp, mMat);
 
     var uniloca = gl.getUniformLocation(prog, 'mvpMatrix');
 
