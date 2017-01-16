@@ -18,8 +18,9 @@ function initgl(id) {
 
 function create_shader(path, gl, type) {
     var shader;
-
-    gl.shaderSource(shader, loadFile(path));
+    var shaderSRC=loadFile(path);
+    shader=gl.createShader(type);
+    gl.shaderSource(shader, shaderSRC);
 
     gl.compileShader(shader);
 
