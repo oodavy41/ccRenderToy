@@ -1,46 +1,69 @@
 onload = function() {
     var glc = document.getElementById('wobaglccc');
+    var status = document.getElementById('status');
+    var fps = document.getElementById('fps');
     var gl = initgl('wobaglccc');
 
-    var vs = create_shader('shaders/base_vx.glsl', gl, gl.VERTEX_SHADER);
-    var fs = create_shader('shaders/base_ft.glsl', gl, gl.FRAGMENT_SHADER);
+    glclear(gl);
 
+    var vs = create_shader('shaders/base_vx.vert', gl, gl.VERTEX_SHADER);
+    var fs = create_shader('shaders/base_ft.frag', gl, gl.FRAGMENT_SHADER);
     var prog = create_program(vs, fs, gl);
 
-    var att_lo = gl.getActiveAttrib(prog, 'position');
 
-    var atts = 3;
-
-    var vertex_pos = [
+    // 保存顶点的位置情报的数组
+    var vertex_position = [
         0, 1, 0,
         1, 0, 0, -1, 0, 0
     ];
 
-    var vbo = create_vbo(vertex_pos, gl);
+    // 保存顶点的颜色情报的数组
+    var vertex_color = [
+        1.0, 0.0, 0.0, 1.0,
+        0.0, 1.0, 0.0, 1.0,
+        0.0, 0.0, 1.0, 1.0
+    ];
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
-    gl.enableVertexAttribArray(att_lo);
+    var points = new Array(2);
 
-    gl.vertexAttribPointer(att_lo, atts, gl.FLOAT, false, 0, 0);
+    points['pos'] = upload_array_att(
+        vertex_position, 'position', prog, gl, [3, gl.FLOAT, false, 0, 0]);
+
+    points['color'] = upload_array_att(
+        vertex_color, 'color', prog, gl, [4, gl.FLOAT, false, 0, 0]);
 
 
-    var mMat = mat4.identity(mat4.create());
-    var vMat = mat4.identity(mat4.create());
-    var pMat = mat4.identity(mat4.create());
-    var mvp = mat4.identity(mat4.create());
-
-    mat4.lookAt(vMat, [0, 1, 3], [0, 1, 0], [0, 1, 0]);
-
-    mat4.perspective(pMat, 90, glc.width / glc.height, 0.1, 100);
-
-    mat4.multiply(mvp, pMat, vMat);
-    mat4.multiply(mvp, mvp, mMat);
+    var mvp = makeMvp([
+        [0, 1, 3],
+        [0, 1, 0],
+        [0, 1, 0]
+    ], [Math.PI / 2, glc.width / glc.height, 0.01, 100]);
 
     var uniloca = gl.getUniformLocation(prog, 'mvpMatrix');
-
     gl.uniformMatrix4fv(uniloca, false, mvp);
 
     gl.drawArrays(gl.TRIANGLES, 0, 3);
 
-    gl.flush();
+    var date = new Date();
+
+
+    (function() {
+        var thisfps = 1000 / ((new Date()).getTime() - date.getTime());
+        date = new Date();
+        fps.textContent = 'FPS:' + parseInt(thisfps);
+
+        glclear(gl);
+
+        var thismvp = mat4.create();
+        mat4.rotateY(thismvp, mvp, (new Date()).getTime() / 1000);
+        gl.uniformMatrix4fv(uniloca, false, thismvp);
+
+
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+        gl.flush();
+
+        setTimeout(arguments.callee, 0);
+    })();
+
 }

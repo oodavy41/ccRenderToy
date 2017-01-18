@@ -6,25 +6,30 @@ function initgl(id) {
         alert('no support for Webgl in this browser\nWEBGL无法在此浏览器初始化');
         return;
     }
+    return gl;
+}
 
+function glclear(gl) {
     gl.clearColor(0, 0, 0, 1);
     gl.clearDepth(1);
     gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
     gl.depthFunc(gl.LEQUAL);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    return gl;
 }
 
 
 function create_shader(path, gl, type) {
     var shader;
-    var shaderSRC=loadFile(path);
-    shader=gl.createShader(type);
+    var shaderSRC = loadFile(path);
+    shader = gl.createShader(type);
     gl.shaderSource(shader, shaderSRC);
 
     gl.compileShader(shader);
-
-    return shader;
+    if (gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+        return shader;
+    else
+        alert(type.toString() + ":" + gl.getShaderInfoLog(shader));
 }
 
 function create_program(vs, fs, gl) {
@@ -35,19 +40,28 @@ function create_program(vs, fs, gl) {
 
     gl.linkProgram(program);
 
-    gl.useProgram(program);
+    if (gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        gl.useProgram(program);
+        return program;
+    } else
+        alert('pro:' + gl.getProgramInfoLog(program));
 
-    return program;
 }
 
 function create_vbo(data, gl) {
     var vbo = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
-
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
-
     return vbo;
+}
+
+function create_ibo(data, gl) {
+    var ibo = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Int16Array(data), gl.STATIC_DRAW);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+    return ibo;
 }
 
 function loadFile(path) {
@@ -59,4 +73,32 @@ function loadFile(path) {
     else
         alert("no shader");
 
+}
+
+function makeMvp(view3v, pers4f) {
+    var mMat = mat4.identity(mat4.create());
+    var vMat = mat4.identity(mat4.create());
+    var pMat = mat4.identity(mat4.create());
+    var mvp = mat4.identity(mat4.create());
+
+    mat4.lookAt(vMat, view3v[0], view3v[1], view3v[2]);
+
+    mat4.perspective(pMat, pers4f[0], pers4f[1], pers4f[2], pers4f[3]);
+
+    mat4.multiply(mvp, pMat, vMat);
+    mat4.multiply(mvp, mvp, mMat);
+    return mvp;
+}
+
+function upload_array_att(array, att_name, program, gl, vap_argus) {
+    var att = gl.getAttribLocation(program, att_name);
+    var vbo = create_vbo(array, gl);
+    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+    gl.enableVertexAttribArray(att);
+    gl.vertexAttribPointer(att,
+        vap_argus[0], vap_argus[1], vap_argus[2], vap_argus[3], vap_argus[4]);
+    return {
+        'att': att,
+        'vbo': vbo
+    };
 }
