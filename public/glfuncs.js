@@ -29,7 +29,7 @@ function create_shader(path, gl, type) {
     if (gl.getShaderParameter(shader, gl.COMPILE_STATUS))
         return shader;
     else
-        alert(type.toString() + ":" + gl.getShaderInfoLog(shader));
+        console.log(type.toString() + ":" + gl.getShaderInfoLog(shader));
 }
 
 function create_program(vs, fs, gl) {
@@ -44,7 +44,7 @@ function create_program(vs, fs, gl) {
         gl.useProgram(program);
         return program;
     } else
-        alert('pro:' + gl.getProgramInfoLog(program));
+        console.log('pro:' + gl.getProgramInfoLog(program));
 
 }
 
@@ -101,4 +101,11 @@ function upload_array_att(array, att_name, program, gl, vap_argus) {
         'att': att,
         'vbo': vbo
     };
+}
+
+function static_uni(arr, smvp) {
+    var ret = vec4.fromValues(arr[0], arr[1], arr[2], arr[3]);
+    vec4.transformMat4(ret, ret, smvp);
+    ret = [ret[0], ret[1], ret[2]];
+    return ret;
 }

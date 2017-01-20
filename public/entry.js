@@ -35,14 +35,16 @@ onload = function() {
 
 
 
+    var light_direction = [1, 0, 1, 0];
+    var camera_pos = [0, 20, 10, 1];
 
     var mvp = makeMvp([
-        [0, 20, 10],
-        [0, 0, 0],
+        camera_pos, [0, 0, 0],
         [0, 1, 0]
     ], [Math.PI / 2, glc.width / glc.height, 0.01, 100]);
 
-    var light_direction = [1, -1, 1];
+    light_direction = static_uni(light_direction, mvp);
+    camera_pos = static_uni(camera_pos, mvp);
 
     var mvpU = gl.getUniformLocation(prog, 'mvpMatrix');
     gl.uniformMatrix4fv(mvpU, false, mvp);
@@ -50,6 +52,8 @@ onload = function() {
     gl.uniformMatrix4fv(smvpU, false, mvp);
     var lightdU = gl.getUniformLocation(prog, 'lightdDirection');
     gl.uniform3fv(lightdU, light_direction);
+    var cameraPos = gl.getUniformLocation(prog, 'cameraPos');
+    gl.uniform3fv(cameraPos, camera_pos);
 
     var update = function() {
         glclear(gl);
