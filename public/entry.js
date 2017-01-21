@@ -13,7 +13,7 @@ onload = function() {
     var prog = create_program(vs, fs, gl);
 
 
-    var v_v = donghnut(32, 32, 3, 9);
+    var v_v = donghnut(32, 64, 3, 9);
     var v_pos = v_v[0],
         v_nor = v_v[1],
         v_col = v_v[2],
@@ -35,7 +35,7 @@ onload = function() {
 
 
 
-    var light_direction = [1, 0, 1, 0];
+    var light_direction = [10, 0, -1, 0];
     var camera_pos = [0, 20, 10, 1];
 
     var mvp = makeMvp([
@@ -72,7 +72,8 @@ onload = function() {
         date = new Date();
         fps.textContent = 'FPS:' + parseInt(thisfps);
         gl.flush();
-        setTimeout(arguments.callee, 0);
+        /*setTimeout(arguments.callee, 0);*/
+        requestAnimationFrame(update);
     };
 
     update();
