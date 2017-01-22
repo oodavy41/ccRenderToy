@@ -109,3 +109,20 @@ function static_uni(arr, smvp) {
     ret = [ret[0], ret[1], ret[2]];
     return ret;
 }
+
+function create_texture(src){
+    var img=new Image();
+    var texture;
+    img.onload=function(){
+        texture=gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+        gl.generateMipmap(gl.TEXTURE_2D);
+        gl.bindTexture(gl.TEXTURE_2D, null);
+    }
+    img.src=src;
+    return {
+        'img':img,
+        'tex':texture
+    };
+}

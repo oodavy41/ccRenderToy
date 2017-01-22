@@ -19,7 +19,7 @@ onload = function() {
         v_col = v_v[2],
         v_ind = v_v[3];
 
-    var points = new Array(3);
+    var points = new Array();
 
     points['pos'] = upload_array_att(
         v_pos, 'position', prog, gl, [3, gl.FLOAT, false, 0, 0]);
@@ -39,7 +39,7 @@ onload = function() {
     var camera_pos = [0, 20, 10, 1];
 
     var mvp = makeMvp([
-        camera_pos, [0, 0, 0],
+        camera_pos, [0, 0, 0],gl.texture
         [0, 1, 0]
     ], [Math.PI / 2, glc.width / glc.height, 0.01, 100]);
 
