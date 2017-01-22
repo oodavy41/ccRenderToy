@@ -19,7 +19,7 @@ onload = function() {
         v_col = v_v[2],
         v_ind = v_v[3];
 
-    var points = new Array(2);
+    var points = new Array(3);
 
     points['pos'] = upload_array_att(
         v_pos, 'position', prog, gl, [3, gl.FLOAT, false, 0, 0]);
