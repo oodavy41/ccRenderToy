@@ -24,5 +24,5 @@ void main(void)
     float bright=clamp(dot(Mnormal, mvpLD), 0.1,1.0);
     //高光光照                                   镜面次幂 ↓
     float hlight=pow(max(dot(camDir, reflectDir),0.0), 256.0)*0.5;
-    gl_FragColor = fcolor*vec4(lightColor*(bright+hlight)*0.6667,1.0);;
+    gl_FragColor = fcolor*vec4(lightColor*(bright+hlight),1.0);;
 }

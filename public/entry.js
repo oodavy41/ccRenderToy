@@ -32,65 +32,12 @@ onload = function() {
     ]
 
     thegl.set_uniform(uni_a);
-
-
-    /*
-        var gl = initgl('wobaglccc');
-
-        glclear(gl);
-
-        var vs = create_shader('shaders/base_vx.vert', gl, gl.VERTEX_SHADER);
-        var fs = create_shader('shaders/base_ft.frag', gl, gl.FRAGMENT_SHADER);
-        var prog = create_program(vs, fs, gl);
-
-
-        var v_v = donghnut(32, 64, 3, 9);
-        var v_pos = v_v[0],
-            v_nor = v_v[1],
-            v_col = v_v[2],
-            v_ind = v_v[3];
-
-        var points = [];
-
-        points['pos'] = upload_array_att(
-            v_pos, 'position', prog, gl, [3, gl.FLOAT, false, 0, 0]);
-
-        points['col'] = upload_array_att(
-            v_col, 'color', prog, gl, [4, gl.FLOAT, false, 0, 0]);
-
-        points['nor'] = upload_array_att(
-            v_nor, 'normal', prog, gl, [3, gl.FLOAT, false, 0, 0]);
-
-        var ibo = create_ibo(v_ind, gl);
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
-
-
-        var mvpU = gl.getUniformLocation(prog, 'mvpMatrix');
-        gl.uniformMatrix4fv(mvpU, false, mvp);
-        var smvpU = gl.getUniformLocation(prog, 'staticMatrix');
-        gl.uniformMatrix4fv(smvpU, false, mvp);
-        var lightdU = gl.getUniformLocation(prog, 'lightdDirection');
-        gl.uniform3fv(lightdU, light_direction);
-        var cameraPos = gl.getUniformLocation(prog, 'cameraPos');
-        gl.uniform3fv(cameraPos, camera_pos);
-
-
-    */
+    
     var update = function() {
         glclear(thegl.gl);
-        //=========MAIN LOOP=========
-
-        /*var thismvp = mat4.create();
-        mat4.rotateY(thismvp, mvp, (new Date()).getTime() / 1000);
-        mat4.rotateX(thismvp, thismvp, (new Date()).getTime() / 2000);
-        mat4.rotateZ(thismvp, thismvp, (new Date()).getTime() / 3000);
-        gl.uniformMatrix4fv(mvpU, false, thismvp);
-
-
-        gl.drawElements(gl.TRIANGLES, v_ind.length, gl.UNSIGNED_SHORT, 0);*/
 
         thegl.update();
-        //============================
+        //=======a=====================
         var thisfps = 1000 / ((new Date()).getTime() - date.getTime());
         date = new Date();
         fps.textContent = 'FPS:' + parseInt(thisfps);
