@@ -5,7 +5,7 @@ a render engine by webgl
 
 todo:
 
-- [x]冯氏光照模型
+- [x] 冯氏光照模型
 - [x] 事件系统
 - [x] obj模型载入
 - [ ] 层次模型动画
