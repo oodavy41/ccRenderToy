@@ -8,7 +8,8 @@ onload = function() {
 
     var thegl = new enter();
     thegl.create('wobaglccc');
-    thegl.make_pro('shaders/base_vx.vert', 'shaders/base_ft.frag')
+    var shad_name='base_phone';
+    thegl.make_pro('shaders/'+shad_name+'.vert', 'shaders/'+shad_name+'.frag')
 
     thegl.get_model(donghnut(32, 64, 3, 9), thegl.COLOR);
 
@@ -32,7 +33,7 @@ onload = function() {
     ]
 
     thegl.set_uniform(uni_a);
-    
+
     var update = function() {
         glclear(thegl.gl);
 
