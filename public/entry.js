@@ -8,10 +8,13 @@ onload = function() {
 
     var thegl = new enter();
     thegl.create('wobaglccc');
-    var shad_name='base_phone';
-    thegl.make_pro('shaders/'+shad_name+'.vert', 'shaders/'+shad_name+'.frag')
+    var shad_name = 'base_phone';
+    thegl.make_pro('shaders/' + shad_name + '.vert', 'shaders/' + shad_name + '.frag')
 
-    thegl.get_model(donghnut(32, 64, 3, 9), thegl.COLOR);
+    var obj = loadFile('models/玛雅金字塔01.obj')
+    obj = objLoader(obj, undefined);
+
+    thegl.get_model(obj, thegl.TEXTURE);
 
     var light_direction = [10, 0, -1, 0];
     var camera_pos = [0, 20, 10, 1];

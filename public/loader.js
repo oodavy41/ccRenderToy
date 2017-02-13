@@ -30,24 +30,24 @@ function objLoader(obj, mtl) {
     var vertices = [];
     var normals = [];
     var uvs = [];
-    var temphs = {};
+    var temphash = {};
 
 
-    if (text.indexOf('\r\n') !== -1) {
+    if (obj.indexOf('\r\n') !== -1) {
 
         // This is faster than String.split with regex that splits on both
-        text = text.replace(/\r\n/g, '\n');
+        obj = obj.replace(/\r\n/g, '\n');
 
     }
 
-    if (text.indexOf('\\\n') !== -1) {
+    if (obj.indexOf('\\\n') !== -1) {
 
         // join lines separated by a line continuation character (\)
-        text = text.replace(/\\\n/g, '');
+        obj = obj.replace(/\\\n/g, '');
 
     }
 
-    var lines = text.split('\n');
+    var lines = obj.split('\n');
     var line = '',
         lineFirstChar = '',
         lineSecondChar = '';
@@ -57,8 +57,53 @@ function objLoader(obj, mtl) {
     // Faster to just trim left side of the line. Use if available.
     var trimLeft = (typeof ''.trimLeft === 'function');
 
-    function addFace() {
-
+    function addFace(f, v, u, n) {
+        v = (parseInt(v) - 1) * 3;
+        u = (parseInt(u) - 1) * 3;
+        n = (parseInt(n) - 1) * 3;
+        var s;
+        switch (f) {
+            case 0:
+                s = v + '/' + u + '/' + n;
+                if (!temphash[s]) {
+                    state.vertices.push(vertices[v], vertices[v + 1], vertices[v + 2]);
+                    state.uvs.push(uvs[u], uvs[u + 1], uvs[u + 2]);
+                    state.normals.push(normals[n], normals[n + 1], normals[n + 2]);
+                    state.indexs.push(state.size);
+                    state.size++;
+                } else
+                    state.indexs.push(temphash[s]);
+                break;
+            case 1:
+                s = v + '/' + u;
+                if (!temphash[s]) {
+                    state.vertices.push(vertices[v], vertices[v + 1], vertices[v + 2]);
+                    state.uvs.push(uvs[u], uvs[u + 1], uvs[u + 2]);
+                    state.indexs.push(state.size);
+                    state.size++;
+                } else
+                    state.indexs.push(temphash[s]);
+                break;
+            case 2:
+                s = v + '/' + '/' + n;
+                if (!temphash[s]) {
+                    state.vertices.push(vertices[v], vertices[v + 1], vertices[v + 2]);
+                    state.normals.push(normals[n], normals[n + 1], normals[n + 2]);
+                    state.indexs.push(state.size);
+                    state.size++;
+                } else
+                    state.indexs.push(temphash[s]);
+                break;
+            case 3:
+                s = v;
+                if (!temphash[s]) {
+                    state.vertices.push(vertices[v], vertices[v + 1], vertices[v + 2]);
+                    state.indexs.push(state.size);
+                    state.size++;
+                } else
+                    state.indexs.push(temphash[s]);
+                break;
+        }
     }
 
     for (var i = 0, l = lines.length; i < l; i++) {
@@ -133,8 +178,8 @@ function objLoader(obj, mtl) {
                     e = [1, 4, 7, 1, 7, 10];
                 }
 
-                for (var i in e)
-                    addFace(result[i], result[i + 1], result[i + 2]);
+                for (i in e)
+                    addFace(0, result[e[i]], result[e[i] + 1], result[e[i] + 2]);
 
 
             } else if ((result = regexp.face_vertex_uv.exec(line)) !== null) {
@@ -151,7 +196,7 @@ function objLoader(obj, mtl) {
                 }
 
                 for (var i in e)
-                    addFace(result[i], result[i + 1], undefined);
+                    addFace(1, result[e[i]], result[e[i] + 1], undefined);
 
 
             } else if ((result = regexp.face_vertex_normal.exec(line)) !== null) {
@@ -168,7 +213,7 @@ function objLoader(obj, mtl) {
                 }
 
                 for (var i in e)
-                    addFace(result[i], undefined, result[i + 1]);
+                    addFace(2, result[e[i]], undefined, result[e[i] + 1]);
 
 
             } else if ((result = regexp.face_vertex.exec(line)) !== null) {
@@ -185,7 +230,7 @@ function objLoader(obj, mtl) {
                 }
 
                 for (var i in e)
-                    addFace(result[i], undefined, undefined);
+                    addFace(3, result[e[i]], undefined, undefined);
 
 
             } else {
@@ -235,7 +280,8 @@ function objLoader(obj, mtl) {
                 indexs: []
             };
             state = retObjs[name];
-            temphs = {};
+            state.size = 0;
+            temphash = {};
 
         } else if (regexp.material_use_pattern.test(line)) {
 
@@ -281,5 +327,5 @@ function objLoader(obj, mtl) {
 
     }
 
-
+    return retObjs;
 }
