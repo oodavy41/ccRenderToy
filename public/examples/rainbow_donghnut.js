@@ -13,7 +13,7 @@ class enter {
 
         this.vert_arr = {};
         this.uniforms = {};
-        this.textures={};
+        this.textures = [];
 
         this.stat_mvp_mat = '';
         this.mod_mvp_mat = '';
@@ -40,7 +40,8 @@ class enter {
                 break;
             case this.TEXTURE:
                 c4t2 = 2;
-                this.textures.push(create_texture(arr[4]));
+                if (arr[4])
+                    this.textures.push(create_texture(arr[4]));
                 break;
         }
 
@@ -92,8 +93,8 @@ class enter {
     update() {
         var m = mat4.create();
         mat4.rotateY(m, this.stat_mvp_mat, (new Date()).getTime() / 1000);
-        mat4.rotateX(m, m, (new Date()).getTime() / 2000);
-        mat4.rotateZ(m, m, (new Date()).getTime() / 3000);
+        //mat4.rotateX(m, m, (new Date()).getTime() / 2000);
+        //mat4.rotateZ(m, m, (new Date()).getTime() / 3000);
         this.gl.uniformMatrix4fv(this.uniforms['mvpMatrix'], false, m);
 
         this.gl.drawElements(this.gl.TRIANGLES, this.IBOlength, this.gl.UNSIGNED_SHORT, 0);

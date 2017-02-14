@@ -13,11 +13,11 @@ onload = function() {
 
     var obj = loadFile('models/玛雅金字塔01.obj')
     obj = objLoader(obj, undefined);
-
-    thegl.get_model(obj, thegl.TEXTURE);
+    var arr = obj['snakehead_001'];
+    thegl.get_model([arr.vertices, arr.normals, arr.uvs, arr.indexs, undefined], thegl.TEXTURE);
 
     var light_direction = [10, 0, -1, 0];
-    var camera_pos = [0, 20, 10, 1];
+    var camera_pos = [0, 20, 1, 1];
     var mvp = makeMvp([
         camera_pos, [0, 0, 0],
         [0, 1, 0]

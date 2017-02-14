@@ -178,8 +178,9 @@ function objLoader(obj, mtl) {
                     e = [1, 4, 7, 1, 7, 10];
                 }
 
-                for (i in e)
-                    addFace(0, result[e[i]], result[e[i] + 1], result[e[i] + 2]);
+                e.forEach(function(e) {
+                    addFace(0, result[e], result[e + 1], result[e + 2]);
+                });
 
 
             } else if ((result = regexp.face_vertex_uv.exec(line)) !== null) {
@@ -195,8 +196,9 @@ function objLoader(obj, mtl) {
                     e = [1, 3, 5, 1, 5, 7];
                 }
 
-                for (var i in e)
-                    addFace(1, result[e[i]], result[e[i] + 1], undefined);
+                e.forEach(function(e) {
+                    addFace(1, result[e], result[e + 1], undefined);
+                })
 
 
             } else if ((result = regexp.face_vertex_normal.exec(line)) !== null) {
@@ -212,8 +214,9 @@ function objLoader(obj, mtl) {
                     e = [1, 3, 5, 1, 5, 7];
                 }
 
-                for (var i in e)
-                    addFace(2, result[e[i]], undefined, result[e[i] + 1]);
+                e.forEach(function(e) {
+                    addFace(2, result[e], undefined, result[e + 1]);
+                });
 
 
             } else if ((result = regexp.face_vertex.exec(line)) !== null) {
@@ -229,8 +232,9 @@ function objLoader(obj, mtl) {
                     e = [1, 2, 3, 1, 3, 4];
                 }
 
-                for (var i in e)
-                    addFace(3, result[e[i]], undefined, undefined);
+                e.forEach(function(e) {
+                    addFace(3, result[e], undefined, undefined);
+                });
 
 
             } else {
