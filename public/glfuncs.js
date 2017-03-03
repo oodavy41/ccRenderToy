@@ -110,7 +110,7 @@ function static_uni(arr, smvp) {
     return ret;
 }
 
-function create_texture(src){
+function create_texture(src,gl){
     var img=new Image();
     var texture;
     img.onload=function(){
