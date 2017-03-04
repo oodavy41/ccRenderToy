@@ -8,10 +8,13 @@ onload = function() {
 
     var thegl = new enter();
     thegl.create('wobaglccc');
+
+    document.getElementById('texture_p').textContent = thegl.gl.getParameter(thegl.gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
+
     var shad_name = 'base_phone';
     thegl.make_pro('shaders/' + shad_name + '.vert', 'shaders/' + shad_name + '.frag')
 
-    var obj = loadFile('models/玛雅金字塔01.obj')
+    var obj = loadFile('models/py01.obj')
     obj = objLoader(obj, undefined);
     var arr = obj['??_1_001'];
     thegl.get_model([arr.vertices, arr.normals, arr.uvs, arr.indexs, undefined], thegl.TEXTURE);

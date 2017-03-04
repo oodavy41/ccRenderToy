@@ -41,7 +41,6 @@ function create_program(vs, fs, gl) {
     gl.linkProgram(program);
 
     if (gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        gl.useProgram(program);
         return program;
     } else
         console.log('pro:' + gl.getProgramInfoLog(program));
@@ -76,10 +75,10 @@ function loadFile(path) {
 }
 
 function makeMvp(view3v, pers4f) {
-    var mMat = mat4.identity(mat4.create());
-    var vMat = mat4.identity(mat4.create());
-    var pMat = mat4.identity(mat4.create());
-    var mvp = mat4.identity(mat4.create());
+    var mMat = mat4.create();
+    var vMat = mat4.create();
+    var pMat = mat4.create();
+    var mvp = mat4.create();
 
     mat4.lookAt(vMat, view3v[0], view3v[1], view3v[2]);
 
@@ -110,19 +109,19 @@ function static_uni(arr, smvp) {
     return ret;
 }
 
-function create_texture(src,gl){
-    var img=new Image();
+function create_texture(src, gl) {
+    var img = new Image();
     var texture;
-    img.onload=function(){
-        texture=gl.createTexture();
+    img.onload = function() {
+        texture = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
         gl.generateMipmap(gl.TEXTURE_2D);
         gl.bindTexture(gl.TEXTURE_2D, null);
     }
-    img.src=src;
+    img.src = src;
     return {
-        'img':img,
-        'tex':texture
+        'img': img,
+        'tex': texture
     };
 }
