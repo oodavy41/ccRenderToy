@@ -10,7 +10,7 @@ Transform class {
     }
 
 
-    static make_transform() {
+    make_transform() {
         var rot = quat.create();
         quat.rotateX(rot, rot, this.rotate.x);
         quat.rotateY(rot, rot, this.rotate.y);
@@ -20,25 +20,25 @@ Transform class {
 
     set_pos(x, y, z) {
         this.position = vec3.fromValues(x, y, z);
-        make_transform();
+        this.make_transform();
     }
 
     set_rx(x) {
         this.rotate.x = x;
-        make_transform();
+        this.make_transform();
     }
     set_ry(y) {
         this.rotate.y = y;
-        make_transform();
+        this.make_transform();
     }
     set_rz(z) {
         this.rotate.z = z;
-        make_transform();
+        this.make_transform();
     }
 
     set_scale(x, y, z) {
         this.scale = vec3.formValues(x, y, z);
-        make_transform();
+        this.make_transform();
     }
 
 

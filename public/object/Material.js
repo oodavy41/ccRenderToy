@@ -1,5 +1,5 @@
 class Material {
-    const
+    const static
     var M4f = "2331",
         V3f = "2332",
         I1i = "2333";
@@ -15,22 +15,23 @@ class Material {
         gl.useProgram(this.prog);
     }
 
-    //value:数据类型传入数组，纹理类型传入Texture.texture
+    //value:数据类型传入数组，纹理类型传入Texture.index
     set_uniform(type, name, value, gl) {
         switch (type) {
-            case M4f:
+            case Material.M4f:
                 this.uniforms[name] = gl.getUniformLocation(that.prog, name);
-                gl.uniformMatrix4fv(uni, false, value);
+                gl.uniformMatrix4fv(this.uniforms[name], false, value);
+                this.uniforms[name].value = value;
                 break;
-            case V3f:
+            case Material.V3f:
                 this.uniforms[name] = gl.getUniformLocation(that.prog, name);
-                gl.uniform3fv(uni, value);
+                gl.uniform3fv(this.uniforms[name], value);
+                this.uniforms[name].value = value;
                 break;
-            case I1i:
+            case Material.I1i:
                 this.uniforms[name] = gl.getUniformLocation(that.prog, name);
-                gl.activeTexture(gl.TEXTURE0);
-                gl.bindTexture(gl.TEXTURE_2D, value);
-                gl.uniform1i(uni, 0);
+                gl.uniform1i(this.uniforms[name], value);
+                this.uniforms[name].value = value;
                 break;
         }
 
