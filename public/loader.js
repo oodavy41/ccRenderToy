@@ -1,4 +1,9 @@
 function objLoader(obj, mtl) {
+
+
+
+
+
     var regexp = {
         // v float float float
         vertex_pattern: /^v\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)/,

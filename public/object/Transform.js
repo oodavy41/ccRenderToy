@@ -1,13 +1,16 @@
 Transform class {
-    constructor(x = 0, y = 0, z = 0) {
+    constructor(mesh: Mesh, mat: Material) {
         this.mvp = '';
         this.m = mat4.create();
-        this.position = vec3.fromValues(x, y, z);
+        this.Mesh = mesh;
+        this.Material = mat;
+        this.position = vec3.fromValues(0, 0, 0);
         this.rotate.x = 0;
         this.rotate.y = 0;
         this.rotate.z = 0;
         this.scale = vec3.formValues(1, 1, 1);
     }
+
 
 
     make_transform() {

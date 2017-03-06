@@ -8,7 +8,6 @@ uniform mat4 modelMatrix
 
 varying vec4 fcoord;
 varying vec3 fnormal;
-varying mat4 fmvp;
 varying mat4 fmm;
 varying vec4 fpos;
 
@@ -16,7 +15,7 @@ void main(void){
     gl_Position = mvpMatrix * modelMatrix* vec4(position,1.0);
     fcoord=coord;
     fnormal=normal;
-    fmvp=mvpMatrix;
-    fmm=modelMatrix;
+    //添加正规矩阵，防止非等比缩放导致的法线畸变
+    fmm=transpose(inverse(modelMatrix))*modelMatrix;
     fpos=gl_Position;
 }
