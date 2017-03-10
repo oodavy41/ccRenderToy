@@ -1,4 +1,5 @@
-function objLoader(obj, mtl) {
+function objLoader(obj, mtl, mtllib) {
+
 
 
 
@@ -32,6 +33,7 @@ function objLoader(obj, mtl) {
     var retObjs = {};
 
     var state;
+    var name;
     var vertices = [];
     var normals = [];
     var uvs = [];
@@ -250,7 +252,7 @@ function objLoader(obj, mtl) {
 
         } else if (lineFirstChar === "l") {
 
-            var lineParts = line.substring(1).trim().split(" ");
+            /*var lineParts = line.substring(1).trim().split(" ");
             var lineVertices = [],
                 lineUVs = [];
 
@@ -270,7 +272,7 @@ function objLoader(obj, mtl) {
                 }
 
             }
-            state.addLineGeometry(lineVertices, lineUVs);
+            state.addLineGeometry(lineVertices, lineUVs);*/
 
         } else if ((result = regexp.object_pattern.exec(line)) !== null) {
 
@@ -280,23 +282,67 @@ function objLoader(obj, mtl) {
 
             // WORKAROUND: https://bugs.chromium.org/p/v8/issues/detail?id=2869
             // var name = result[ 0 ].substr( 1 ).trim();
-            var name = (" " + result[0].substr(1).trim()).substr(1);
+            if (state) {
+                var mesh = state.mesh;
+                mesh.set_mesh([
+                    ['position', state.vertices, 3],
+                    ['cood', state.uvs, 2],
+                    ['normal', state.normals, 3],
+                    state.indexs
+                ])
+                retObjs[name].add_mesh(mesh);
 
-            retObjs[name] = {
+            }
+
+
+            state = {
+                mesh: null,
                 vertices: [],
                 normals: [],
                 uvs: [],
-                indexs: []
+                indexs: [],
+                size: 0
             };
-            state = retObjs[name];
-            state.size = 0;
             temphash = {};
+
+            name = (" " + result[0].substr(1).trim()).substr(1);
+            retObjs[name] = new Transform();
 
         } else if (regexp.material_use_pattern.test(line)) {
 
             // material
 
             //state.object.startMaterial(line.substring(7).trim(), state.materialLibraries);
+
+            var matname = line.substring(7).trim();
+            if (state.mesh) {
+
+                var mesh = state.mesh;
+                mesh.set_mesh([
+                    ['position', state.vertices, 3],
+                    ['cood', state.uvs, 2],
+                    ['normal', state.normals, 3],
+                    state.indexs
+                ])
+                retObjs[name].add_mesh(mesh);
+
+                state = {
+                    mesh: null,
+                    vertices: [],
+                    normals: [],
+                    uvs: [],
+                    indexs: [],
+                    size: 0
+                };
+
+                temphash = {};
+            }
+
+
+
+            state.mesh = new Mesh();
+            state.mesh.set_mat(mtllib[matname]);
+
 
         } else if (regexp.material_library_pattern.test(line)) {
 

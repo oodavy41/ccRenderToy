@@ -1,4 +1,4 @@
-class enter {
+class GLg {
     constructor() {
         this.COLOR = '0000';
         this.TEXTURE = '0001';

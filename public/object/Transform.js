@@ -1,14 +1,18 @@
-Transform class {
-    constructor(mesh: Mesh, mat: Material) {
+class Transform {
+    constructor() {
         this.mvp = '';
         this.m = mat4.create();
-        this.Mesh = mesh;
-        this.Material = mat;
+        this.Mesh = [];
         this.position = vec3.fromValues(0, 0, 0);
         this.rotate.x = 0;
         this.rotate.y = 0;
         this.rotate.z = 0;
         this.scale = vec3.formValues(1, 1, 1);
+        this.make_transform();
+    }
+
+    add_mesh(mesh){
+        this.Mesh.push(mesh);
     }
 
 
