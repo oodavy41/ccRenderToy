@@ -6,15 +6,15 @@ onload = function() {
 
     var date = new Date();
 
-    var thegl = new enter();
+    var thegl = new GLg();
     thegl.create('wobaglccc');
 
     document.getElementById('texture_p').textContent = thegl.gl.getParameter(thegl.gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
 
     var shad_name = 'base_phone';
-    thegl.make_pro('shaders/' + shad_name + '.vert', 'shaders/' + shad_name + '.frag')
+    thegl.make_pro('shaders/' + shad_name + '.vert', 'shaders/' + shad_name + '.frag');
 
-    var obj = loadFile('models/py01.obj')
+    var obj = loadFile('models/py01.obj');
     obj = objLoader(obj, undefined);
     var arr = obj['??_1_001'];
     thegl.get_model([arr.vertices, arr.normals, arr.uvs, arr.indexs, undefined], thegl.TEXTURE);
@@ -36,7 +36,7 @@ onload = function() {
         [thegl.M4F, 'staticMatrix', mvp],
         [thegl.V3F, 'lightdDirection', light_direction],
         [thegl.V3F, 'cameraPos', camera_pos]
-    ]
+    ];
 
     thegl.set_uniform(uni_a);
 
@@ -54,4 +54,4 @@ onload = function() {
 
     update();
 
-}
+};

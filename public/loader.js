@@ -1,8 +1,5 @@
-function objLoader(obj, mtl, mtllib) {
-
-
-
-
+function objLoader(objpath, objname, mtllib, gl) {
+    var obj = loadFile(objpath + objname);
 
 
     var regexp = {
@@ -185,7 +182,7 @@ function objLoader(obj, mtl, mtllib) {
                     e = [1, 4, 7, 1, 7, 10];
                 }
 
-                e.forEach(function(e) {
+                e.forEach(function (e) {
                     addFace(0, result[e], result[e + 1], result[e + 2]);
                 });
 
@@ -203,7 +200,7 @@ function objLoader(obj, mtl, mtllib) {
                     e = [1, 3, 5, 1, 5, 7];
                 }
 
-                e.forEach(function(e) {
+                e.forEach(function (e) {
                     addFace(1, result[e], result[e + 1], undefined);
                 })
 
@@ -221,7 +218,7 @@ function objLoader(obj, mtl, mtllib) {
                     e = [1, 3, 5, 1, 5, 7];
                 }
 
-                e.forEach(function(e) {
+                e.forEach(function (e) {
                     addFace(2, result[e], undefined, result[e + 1]);
                 });
 
@@ -239,7 +236,7 @@ function objLoader(obj, mtl, mtllib) {
                     e = [1, 2, 3, 1, 3, 4];
                 }
 
-                e.forEach(function(e) {
+                e.forEach(function (e) {
                     addFace(3, result[e], undefined, undefined);
                 });
 
@@ -253,26 +250,26 @@ function objLoader(obj, mtl, mtllib) {
         } else if (lineFirstChar === "l") {
 
             /*var lineParts = line.substring(1).trim().split(" ");
-            var lineVertices = [],
-                lineUVs = [];
+             var lineVertices = [],
+             lineUVs = [];
 
-            if (line.indexOf("/") === -1) {
+             if (line.indexOf("/") === -1) {
 
-                lineVertices = lineParts;
+             lineVertices = lineParts;
 
-            } else {
+             } else {
 
-                for (var li = 0, llen = lineParts.length; li < llen; li++) {
+             for (var li = 0, llen = lineParts.length; li < llen; li++) {
 
-                    var parts = lineParts[li].split("/");
+             var parts = lineParts[li].split("/");
 
-                    if (parts[0] !== "") lineVertices.push(parts[0]);
-                    if (parts[1] !== "") lineUVs.push(parts[1]);
+             if (parts[0] !== "") lineVertices.push(parts[0]);
+             if (parts[1] !== "") lineUVs.push(parts[1]);
 
-                }
+             }
 
-            }
-            state.addLineGeometry(lineVertices, lineUVs);*/
+             }
+             state.addLineGeometry(lineVertices, lineUVs);*/
 
         } else if ((result = regexp.object_pattern.exec(line)) !== null) {
 
@@ -289,7 +286,7 @@ function objLoader(obj, mtl, mtllib) {
                     ['cood', state.uvs, 2],
                     ['normal', state.normals, 3],
                     state.indexs
-                ])
+                ]);
                 retObjs[name].add_mesh(mesh);
 
             }
@@ -323,7 +320,7 @@ function objLoader(obj, mtl, mtllib) {
                     ['cood', state.uvs, 2],
                     ['normal', state.normals, 3],
                     state.indexs
-                ])
+                ]);
                 retObjs[name].add_mesh(mesh);
 
                 state = {
@@ -339,7 +336,6 @@ function objLoader(obj, mtl, mtllib) {
             }
 
 
-
             state.mesh = new Mesh();
             state.mesh.set_mat(mtllib[matname]);
 
@@ -348,7 +344,7 @@ function objLoader(obj, mtl, mtllib) {
 
             // mtl file
 
-            //state.materialLibraries.push(line.substring(7).trim());
+            mtlLoader(objpath + line.substring(7).trim(), mtllib, gl);
 
         } else if ((result = regexp.smoothing_pattern.exec(line)) !== null) {
 
@@ -362,14 +358,14 @@ function objLoader(obj, mtl, mtllib) {
             // Example asset: examples/models/obj/cerberus/Cerberus.obj
 
             /*var value = result[1].trim().toLowerCase();
-            state.object.smooth = (value === '1' || value === 'on');
+             state.object.smooth = (value === '1' || value === 'on');
 
-            var material = state.object.currentMaterial();
-            if (material) {
+             var material = state.object.currentMaterial();
+             if (material) {
 
-                material.smooth = state.object.smooth;
+             material.smooth = state.object.smooth;
 
-            }*/
+             }*/
 
         } else {
 
@@ -383,4 +379,69 @@ function objLoader(obj, mtl, mtllib) {
     }
 
     return retObjs;
+}
+
+function mtlLoader(path, mtlname, mtllib, gl) {
+    var mtl = loadFile(path + mtlname);
+
+    var shadpas = 'shaders/';
+    var shadname = 'text_phone';
+
+    var keyhash = {ka: 'ambient', kd: 'diffuse', ks: 'specular'};
+
+    var lines = mtl.split('\n');
+    var thismtl;
+    var delimiter_pattern = /\s+/;
+
+    for (var i = 0; i < lines.length; i++) {
+
+        var line = lines[i];
+        line = line.trim();
+
+        if (line.length === 0 || line.charAt(0) === '#') {
+
+            // Blank line or comment ignore
+            continue;
+
+        }
+
+        var pos = line.indexOf(' ');
+
+        var key = ( pos >= 0 ) ? line.substring(0, pos) : line;
+        key = key.toLowerCase();
+
+        var value = ( pos >= 0 ) ? line.substring(pos + 1) : '';
+        value = value.trim();
+
+        if (key === 'newmtl') {
+
+            // New material
+            var vpath = shadpas + shadname + '.vert';
+            var fpath = shadpas + shadname + '.farg';
+
+            thismtl = mtllib[value] = new Material(vpath, fpath, gl);
+
+        } else if (thismtl) {
+
+            if (key === 'ka' || key === 'kd' || key === 'ks') {
+
+                var ss = value.split(delimiter_pattern, 3);
+                var v = [parseFloat(ss[0]), parseFloat(ss[1]), parseFloat(ss[2])];
+                thismtl.set_uniform(Material.V3f, keyhash[key], v, gl);
+
+            } else if (key === 'Ns') {
+
+                thismtl.set_uniform(Material._1f, 'powup', parseFloat(value), gl);
+
+            } else if (key === 'map_Ka') {
+
+                thismtl.set_uniform(Material._1b, 'usetex', true, gl);
+                var tex = new Texture(path + value, gl);
+                thismtl.set_uniform(Material.I1i, 'tex', tex, gl);
+            }
+
+        }
+
+    }
+
 }

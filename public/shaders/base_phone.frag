@@ -5,10 +5,10 @@ varying vec3 fnormal;
 varying mat4 fmvp;
 varying vec4 fpos;
 
-uniform   vec3 lightdDirection;
-uniform   vec3 cameraPos;
+uniform vec3 lightdDirection;
+uniform vec3 cameraPos;
 
-uniform   mat4 staticMatrix;
+uniform mat4 staticMatrix;
 
 void main(void)
 {
