@@ -1,5 +1,5 @@
 function initgl(id) {
-    var glc = document.getElementById('wobaglccc');
+    var glc = document.getElementById(id);
     var gl = glc.getContext('webgl');
 
     if (!gl) {
@@ -70,7 +70,7 @@ function loadFile(path) {
     if (xhr.status == 200)
         return xhr.responseText;
     else
-        alert("no shader");
+        console.log("no such file:" + path);
 
 }
 
@@ -118,7 +118,7 @@ function create_texture(src, gl) {
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
         gl.generateMipmap(gl.TEXTURE_2D);
         gl.bindTexture(gl.TEXTURE_2D, null);
-    }
+    };
     img.src = src;
     return {
         'img': img,

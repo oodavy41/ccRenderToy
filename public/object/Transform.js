@@ -1,6 +1,5 @@
 class Transform {
     constructor() {
-        this.mvp = '';
         this.m = mat4.create();
         this.Mesh = [];
         this.position = vec3.fromValues(0, 0, 0);
@@ -13,6 +12,24 @@ class Transform {
 
     add_mesh(mesh){
         this.Mesh.push(mesh);
+    }
+
+    init(glg) {
+        if (!(glg.mvp && glg.light_d && glg.light_c)) {
+            console.log('no camera or light info');
+        } else {
+            for (var mesh in this.Mesh) {
+                mesh.material.set_uniform(Material.V3f, 'lightDirection', glg.light_d, glg.gl);
+                mesh.material.set_uniform(Material.V3f, 'lightColor', glg.light_c, glg.gl);
+                mesh.material.set_uniform(Material.M4f, 'mvpMatrix', glg.mvp, glg.gl);
+                mesh.material.set_uniform(Material.M4f, 'modelMatrix', this.m, glg.gl);
+            }
+        }
+    }
+
+    draw(gl) {
+        for (var mesh in this.Mesh)
+            mesh.draw(gl);
     }
 
 

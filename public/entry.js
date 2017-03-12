@@ -7,11 +7,15 @@ onload = function() {
     var date = new Date();
 
     var thegl = new GLg();
+
     thegl.create('wobaglccc');
 
-    document.getElementById('texture_p').textContent = thegl.gl.getParameter(thegl.gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
+    var objs = objLoader('models/', 'py01.obj', thegl.mtllib, thegl.gl);
+    for (var tran in objs) {
+        tran.init(thegl)
+    }
 
-    var shad_name = 'base_phone';
+    /*    var shad_name = 'base_phone';
     thegl.make_pro('shaders/' + shad_name + '.vert', 'shaders/' + shad_name + '.frag');
 
     var obj = loadFile('models/py01.obj');
@@ -38,12 +42,14 @@ onload = function() {
         [thegl.V3F, 'cameraPos', camera_pos]
     ];
 
-    thegl.set_uniform(uni_a);
+     thegl.set_uniform(uni_a);*/
 
     var update = function() {
         glclear(thegl.gl);
 
-        thegl.update();
+        for (var tran in objs) {
+            tran.draw();
+        }
         //=======a=====================
         var thisfps = 1000 / ((new Date()).getTime() - date.getTime());
         date = new Date();

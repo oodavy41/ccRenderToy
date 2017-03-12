@@ -279,7 +279,7 @@ function objLoader(objpath, objname, mtllib, gl) {
 
             // WORKAROUND: https://bugs.chromium.org/p/v8/issues/detail?id=2869
             // var name = result[ 0 ].substr( 1 ).trim();
-            if (state) {
+            if (state && name) {
                 var mesh = state.mesh;
                 mesh.set_mesh([
                     ['position', state.vertices, 3],
@@ -337,6 +337,8 @@ function objLoader(objpath, objname, mtllib, gl) {
 
 
             state.mesh = new Mesh();
+            if (!mtllib[matname])
+                console.log('no such mtl:' + matname);
             state.mesh.set_mat(mtllib[matname]);
 
 
@@ -344,7 +346,7 @@ function objLoader(objpath, objname, mtllib, gl) {
 
             // mtl file
 
-            mtlLoader(objpath + line.substring(7).trim(), mtllib, gl);
+            mtlLoader(objpath, line.substring(7).trim(), mtllib, gl);
 
         } else if ((result = regexp.smoothing_pattern.exec(line)) !== null) {
 
@@ -416,6 +418,8 @@ function mtlLoader(path, mtlname, mtllib, gl) {
         if (key === 'newmtl') {
 
             // New material
+            if (mtllib[value])
+                console.log("already has a same mtl name");
             var vpath = shadpas + shadname + '.vert';
             var fpath = shadpas + shadname + '.farg';
 

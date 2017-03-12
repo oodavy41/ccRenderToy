@@ -7,7 +7,7 @@ varying mat4 fmm;
 
 
 
-uniform vec3 lightdDirection;
+uniform vec3 lightDirection;
 uniform vec3 lightColor;
 uniform vec3 cameraPos;
 
@@ -23,7 +23,7 @@ uniform sampler2D tex;
 
 void main(void)
 {
-    vec3 mvpLD=lightdDirection;
+    vec3 mvpLD=lightDirection;
 
     //法线
     vec3 Mnormal=normalize((fmm*vec4(fnormal,0.0)).xyz);
@@ -39,5 +39,7 @@ void main(void)
 
     vec4 color=usetex?
         texture2D(tex,vec2(fcoord.s,fcoord.t)):vec4(1,1,1,1);
-    gl_FragColor = color*vec4(lightColor*diffuse*bright,1.0)+vec4(specular*hlight,1.0)+color*vec4(ambient,1.0);
+    gl_FragColor = color*vec4(lightColor*diffuse*bright,1.0)
+        +vec4(specular*hlight,1.0)
+        +color*vec4(ambient,1.0);
 }

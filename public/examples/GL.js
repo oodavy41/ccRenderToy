@@ -1,35 +1,48 @@
 class GLg {
     constructor() {
-        this.COLOR = '0000';
-        this.TEXTURE = '0001';
-        this.M4F = '0010';
-        this.V3F = '0011';
-        this.I1I = '0012';
+        this.gl = null;
 
-        this.gl = '';
-        this.vs = '';
-        this.fs = '';
-        this.prog = '';
-
-        this.vert_arr = {};
-        this.uniforms = {};
-        this.textures = [];
-
-        this.stat_mvp_mat = '';
-        this.mod_mvp_mat = '';
-
-        this.glsl_mvp_mat = '';
+        this.mtllib = {};
+        this.light_d = null;
+        this.light_c = null;
+        this.camera_pos = null;
+        this.camera_look = null;
+        this.camera_up = null;
+        this.camera_info = null;
+        this.mvp = null;
     }
 
     create(id) {
         this.gl = initgl(id);
     }
 
-    make_pro(ver_path, fra_path) {
-        this.vs = create_shader(ver_path, this.gl, this.gl.VERTEX_SHADER);
-        this.fs = create_shader(fra_path, this.gl, this.gl.FRAGMENT_SHADER);
-        this.prog = create_program(this.vs, this.fs, this.gl);
+    set_light(direction, color) {
+        this.light_c = color;
+        this.light_d = direction;
     }
+
+    set_cam_pos(pos) {
+        this.camera_pos = pos;
+        this.makemvp();
+    }
+
+    set_cam_look(lookat) {
+        this.camera_look = lookat;
+        this.makemvp();
+    }
+
+    set_cam_up(up) {
+        this.camera_up = up;
+        this.makemvp();
+    }
+
+    makemvp() {
+        if (this.camera_pos && this.camera_look && this.camera_up && this.camera_info) {
+            this.mvp = makeMvp([this.camera_pos, this.camera_look, this.camera_up], this.camera_info);
+        }
+    }
+
+
 
     //arr格式[[positions],[normals],[color/textureCood],[index],textureSrc]
     get_model(arr, flag) {
