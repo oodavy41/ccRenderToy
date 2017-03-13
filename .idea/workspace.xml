@@ -1,54 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="347b00cf-b8b6-4f75-913c-dbe400fce5ee" name="默认" comment="loader done">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face1.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face1ruin.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face2.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face2ruin.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face3.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face3ruin.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face4.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face4ruin.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face5.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face5ruin.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face6.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face6ruin.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face7.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face7ruin.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face8.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face8ruin.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/face9.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/innerdoors.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/pyramid_top.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/rail1.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/rail2.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/snake4.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/south_staircase.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/stairside.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/stairsideruin.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/steps.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/templeraisedbottom.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/templeraisedtop.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/templetop.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/templeupperbottom.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/templeuppertop.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/upperdoors.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/maps/west_staircase.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/py01.mtl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/public/models/py01.obj" afterPath="" />
+    <list default="true" id="347b00cf-b8b6-4f75-913c-dbe400fce5ee" name="默认" comment="some problem">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/models/Wall/1_'.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/models/Wall/3.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/models/Wall/4.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/models/Wall/5.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/models/Wall/brickwall_4.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/models/Wall/wall.mtl" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/models/Wall/wall.obj" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/entry.js" afterPath="$PROJECT_DIR$/public/entry.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/examples/GL.js" afterPath="$PROJECT_DIR$/public/examples/GL.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/glfuncs.js" afterPath="$PROJECT_DIR$/public/glfuncs.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/index.html" afterPath="$PROJECT_DIR$/public/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/loader.js" afterPath="$PROJECT_DIR$/public/loader.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/object/Material.js" afterPath="$PROJECT_DIR$/public/object/Material.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/object/Mesh.js" afterPath="$PROJECT_DIR$/public/object/Mesh.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/object/Texture.js" afterPath="$PROJECT_DIR$/public/object/Texture.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/object/Transform.js" afterPath="$PROJECT_DIR$/public/object/Transform.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/shaders/text_phone.frag" afterPath="$PROJECT_DIR$/public/shaders/text_phone.frag" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/shaders/text_phone.vert" afterPath="$PROJECT_DIR$/public/shaders/text_phone.vert" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -75,7 +36,7 @@
             <entry file="file://$PROJECT_DIR$/public/entry.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="270">
-                  <caret line="36" column="38" lean-forward="false" selection-start-line="36" selection-start-column="38" selection-end-line="36" selection-end-column="38" />
+                  <caret line="35" column="38" lean-forward="false" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
                   <folding />
                 </state>
               </provider>
@@ -104,8 +65,8 @@
           <file leaf-file-name="Material.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/public/object/Material.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="282">
-                  <caret line="54" column="0" lean-forward="true" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+                <state relative-caret-position="60">
+                  <caret line="4" column="38" lean-forward="false" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="38" />
                   <folding />
                 </state>
               </provider>
@@ -135,7 +96,7 @@
             <entry file="file://$PROJECT_DIR$/public/object/Mesh.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="465">
-                  <caret line="40" column="65" lean-forward="false" selection-start-line="40" selection-start-column="65" selection-end-line="40" selection-end-column="65" />
+                  <caret line="40" column="66" lean-forward="false" selection-start-line="40" selection-start-column="66" selection-end-line="40" selection-end-column="66" />
                   <folding />
                 </state>
               </provider>
@@ -179,7 +140,7 @@
             <entry file="file://$PROJECT_DIR$/public/examples/GL.js">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="60">
-                  <caret line="4" column="25" lean-forward="true" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
+                  <caret line="4" column="25" lean-forward="false" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
                   <folding />
                 </state>
               </provider>
@@ -482,7 +443,7 @@
       <workItem from="1489250498434" duration="759000" />
       <workItem from="1489251269520" duration="6661000" />
       <workItem from="1489301229568" duration="9963000" />
-      <workItem from="1489392913780" duration="26642000" />
+      <workItem from="1489392913780" duration="26717000" />
     </task>
     <task id="LOCAL-00001" summary="obj loader is done /switch to webstorm">
       <created>1489257948521</created>
@@ -498,11 +459,18 @@
       <option name="project" value="LOCAL" />
       <updated>1489345250922</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="some problem">
+      <created>1489429679982</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1489429679982</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="45773000" />
+    <option name="totallyTimeSpent" value="45848000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -546,7 +514,8 @@
     <MESSAGE value="obj loader is done /switch to webstorm" />
     <MESSAGE value="debuging" />
     <MESSAGE value="loader done" />
-    <option name="LAST_COMMIT_MESSAGE" value="loader done" />
+    <MESSAGE value="some problem" />
+    <option name="LAST_COMMIT_MESSAGE" value="some problem" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -858,7 +827,7 @@
     <entry file="file://$PROJECT_DIR$/public/examples/GL.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
-          <caret line="4" column="25" lean-forward="true" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
+          <caret line="4" column="25" lean-forward="false" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
           <folding />
         </state>
       </provider>
@@ -866,7 +835,7 @@
     <entry file="file://$PROJECT_DIR$/public/object/Mesh.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
-          <caret line="40" column="65" lean-forward="false" selection-start-line="40" selection-start-column="65" selection-end-line="40" selection-end-column="65" />
+          <caret line="40" column="66" lean-forward="false" selection-start-line="40" selection-start-column="66" selection-end-line="40" selection-end-column="66" />
           <folding />
         </state>
       </provider>
@@ -898,7 +867,7 @@
     <entry file="file://$PROJECT_DIR$/public/entry.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
-          <caret line="36" column="38" lean-forward="false" selection-start-line="36" selection-start-column="38" selection-end-line="36" selection-end-column="38" />
+          <caret line="35" column="38" lean-forward="false" selection-start-line="35" selection-start-column="38" selection-end-line="35" selection-end-column="38" />
           <folding />
         </state>
       </provider>
@@ -913,8 +882,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/object/Material.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="54" column="0" lean-forward="true" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+        <state relative-caret-position="60">
+          <caret line="4" column="38" lean-forward="false" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="38" />
           <folding />
         </state>
       </provider>
