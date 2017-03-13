@@ -1,9 +1,5 @@
+console.log('mtl.load');
 class Material {
-    static M4f = "2331";
-    static V3f = "2332";
-    static I1i = "2333";
-    static _1f = "2334";
-    static _1b = "2335";
 
     constructor(ver_path, fra_path, gl) {
         this.vs = create_shader(ver_path, gl, gl.VERTEX_SHADER);
@@ -16,17 +12,28 @@ class Material {
         gl.useProgram(this.prog);
     }
 
-    //value:数据类型传入数组，纹理类型传入Texture
+    //value:数据类型传入数组，纹理类型传入Texture  此前需要useProgram
     set_uniform(type, name, value, gl) {
+        gl.useProgram(this.prog);
         switch (type) {
             case Material.M4f:
                 this.uniforms[name] = gl.getUniformLocation(this.prog, name);
                 gl.uniformMatrix4fv(this.uniforms[name], false, value);
                 this.uniforms[name].value = value;
                 break;
+            case Material.M3f:
+                this.uniforms[name] = gl.getUniformLocation(this.prog, name);
+                gl.uniformMatrix3fv(this.uniforms[name], false, value);
+                this.uniforms[name].value = value;
+                break;
             case Material.V3f:
                 this.uniforms[name] = gl.getUniformLocation(this.prog, name);
                 gl.uniform3fv(this.uniforms[name], value);
+                this.uniforms[name].value = value;
+                break;
+            case Material.V4f:
+                this.uniforms[name] = gl.getUniformLocation(this.prog, name);
+                gl.uniform4fv(this.uniforms[name], value);
                 this.uniforms[name].value = value;
                 break;
             case Material.I1i:
@@ -44,10 +51,18 @@ class Material {
                 gl.uniform1i(this.uniforms[name], value);
                 this.uniforms[name].value = value;
                 break;
-
         }
 
     }
-
-
 }
+
+Material.M4f = "2331";
+Material.M3f = "2332";
+
+Material.V3f = "2341";
+Material.V4f = "2342";
+
+Material.I1i = "2351";
+
+Material._1f = "2361";
+Material._1b = "2361";

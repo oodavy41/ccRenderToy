@@ -19,8 +19,9 @@ class Mesh {
 
     init(gl) {
         var program=this.material.prog;
-        if(!prog)
+        if (!program)
             console.log("no Program Binded!");
+        gl.useProgram(program);
 
         for (var i = 0, l = this.arrs.length; i < l; i++) {
             var arr = this.arrs[i];
@@ -37,6 +38,7 @@ class Mesh {
 
     draw(gl){
         this.material.use(gl);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.index_buffer);
         gl.drawElements(gl.TRIANGLES, this.index_length, gl.UNSIGNED_SHORT, 0);
     }
 

@@ -10,7 +10,7 @@ function initgl(id) {
 }
 
 function glclear(gl) {
-    gl.clearColor(0, 0, 0, 1);
+    gl.clearColor(0.3, 0.3, 0.3, 1);
     gl.clearDepth(1);
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
@@ -74,6 +74,7 @@ function loadFile(path) {
 
 }
 
+
 function makeMvp(view3v, pers4f) {
     var mMat = mat4.create();
     var vMat = mat4.create();
@@ -91,6 +92,8 @@ function makeMvp(view3v, pers4f) {
 
 function upload_array_att(array, att_name, program, gl, vap_argus) {
     var att = gl.getAttribLocation(program, att_name);
+    if (att === -1)
+        console.log('no attribute such name:' + att_name);
     var vbo = create_vbo(array, gl);
     gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
     gl.enableVertexAttribArray(att);

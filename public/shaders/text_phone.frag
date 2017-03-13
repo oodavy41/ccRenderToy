@@ -3,11 +3,10 @@ precision mediump float;
 varying vec4 fpos;
 varying vec2 fcoord;
 varying vec3 fnormal;
-varying mat4 fmm;
 
+uniform mat3 normalMatrix;
 
-
-uniform vec3 lightDirection;
+uniform vec4 lightDirection;
 uniform vec3 lightColor;
 uniform vec3 cameraPos;
 
@@ -23,10 +22,10 @@ uniform sampler2D tex;
 
 void main(void)
 {
-    vec3 mvpLD=lightDirection;
+    vec3 mvpLD=lightDirection.xyz;
 
     //法线
-    vec3 Mnormal=normalize((fmm*vec4(fnormal,0.0)).xyz);
+    vec3 Mnormal=normalize(normalMatrix*fnormal);
 
     //漫反射光照                        环境光系数 ↓
     float bright=clamp(dot(Mnormal, mvpLD),0.0,1.0);
@@ -39,7 +38,7 @@ void main(void)
 
     vec4 color=usetex?
         texture2D(tex,vec2(fcoord.s,fcoord.t)):vec4(1,1,1,1);
-    gl_FragColor = color*vec4(lightColor*diffuse*bright,1.0)
-        +vec4(specular*hlight,1.0)
-        +color*vec4(ambient,1.0);
+    gl_FragColor = color*vec4(lightColor*diffuse*bright,1.0)+
+        vec4(specular*hlight,1.0)+
+        color*vec4(ambient,1.0);
 }

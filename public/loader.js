@@ -1,4 +1,10 @@
+var att_p = 'position';
+var att_uv = 'coord';
+var att_n = 'normal';
+
+
 function objLoader(objpath, objname, mtllib, gl) {
+
     var obj = loadFile(objpath + objname);
 
 
@@ -279,12 +285,17 @@ function objLoader(objpath, objname, mtllib, gl) {
 
             // WORKAROUND: https://bugs.chromium.org/p/v8/issues/detail?id=2869
             // var name = result[ 0 ].substr( 1 ).trim();
+
+
+            if (result[0].substr(1).trim() == 'default')
+                continue;
+
             if (state && name) {
                 var mesh = state.mesh;
                 mesh.set_mesh([
-                    ['position', state.vertices, 3],
-                    ['cood', state.uvs, 2],
-                    ['normal', state.normals, 3],
+                    [att_p, state.vertices, 3],
+                    [att_uv, state.uvs, 2],
+                    [att_n, state.normals, 3],
                     state.indexs
                 ]);
                 retObjs[name].add_mesh(mesh);
@@ -302,7 +313,8 @@ function objLoader(objpath, objname, mtllib, gl) {
             };
             temphash = {};
 
-            name = (" " + result[0].substr(1).trim()).substr(1);
+            name = result[0].substr(1).trim();
+
             retObjs[name] = new Transform();
 
         } else if (regexp.material_use_pattern.test(line)) {
@@ -316,9 +328,9 @@ function objLoader(objpath, objname, mtllib, gl) {
 
                 var mesh = state.mesh;
                 mesh.set_mesh([
-                    ['position', state.vertices, 3],
-                    ['cood', state.uvs, 2],
-                    ['normal', state.normals, 3],
+                    [att_p, state.vertices, 3],
+                    [att_uv, state.uvs, 2],
+                    [att_n, state.normals, 3],
                     state.indexs
                 ]);
                 retObjs[name].add_mesh(mesh);
@@ -421,7 +433,7 @@ function mtlLoader(path, mtlname, mtllib, gl) {
             if (mtllib[value])
                 console.log("already has a same mtl name");
             var vpath = shadpas + shadname + '.vert';
-            var fpath = shadpas + shadname + '.farg';
+            var fpath = shadpas + shadname + '.frag';
 
             thismtl = mtllib[value] = new Material(vpath, fpath, gl);
 
@@ -433,11 +445,11 @@ function mtlLoader(path, mtlname, mtllib, gl) {
                 var v = [parseFloat(ss[0]), parseFloat(ss[1]), parseFloat(ss[2])];
                 thismtl.set_uniform(Material.V3f, keyhash[key], v, gl);
 
-            } else if (key === 'Ns') {
+            } else if (key === 'ns') {
 
                 thismtl.set_uniform(Material._1f, 'powup', parseFloat(value), gl);
 
-            } else if (key === 'map_Ka') {
+            } else if (key === 'map_kd') {
 
                 thismtl.set_uniform(Material._1b, 'usetex', true, gl);
                 var tex = new Texture(path + value, gl);
@@ -449,3 +461,5 @@ function mtlLoader(path, mtlname, mtllib, gl) {
     }
 
 }
+
+console.log('loader.load');

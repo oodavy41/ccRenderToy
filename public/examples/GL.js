@@ -36,6 +36,11 @@ class GLg {
         this.makemvp();
     }
 
+    set_cam_info(info) {
+        this.camera_info = info;
+        this.makemvp();
+    }
+
     makemvp() {
         if (this.camera_pos && this.camera_look && this.camera_up && this.camera_info) {
             this.mvp = makeMvp([this.camera_pos, this.camera_look, this.camera_up], this.camera_info);
@@ -111,6 +116,5 @@ class GLg {
         this.gl.uniformMatrix4fv(this.uniforms['mvpMatrix'], false, m);
 
         this.gl.drawElements(this.gl.TRIANGLES, this.IBOlength, this.gl.UNSIGNED_SHORT, 0);
-
     }
 }

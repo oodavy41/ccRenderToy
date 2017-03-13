@@ -1,12 +1,14 @@
 class Transform {
     constructor() {
         this.m = mat4.create();
+        this.nm = mat3.create();
         this.Mesh = [];
         this.position = vec3.fromValues(0, 0, 0);
+        this.rotate = {};
         this.rotate.x = 0;
         this.rotate.y = 0;
         this.rotate.z = 0;
-        this.scale = vec3.formValues(1, 1, 1);
+        this.scale = vec3.fromValues(1, 1, 1);
         this.make_transform();
     }
 
@@ -19,17 +21,25 @@ class Transform {
             console.log('no camera or light info');
         } else {
             for (var mesh in this.Mesh) {
-                mesh.material.set_uniform(Material.V3f, 'lightDirection', glg.light_d, glg.gl);
+                mesh = this.Mesh[mesh];
+                mesh.init(glg.gl);
+                mesh.material.set_uniform(Material.V4f, 'lightDirection', glg.light_d, glg.gl);
                 mesh.material.set_uniform(Material.V3f, 'lightColor', glg.light_c, glg.gl);
+                mesh.material.set_uniform(Material.V3f, 'cameraPos', glg.camera_pos, glg.gl);
                 mesh.material.set_uniform(Material.M4f, 'mvpMatrix', glg.mvp, glg.gl);
                 mesh.material.set_uniform(Material.M4f, 'modelMatrix', this.m, glg.gl);
+                mesh.material.set_uniform(Material.M3f, 'normalMatrix', this.nm, glg.gl);
             }
         }
     }
 
     draw(gl) {
-        for (var mesh in this.Mesh)
+        for (var mesh in this.Mesh) {
+            mesh = this.Mesh[mesh];
+            mesh.material.set_uniform(Material.M4f, 'modelMatrix', this.m, gl);
+            mesh.material.set_uniform(Material.M3f, 'normalMatrix', this.nm, gl);
             mesh.draw(gl);
+        }
     }
 
 
@@ -40,6 +50,7 @@ class Transform {
         quat.rotateY(rot, rot, this.rotate.y);
         quat.rotateZ(rot, rot, this.rotate.z);
         mat4.fromRotationTranslationScale(this.m, rot, this.position, this.scale);
+        mat3.normalFromMat4(this.nm, this.m);
     }
 
     set_pos(x, y, z) {
