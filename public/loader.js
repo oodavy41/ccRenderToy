@@ -451,7 +451,7 @@ function mtlLoader(path, mtlname, mtllib, gl) {
 
             } else if (key === 'map_kd') {
 
-                thismtl.set_uniform(Material._1b, 'usetex', true, gl);
+                thismtl.set_uniform(Material._1b, 'usetex', false, gl);
                 var tex = new Texture(path + value, gl);
                 thismtl.set_uniform(Material.I1i, 'tex', tex, gl);
             }

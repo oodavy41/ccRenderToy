@@ -14,6 +14,8 @@ some design and implementation reference to [three.js](https://threejs.org)
 部分设计实现参考了 [three.js](https://threejs.org)
 
 
+![](http://o6qwciia9.bkt.clouddn.com/Rlyeh/dounts2.png)
+
 todo:
 
 - [x] 冯氏光照模型

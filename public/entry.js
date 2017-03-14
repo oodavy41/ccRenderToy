@@ -30,7 +30,7 @@ onload = function() {
 
 
     var update = function () {
-        glclear(thegl.gl);
+        //glclear(thegl.gl);
 
         for (var tran in objs) {
             objs[tran].draw(thegl.gl);

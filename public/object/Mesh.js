@@ -38,6 +38,11 @@ class Mesh {
 
     draw(gl){
         this.material.use(gl);
+        for(var i = 0, l = this.arrs.length-1; i < l; i++) {
+            var arr=this.arrs[i];
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.arr_bkup[arr[0]].vbo);
+            gl.vertexAttribPointer(this.arr_bkup[arr[0]].att,arr[2],gl.FLOAT,false,0,0);
+        }
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.index_buffer);
         gl.drawElements(gl.TRIANGLES, this.index_length, gl.UNSIGNED_SHORT, 0);
     }
