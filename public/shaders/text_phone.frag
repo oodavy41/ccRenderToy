@@ -37,8 +37,9 @@ void main(void)
     float hlight=pow(max(dot(Mnormal, reflectDir),0.0), powup);
 
     vec4 color=usetex?
-        texture2D(tex,vec2(fcoord.s,fcoord.t)):vec4(1,1,1,1);
-    gl_FragColor = color*vec4(lightColor*diffuse*bright,1.0)+
+        texture2D(tex,vec2(fcoord.s,fcoord.t)):
+        vec4(diffuse,1.0);
+    gl_FragColor = color*vec4(lightColor*bright,1.0)+
         vec4(specular*hlight,1.0)+
-        color*vec4(ambient,1.0);
+        color*vec4(ambient+vec3(0.1),1.0);
 }

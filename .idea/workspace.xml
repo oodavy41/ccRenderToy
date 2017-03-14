@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="347b00cf-b8b6-4f75-913c-dbe400fce5ee" name="默认" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/models/Wall/brickwall_4.jpg" afterPath="$PROJECT_DIR$/public/models/Wall/brickwall_4.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/entry.js" afterPath="$PROJECT_DIR$/public/entry.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/glfuncs.js" afterPath="$PROJECT_DIR$/public/glfuncs.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/loader.js" afterPath="$PROJECT_DIR$/public/loader.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/object/Mesh.js" afterPath="$PROJECT_DIR$/public/object/Mesh.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/object/Texture.js" afterPath="$PROJECT_DIR$/public/object/Texture.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/shaders/text_phone.frag" afterPath="$PROJECT_DIR$/public/shaders/text_phone.frag" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -28,11 +32,11 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="entry.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="entry.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/public/entry.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="525">
-                  <caret line="35" column="36" lean-forward="false" selection-start-line="35" selection-start-column="36" selection-end-line="35" selection-end-column="36" />
+                <state relative-caret-position="240">
+                  <caret line="22" column="50" lean-forward="true" selection-start-line="22" selection-start-column="50" selection-end-line="22" selection-end-column="50" />
                   <folding />
                 </state>
               </provider>
@@ -41,8 +45,8 @@
           <file leaf-file-name="Transform.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/object/Transform.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="405">
-                  <caret line="27" column="37" lean-forward="true" selection-start-line="27" selection-start-column="37" selection-end-line="27" selection-end-column="37" />
+                <state relative-caret-position="195">
+                  <caret line="28" column="50" lean-forward="true" selection-start-line="28" selection-start-column="50" selection-end-line="28" selection-end-column="50" />
                   <folding />
                 </state>
               </provider>
@@ -68,31 +72,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Texture.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/public/object/Texture.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="135">
-                  <caret line="9" column="24" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="24" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="loader.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/public/loader.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="177">
-                  <caret line="295" column="26" lean-forward="false" selection-start-line="295" selection-start-column="21" selection-end-line="295" selection-end-column="26" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Mesh.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="Mesh.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/object/Mesh.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="285">
-                  <caret line="40" column="45" lean-forward="false" selection-start-line="40" selection-start-column="45" selection-end-line="40" selection-end-column="45" />
+                <state relative-caret-position="315">
+                  <caret line="33" column="37" lean-forward="false" selection-start-line="33" selection-start-column="37" selection-end-line="33" selection-end-column="37" />
                   <folding />
                 </state>
               </provider>
@@ -105,8 +89,8 @@
           <file leaf-file-name="text_phone.frag" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/public/shaders/text_phone.frag">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="45">
-                  <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+                <state relative-caret-position="342">
+                  <caret line="43" column="42" lean-forward="true" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
                   <folding />
                 </state>
               </provider>
@@ -125,8 +109,8 @@
           <file leaf-file-name="glfuncs.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/glfuncs.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="240">
-                  <caret line="94" column="19" lean-forward="true" selection-start-line="94" selection-start-column="19" selection-end-line="94" selection-end-column="19" />
+                <state relative-caret-position="180">
+                  <caret line="12" column="28" lean-forward="false" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
                   <folding />
                 </state>
               </provider>
@@ -151,6 +135,7 @@
       <find>no shader</find>
       <find>g de</find>
       <find>g</find>
+      <find>g</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -161,18 +146,18 @@
       <list>
         <option value="$PROJECT_DIR$/public/shaders/base_phone.frag" />
         <option value="$PROJECT_DIR$/public/shaders/text_phone.vert" />
-        <option value="$PROJECT_DIR$/public/shaders/text_phone.frag" />
         <option value="$PROJECT_DIR$/public/object/Transform.js" />
         <option value="$PROJECT_DIR$/public/examples/GL.js" />
         <option value="$PROJECT_DIR$/public/models/Castle/Castle OBJ.obj" />
         <option value="$PROJECT_DIR$/public/models/Castle/CastleOBJ.obj" />
-        <option value="$PROJECT_DIR$/public/object/Texture.js" />
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/public/object/Material.js" />
-        <option value="$PROJECT_DIR$/public/loader.js" />
-        <option value="$PROJECT_DIR$/public/entry.js" />
         <option value="$PROJECT_DIR$/public/glfuncs.js" />
         <option value="$PROJECT_DIR$/public/object/Mesh.js" />
+        <option value="$PROJECT_DIR$/public/loader.js" />
+        <option value="$PROJECT_DIR$/public/shaders/text_phone.frag" />
+        <option value="$PROJECT_DIR$/public/object/Texture.js" />
+        <option value="$PROJECT_DIR$/public/entry.js" />
       </list>
     </option>
   </component>
@@ -209,7 +194,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -337,6 +321,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -440,6 +425,7 @@
       <workItem from="1489251269520" duration="6661000" />
       <workItem from="1489301229568" duration="9963000" />
       <workItem from="1489392913780" duration="30513000" />
+      <workItem from="1489488958821" duration="6956000" />
     </task>
     <task id="LOCAL-00001" summary="obj loader is done /switch to webstorm">
       <created>1489257948521</created>
@@ -473,7 +459,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49644000" />
+    <option name="totallyTimeSpent" value="56600000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -485,7 +471,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1688" y="18" width="1696" height="1026" extended-state="7" />
+    <frame x="-1688" y="18" width="1696" height="1026" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1809409" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -526,6 +512,30 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/public/shaders/text_phone.vert">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="25" lean-forward="false" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/glfuncs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1410">
+          <caret line="94" column="19" lean-forward="true" selection-start-line="94" selection-start-column="19" selection-end-line="94" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/examples/GL.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="25" lean-forward="false" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public/entry.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="750">
@@ -630,14 +640,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/models/py01.mtl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="25" lean-forward="true" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/public/models/py01.mtl" />
     <entry file="file://$PROJECT_DIR$/public/object/Material.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -771,46 +774,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/models/py01.mtl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="4" lean-forward="true" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/shaders/text_phone.vert">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="25" lean-forward="false" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/models/Castle/Castle OBJ.mtl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/models/Castle/Castle OBJ.obj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="31" lean-forward="true" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/models/Castle/CastleOBJ.obj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="30" lean-forward="true" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/public/models/py01.mtl" />
+    <entry file="file://$PROJECT_DIR$/public/models/Castle/Castle OBJ.mtl" />
+    <entry file="file://$PROJECT_DIR$/public/models/Castle/Castle OBJ.obj" />
     <entry file="file://$PROJECT_DIR$/public/examples/GL.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -819,50 +785,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/object/Texture.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="24" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/object/Material.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="38" lean-forward="false" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/object/Transform.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="37" lean-forward="true" selection-start-line="27" selection-start-column="37" selection-end-line="27" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/entry.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="35" column="36" lean-forward="false" selection-start-line="35" selection-start-column="36" selection-end-line="35" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/loader.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="295" column="26" lean-forward="false" selection-start-line="295" selection-start-column="21" selection-end-line="295" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/glfuncs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="94" column="19" lean-forward="true" selection-start-line="94" selection-start-column="19" selection-end-line="94" selection-end-column="19" />
+        <state relative-caret-position="180">
+          <caret line="12" column="28" lean-forward="false" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/object/Mesh.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="33" column="37" lean-forward="false" selection-start-line="33" selection-start-column="37" selection-end-line="33" selection-end-column="37" />
           <folding />
         </state>
       </provider>
@@ -875,18 +809,82 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/object/Mesh.js">
+    <entry file="file://$PROJECT_DIR$/public/object/Transform.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="40" column="45" lean-forward="false" selection-start-line="40" selection-start-column="45" selection-end-line="40" selection-end-column="45" />
+        <state relative-caret-position="195">
+          <caret line="28" column="50" lean-forward="true" selection-start-line="28" selection-start-column="50" selection-end-line="28" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/models/Castle/CastleOBJ.obj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="13051" column="2" lean-forward="false" selection-start-line="13051" selection-start-column="0" selection-end-line="13051" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/shaders/text_phone.vert">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="25" lean-forward="false" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/models/Wall/wall.mtl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/loader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4813">
+          <caret line="446" column="0" lean-forward="true" selection-start-line="446" selection-start-column="0" selection-end-line="446" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/models/Wall/wall.obj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="63" column="8" lean-forward="false" selection-start-line="63" selection-start-column="2" selection-end-line="63" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/object/Texture.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/object/Material.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="38" lean-forward="false" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/shaders/text_phone.frag">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+        <state relative-caret-position="342">
+          <caret line="43" column="42" lean-forward="true" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/entry.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="22" column="50" lean-forward="true" selection-start-line="22" selection-start-column="50" selection-end-line="22" selection-end-column="50" />
           <folding />
         </state>
       </provider>

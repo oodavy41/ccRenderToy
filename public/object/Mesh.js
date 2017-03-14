@@ -29,9 +29,9 @@ class Mesh {
                 this.arr_bkup[arr[0]] = upload_array_att(
                     arr[1], arr[0], program, gl, [arr[2], gl.FLOAT, false, 0, 0]);
             else {
-                this.index_buffer = create_ibo(arr[1], gl);
+                this.index_buffer = create_ibo(arr, gl);
                 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.index_buffer);
-                this.index_length=arr[1].length;
+                this.index_length = arr.length;
             }
         }
     }

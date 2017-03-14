@@ -7,10 +7,10 @@ onload = function() {
     var glc = document.getElementById('wobaglccc');
     var fps = document.getElementById('fps');
 
-    var light_direction = [10, 0, -1, 0];
+    var light_direction = [10, 0, 1, 0];
     var light_color = [1, 1, 1];
-    var camera_pos = [0, 20, 100];
-    var camera_look = [0, 0, 0];
+    var camera_pos = [-3, 6, 6];
+    var camera_look = [0, 3, 0];
     var camera_up = [0, 1, 0];
     var camera_info = [Math.PI / 2, glc.width / glc.height, 0.01, 100];
 
@@ -30,7 +30,7 @@ onload = function() {
 
 
     var update = function () {
-        //glclear(thegl.gl);
+        glclear(thegl.gl);
 
         for (var tran in objs) {
             objs[tran].draw(thegl.gl);
@@ -48,7 +48,6 @@ onload = function() {
         if (loadProg == 0) {
 
             for (var tran in objs) {
-
                 objs[tran].init(thegl);
             }
             statuss.innerText = 'Done';

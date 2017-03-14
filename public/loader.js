@@ -69,7 +69,7 @@ function objLoader(objpath, objname, mtllib, gl) {
 
     function addFace(f, v, u, n) {
         v = (parseInt(v) - 1) * 3;
-        u = (parseInt(u) - 1) * 3;
+        u = (parseInt(u) - 1) * 2;
         n = (parseInt(n) - 1) * 3;
         var s;
         switch (f) {
@@ -77,7 +77,7 @@ function objLoader(objpath, objname, mtllib, gl) {
                 s = v + '/' + u + '/' + n;
                 if (!temphash[s]) {
                     state.vertices.push(vertices[v], vertices[v + 1], vertices[v + 2]);
-                    state.uvs.push(uvs[u], uvs[u + 1], uvs[u + 2]);
+                    state.uvs.push(uvs[u], uvs[u + 1]);
                     state.normals.push(normals[n], normals[n + 1], normals[n + 2]);
                     state.indexs.push(state.size);
                     state.size++;
@@ -88,7 +88,7 @@ function objLoader(objpath, objname, mtllib, gl) {
                 s = v + '/' + u;
                 if (!temphash[s]) {
                     state.vertices.push(vertices[v], vertices[v + 1], vertices[v + 2]);
-                    state.uvs.push(uvs[u], uvs[u + 1], uvs[u + 2]);
+                    state.uvs.push(uvs[u], uvs[u + 1]);
                     state.indexs.push(state.size);
                     state.size++;
                 } else
@@ -451,7 +451,7 @@ function mtlLoader(path, mtlname, mtllib, gl) {
 
             } else if (key === 'map_kd') {
 
-                thismtl.set_uniform(Material._1b, 'usetex', false, gl);
+                thismtl.set_uniform(Material._1b, 'usetex', true, gl);
                 var tex = new Texture(path + value, gl);
                 thismtl.set_uniform(Material.I1i, 'tex', tex, gl);
             }

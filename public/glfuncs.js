@@ -6,15 +6,15 @@ function initgl(id) {
         alert('no support for Webgl in this browser\nWEBGL无法在此浏览器初始化');
         return;
     }
-    return gl;
-}
-
-function glclear(gl) {
     gl.clearColor(0.3, 0.3, 0.3, 1);
     gl.clearDepth(1);
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
     gl.depthFunc(gl.LEQUAL);
+    return gl;
+}
+
+function glclear(gl) {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 }
 
@@ -95,10 +95,7 @@ function upload_array_att(array, att_name, program, gl, vap_argus) {
     if (att === -1)
         console.log('no attribute such name:' + att_name);
     var vbo = create_vbo(array, gl);
-    gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
     gl.enableVertexAttribArray(att);
-    gl.vertexAttribPointer(att,
-        vap_argus[0], vap_argus[1], vap_argus[2], vap_argus[3], vap_argus[4]);
     return {
         'att': att,
         'vbo': vbo
