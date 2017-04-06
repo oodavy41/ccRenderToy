@@ -11,6 +11,9 @@ function initgl(id) {
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
     gl.depthFunc(gl.LEQUAL);
+
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
     return gl;
 }
 

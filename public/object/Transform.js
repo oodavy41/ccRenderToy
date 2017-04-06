@@ -33,12 +33,13 @@ class Transform {
         }
     }
 
-    draw(gl) {
+    draw(glg) {
         for (var mesh in this.Mesh) {
             mesh = this.Mesh[mesh];
-            mesh.material.set_uniform(Material.M4f, 'modelMatrix', this.m, gl);
-            mesh.material.set_uniform(Material.M3f, 'normalMatrix', this.nm, gl);
-            mesh.draw(gl);
+            mesh.material.set_uniform(Material.M4f, 'modelMatrix', this.m, glg.gl);
+            mesh.material.set_uniform(Material.M3f, 'normalMatrix', this.nm, glg.gl);
+            mesh.material.set_uniform(Material.M4f, 'mvpMatrix', glg.mvp, glg.gl);
+            mesh.draw(glg.gl);
         }
     }
 

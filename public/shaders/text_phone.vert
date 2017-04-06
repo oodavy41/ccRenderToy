@@ -15,5 +15,4 @@ void main(void){
     gl_Position = mvpMatrix * fpos;
     fcoord=coord;
     fnormal=normal;
-    //添加正规矩阵，防止非等比缩放导致的法线畸变
 }
