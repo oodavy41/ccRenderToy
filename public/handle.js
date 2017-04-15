@@ -8,5 +8,7 @@ function on_mouse_move(event) {
         var y = event.clientY;
         thegl.client_pos[2] = x;
         thegl.client_pos[3] = y;
+    } else {
+        thegl.client_pos = [-1, 0, -1, 0];
     }
 }

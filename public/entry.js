@@ -14,8 +14,8 @@ onload = function() {
 
     thegl = new GLg();
 
-    glc.addEventListener('click', can_on_click());
-    document.body.addEventListener('mousemove', on_mouse_move(event));
+    glc.addEventListener('click', can_on_click);
+    window.addEventListener('mousemove', on_mouse_move);
 
 
     var light_direction = [10, 0, 1, 0];
@@ -32,12 +32,14 @@ onload = function() {
     thegl.set_cam_front(camera_front);
     thegl.set_cam_up(camera_up);
     thegl.set_cam_info(camera_info);
+    thegl.set_cam_ptype();
 
     var objs = objLoader('models/Wall/', 'wall.obj', thegl.mtllib, thegl.gl);
 
 
     var update = function () {
         glclear(thegl.gl);
+
         thegl.fps_ctrl();
 
         for (var tran in objs) {

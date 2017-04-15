@@ -3,7 +3,7 @@ class GLg {
         this.gl = null;
 
         this.mouseCTRL_flag = false;
-        this.client_pos = [-1, 0, 0, 0];
+        this.client_pos = [-1, 0, -1, 0];
         this.fps_angel = [0, 0];
 
         this.mtllib = {};
@@ -13,6 +13,7 @@ class GLg {
         this.camera_front = null;
         this.camera_up = null;
         this.camera_info = null;
+        this.camera_ptype = null;
         this.mvp = null;
     }
 
@@ -51,6 +52,11 @@ class GLg {
         this.makemvp();
     }
 
+    //设定初始相机朝向，作为今后视角转向基础
+    set_cam_ptype() {
+        this.camera_ptype = this.make_cam_look();
+    }
+
     makemvp() {
         if (this.camera_pos && this.camera_front && this.camera_up && this.camera_info) {
             this.mvp = makeMvp([this.camera_pos, this.make_cam_look(), this.camera_up], this.camera_info);
@@ -59,15 +65,19 @@ class GLg {
 
     fps_ctrl() {
         var ret = [0, 0];
-        if (this.client_pos[0] != -1) {
-            ret[0] = this.client_pos[2] - this.client_pos[0];
-            ret[1] = this.client_pos[3] - this.client_pos[1];
-        }
-        this.client_pos[0] = this.client_pos[2];
-        this.client_pos[1] = this.client_pos[3];
 
-        this.fps_angel[0] += Math.asin(-ret[1] / set.FPSraid) / Math.PI * 180;
-        this.fps_angel[1] += Math.asin(-ret[0] / set.FPSraid) / Math.PI * 180;
+        if (this.client_pos[2] != -1) {
+            if (this.client_pos[0] != -1) {
+                ret[0] = this.client_pos[2] - this.client_pos[0];
+                ret[1] = this.client_pos[3] - this.client_pos[1];
+            }
+            this.client_pos[0] = this.client_pos[2];
+            this.client_pos[1] = this.client_pos[3];
+        }
+
+        this.fps_angel[0] += Math.asin(-ret[1] / set.FPSraid) / Math.PI * 90;
+        this.fps_angel[1] += Math.asin(-ret[0] / set.FPSraid) / Math.PI * 90;
+
 
         if (this.fps_angel[0] > 89)
             this.fps_angel[0] = 89;
@@ -78,12 +88,13 @@ class GLg {
         if (this.fps_angel[1] < -180)
             this.fps_angel[1] = 360 + this.fps_angel[1];
 
-        console.log(this.fps_angel[0] + ';' + this.fps_angel[1]);
+        console.log(this.fps_angel[0] + '|' + this.fps_angel[1]);
 
-        var lookat = this.make_cam_look();
+
+        var lookat = this.camera_ptype;
         var nlookat = vec3.create();
-        vec3.rotateX(nlookat, lookat, this.camera_pos, this.fps_angel[0]);
-        vec3.rotateY(nlookat, nlookat, this.camera_pos, this.fps_angel[1]);
+        vec3.rotateX(nlookat, lookat, this.camera_pos, this.fps_angel[0] / 90);
+        vec3.rotateY(nlookat, nlookat, this.camera_pos, this.fps_angel[1] / 90);
         this.camera_front = [nlookat[0] - this.camera_pos[0], nlookat[1] - this.camera_pos[1], nlookat[2] - this.camera_pos[2]]
 
         this.makemvp();

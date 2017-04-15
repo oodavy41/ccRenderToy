@@ -1,4 +1,4 @@
 var set = {
-    FPSraid: 500,
+    FPSraid: 20,
 
 }
