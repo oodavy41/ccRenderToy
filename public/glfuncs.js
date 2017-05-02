@@ -13,6 +13,7 @@ function initgl(id) {
     gl.depthFunc(gl.LEQUAL);
 
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    //gl.pixelStorei(gl.UNPACK_FLIP_X_WEBGL, true);
 
     return gl;
 }

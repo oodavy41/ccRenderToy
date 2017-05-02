@@ -2,9 +2,13 @@ class GLg {
     constructor() {
         this.gl = null;
 
+        //fpsctrl
         this.mouseCTRL_flag = false;
         this.client_pos = [-1, 0, -1, 0];
         this.fps_angel = [0, 0];
+
+        //movectrl     w a s d
+        this.movement = [0, 0, 0, 0];
 
         this.mtllib = {};
         this.light_d = null;
@@ -12,6 +16,7 @@ class GLg {
         this.camera_pos = null;
         this.camera_front = null;
         this.camera_up = null;
+        this.camera_right = null;
         this.camera_info = null;
         this.camera_ptype = null;
         this.mvp = null;
@@ -27,12 +32,12 @@ class GLg {
     }
 
     set_cam_pos(pos) {
-        this.camera_pos = pos;
+        this.camera_pos = vec3.fromValues(pos[0], pos[1], pos[2]);
         this.makemvp();
     }
 
-    set_cam_front(lookfront) {
-        this.camera_front = lookfront;
+    set_cam_front(f) {
+        this.camera_front = vec3.fromValues(f[0], f[1], f[2]);
         this.makemvp();
     }
 
@@ -43,7 +48,7 @@ class GLg {
     }
 
     set_cam_up(up) {
-        this.camera_up = up;
+        this.camera_up = vec3.fromValues(up[0], up[1], up[2]);
         this.makemvp();
     }
 
@@ -60,6 +65,8 @@ class GLg {
     makemvp() {
         if (this.camera_pos && this.camera_front && this.camera_up && this.camera_info) {
             this.mvp = makeMvp([this.camera_pos, this.make_cam_look(), this.camera_up], this.camera_info);
+            this.camera_right = vec3.create();
+            vec3.cross(this.camera_right, this.camera_front, this.camera_up);
         }
     }
 
@@ -75,32 +82,67 @@ class GLg {
             this.client_pos[1] = this.client_pos[3];
         }
 
-        this.fps_angel[0] += Math.asin(-ret[1] / set.FPSraid) / Math.PI * 90;
-        this.fps_angel[1] += Math.asin(-ret[0] / set.FPSraid) / Math.PI * 90;
+        ret[0] = Math.max(ret[0], -set.FPSraid);
+        ret[1] = Math.max(ret[1], -set.FPSraid);
+        ret[0] = Math.min(ret[0], set.FPSraid);
+        ret[1] = Math.min(ret[1], set.FPSraid);
+
+        this.fps_angel[0] += Math.asin(-ret[1] / set.FPSraid);
+        this.fps_angel[1] += Math.asin(-ret[0] / set.FPSraid);
 
 
-        if (this.fps_angel[0] > 89)
-            this.fps_angel[0] = 89;
-        if (this.fps_angel[0] < -89)
-            this.fps_angel[0] = -89;
-        if (this.fps_angel[1] > 180)
-            this.fps_angel[1] = -360 + this.fps_angel[1];
-        if (this.fps_angel[1] < -180)
-            this.fps_angel[1] = 360 + this.fps_angel[1];
+        this.fps_angel[0] = Math.min(this.fps_angel[0], Math.PI / 2);
+        this.fps_angel[0] = Math.max(this.fps_angel[0], -Math.PI / 2);
+        if (this.fps_angel[1] > Math.PI)
+            this.fps_angel[1] += -Math.PI * 2;
+        if (this.fps_angel[1] < -Math.PI)
+            this.fps_angel[1] += Math.PI * 2;
 
-        console.log(this.fps_angel[0] + '|' + this.fps_angel[1]);
+        //console.log(this.fps_angel[0] + '|' + this.fps_angel[1] + '|' + ret[0] + '|' + ret[1]);
 
 
         var lookat = this.camera_ptype;
         var nlookat = vec3.create();
-        vec3.rotateX(nlookat, lookat, this.camera_pos, this.fps_angel[0] / 90);
-        vec3.rotateY(nlookat, nlookat, this.camera_pos, this.fps_angel[1] / 90);
-        this.camera_front = [nlookat[0] - this.camera_pos[0], nlookat[1] - this.camera_pos[1], nlookat[2] - this.camera_pos[2]]
+        vec3.rotateX(nlookat, lookat, this.camera_pos, this.fps_angel[0]);
+        vec3.rotateY(nlookat, nlookat, this.camera_pos, this.fps_angel[1]);
+
+        vec3.subtract(this.camera_front, nlookat, this.camera_pos);
+
+        vec3.cross(this.camera_right, this.camera_front, this.camera_up);
+
+        vec3.normalize(this.camera_front, this.camera_front);
+        vec3.normalize(this.camera_right, this.camera_right);
+
+        this.movectrl();
 
         this.makemvp();
 
-
         return ret;
+    }
+
+    movectrl() {
+        var abf = vec3.create(), abr = vec3.create();
+        var wasd = [
+            this.camera_front,
+            vec3.scale(abr, this.camera_right, -1),
+            vec3.scale(abf, this.camera_front, -1),
+            this.camera_right
+        ]
+
+        var ret = vec3.fromValues(0, 0, 0);
+
+        for (var i = 0; i < 4; i++) {
+            if (this.movement[i] === 1) {
+                vec3.add(ret, ret, wasd[i]);
+            }
+        }
+
+        vec3.normalize(ret, ret);
+
+        vec3.scale(ret, ret, set.MoveSpeed);
+
+        vec3.add(this.camera_pos, this.camera_pos, ret);
+        vec3.add(this.camera_ptype, this.camera_ptype, ret);
     }
 
 

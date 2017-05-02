@@ -16,6 +16,8 @@ onload = function() {
 
     glc.addEventListener('click', can_on_click);
     window.addEventListener('mousemove', on_mouse_move);
+    window.addEventListener('keypress', on_key_press);
+    window.addEventListener('keyup', on_key_up);
 
 
     var light_direction = [10, 0, 1, 0];
@@ -23,7 +25,7 @@ onload = function() {
     var camera_pos = [-3, 6, 6];
     var camera_front = [0, 0, -1];
     var camera_up = [0, 1, 0];
-    var camera_info = [Math.PI / 2, glc.width / glc.height, 0.01, 100];
+    var camera_info = [Math.PI / 3, glc.width / glc.height, 0.01, 100];
 
 
     thegl.create('wobaglccc');
@@ -34,7 +36,7 @@ onload = function() {
     thegl.set_cam_info(camera_info);
     thegl.set_cam_ptype();
 
-    var objs = objLoader('models/Wall/', 'wall.obj', thegl.mtllib, thegl.gl);
+    var objs = objLoader('models/item01/', 'item01.obj', thegl.mtllib, thegl.gl);
 
 
     var update = function () {

@@ -12,3 +12,39 @@ function on_mouse_move(event) {
         thegl.client_pos = [-1, 0, -1, 0];
     }
 }
+
+function on_key_press(event) {
+    switch (event.keyCode) {
+        case 119:
+            thegl.movement[0] = 1;
+            break;
+        case 97:
+            thegl.movement[1] = 1;
+            break;
+        case 115:
+            thegl.movement[2] = 1;
+            break;
+        case 100:
+            thegl.movement[3] = 1;
+            break;
+    }
+
+}
+
+function on_key_up(event) {
+    switch (event.keyCode + 32) {
+        case 119:
+            thegl.movement[0] = 0;
+            break;
+        case 97:
+            thegl.movement[1] = 0;
+            break;
+        case 115:
+            thegl.movement[2] = 0;
+            break;
+        case 100:
+            thegl.movement[3] = 0;
+            break;
+    }
+
+}
