@@ -392,6 +392,17 @@ function objLoader(objpath, objname, mtllib, gl) {
 
     }
 
+    //end of file TODO
+    var mesh = state.mesh;
+    mesh.set_mesh([
+        [att_p, state.vertices, 3],
+        [att_uv, state.uvs, 2],
+        [att_n, state.normals, 3],
+        state.indexs
+    ]);
+    retObjs[name].add_mesh(mesh);
+
+
     return retObjs;
 }
 
@@ -436,6 +447,7 @@ function mtlLoader(path, mtlname, mtllib, gl) {
             var fpath = shadpas + shadname + '.frag';
 
             thismtl = mtllib[value] = new Material(vpath, fpath, gl);
+            thismtl.set_uniform(Material._1f, 'powup', 0.1, gl);
 
         } else if (thismtl) {
 

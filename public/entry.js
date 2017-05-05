@@ -20,7 +20,7 @@ onload = function() {
     window.addEventListener('keyup', on_key_up);
 
 
-    var light_direction = [10, 0, 1, 0];
+    var light_direction = [-10, 0, -1, 0];
     var light_color = [1, 1, 1];
     var camera_pos = [-3, 6, 6];
     var camera_front = [0, 0, -1];
