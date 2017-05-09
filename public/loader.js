@@ -1,9 +1,10 @@
 var att_p = 'position';
 var att_uv = 'coord';
 var att_n = 'normal';
+var att_c = 'color';
 
 
-function objLoader(objpath, objname, mtllib, gl) {
+function objLoader(objpath, objname, mtllib, gl, mtlflag) {
 
     var obj = loadFile(objpath + objname);
 
@@ -323,8 +324,8 @@ function objLoader(objpath, objname, mtllib, gl) {
 
             //state.object.startMaterial(line.substring(7).trim(), state.materialLibraries);
 
-            var matname = line.substring(7).trim();
-            if (state.mesh) {
+            var matname = line.substring(7).trim() + mtlflag;
+            if (state && state.mesh) {
 
                 var mesh = state.mesh;
                 mesh.set_mesh([
@@ -335,17 +336,17 @@ function objLoader(objpath, objname, mtllib, gl) {
                 ]);
                 retObjs[name].add_mesh(mesh);
 
-                state = {
-                    mesh: null,
-                    vertices: [],
-                    normals: [],
-                    uvs: [],
-                    indexs: [],
-                    size: 0
-                };
-
-                temphash = {};
             }
+            state = {
+                mesh: null,
+                vertices: [],
+                normals: [],
+                uvs: [],
+                indexs: [],
+                size: 0
+            };
+
+            temphash = {};
 
 
             state.mesh = new Mesh();
@@ -358,7 +359,7 @@ function objLoader(objpath, objname, mtllib, gl) {
 
             // mtl file
 
-            mtlLoader(objpath, line.substring(7).trim(), mtllib, gl);
+            mtlLoader(objpath, line.substring(7).trim(), mtllib, gl, mtlflag);
 
         } else if ((result = regexp.smoothing_pattern.exec(line)) !== null) {
 
@@ -392,7 +393,7 @@ function objLoader(objpath, objname, mtllib, gl) {
 
     }
 
-    //end of file TODO
+    //end of file do
     var mesh = state.mesh;
     mesh.set_mesh([
         [att_p, state.vertices, 3],
@@ -406,11 +407,11 @@ function objLoader(objpath, objname, mtllib, gl) {
     return retObjs;
 }
 
-function mtlLoader(path, mtlname, mtllib, gl) {
+function mtlLoader(path, mtlname, mtllib, gl, mtlflag) {
     var mtl = loadFile(path + mtlname);
 
     var shadpas = 'shaders/';
-    var shadname = 'text_phone';
+    var shadname = mtlflag;
 
     var keyhash = {ka: 'ambient', kd: 'diffuse', ks: 'specular'};
 
@@ -439,10 +440,10 @@ function mtlLoader(path, mtlname, mtllib, gl) {
         value = value.trim();
 
         if (key === 'newmtl') {
-
+            value += mtlflag;
             // New material
             if (mtllib[value])
-                console.log("already has a same mtl name");
+                console.log("same mtl name", value);
             var vpath = shadpas + shadname + '.vert';
             var fpath = shadpas + shadname + '.frag';
 
@@ -473,5 +474,3 @@ function mtlLoader(path, mtlname, mtllib, gl) {
     }
 
 }
-
-console.log('loader.load');

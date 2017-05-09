@@ -1,4 +1,4 @@
-console.log('mtl.load');
+
 class Material {
 
     constructor(ver_path, fra_path, gl) {

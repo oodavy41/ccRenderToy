@@ -39,6 +39,7 @@ class Transform {
             mesh.material.set_uniform(Material.M4f, 'modelMatrix', this.m, glg.gl);
             mesh.material.set_uniform(Material.M3f, 'normalMatrix', this.nm, glg.gl);
             mesh.material.set_uniform(Material.M4f, 'mvpMatrix', glg.mvp, glg.gl);
+            mesh.material.set_uniform(Material.V3f, 'cameraPos', glg.camera_pos, glg.gl);
             mesh.draw(glg.gl);
         }
     }

@@ -22,7 +22,7 @@ uniform sampler2D tex;
 
 void main(void)
 {
-    vec3 mvpLD=lightDirection.xyz;
+    vec3 mvpLD=normalize(lightDirection.xyz);
 
     //法线
     vec3 Mnormal=normalize(normalMatrix*fnormal);
@@ -33,14 +33,15 @@ void main(void)
     //blinn phone
     vec3 camDir=normalize(cameraPos-vec3(fpos));
     //高光光照
-    float hlight=dot(mvpLD,Mnormal)>0.0?
-        pow(max(dot(Mnormal, normalize(-mvpLD+camDir)),0.0), powup)
+    float hlight=dot(mvpLD,Mnormal)>0.0&&powup>0.0?
+        pow(max(dot(Mnormal, normalize(mvpLD+camDir)),0.0), powup)
         :0.0;//               反射与视线中线 ↑            镜面次幂 ↑
 
     vec4 color=usetex?
         texture2D(tex,vec2(fcoord.s,fcoord.t)):
         vec4(diffuse,1.0);
+
     gl_FragColor = color*vec4(lightColor*bright,1.0)+
         vec4(specular*hlight,1.0)+
-        color*vec4(ambient+vec3(0.1),1.0);
+        color*vec4(ambient,1.0);
 }

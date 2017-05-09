@@ -1,4 +1,4 @@
-function donghnut(row, column, irad, rad) {
+function donghnut(row, column, irad, rad, glg) {
     var pos = new Array(),
         nor = new Array(),
         col = new Array(),
@@ -28,7 +28,19 @@ function donghnut(row, column, irad, rad) {
             idx.push(r + column + 1, r + column + 2, r + 1);
         }
     }
-    return [pos, nor, col, idx];
+
+    var ret = new Transform();
+    var mesh = new Mesh();
+    mesh.set_mesh([
+        [att_p, pos, 3],
+        [att_c, col, 4],
+        [att_n, nor, 3],
+        idx
+    ]);
+    var mat = new Material('shaders/base_phone.vert', 'shaders/base_phone.frag', glg.gl);
+    mesh.set_mat(mat);
+    ret.add_mesh(mesh);
+    return ret;
 }
 
 function hsva(h, s, v, a) {

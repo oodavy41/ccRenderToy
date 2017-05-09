@@ -36,7 +36,10 @@ onload = function() {
     thegl.set_cam_info(camera_info);
     thegl.set_cam_ptype();
 
-    var objs = objLoader('models/item01/', 'item01.obj', thegl.mtllib, thegl.gl);
+    var objs1 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_phone');
+    var objs2 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'text_phone');
+    var objs3 = [donghnut(30, 36, 1, 3, thegl)];
+    var objs = [objs1, objs2, objs3];
 
 
     var update = function () {
@@ -44,10 +47,15 @@ onload = function() {
 
         thegl.fps_ctrl();
 
-        for (var tran in objs) {
-            objs[tran].draw(thegl);
+        for (var i = 0, l = objs.length; i < l; i++) {
+            for (var tran in objs[i]) {
+                objs[i][tran].draw(thegl);
+                if (i == 2) {
+                    objs[i][tran].set_rx(date.getTime() / 1000);
+                }
+                console.log('draw', i + tran);
+            }
         }
-
 
         //=======a=====================
         var thisfps = 1000 / ((new Date()).getTime() - date.getTime());
@@ -61,8 +69,14 @@ onload = function() {
     promise = function () {
         if (loadProg == 0) {
 
-            for (var tran in objs) {
-                objs[tran].init(thegl);
+            for (var i = 0, l = objs.length; i < l; i++) {
+                for (var tran in objs[i]) {
+
+                    objs[i][tran].set_pos(3 * i, 3 * i, 0);
+
+                    objs[i][tran].init(thegl);
+                    console.log('init', i + tran);
+                }
             }
             statuss.innerText = 'Done';
             progress.innerText = '';
