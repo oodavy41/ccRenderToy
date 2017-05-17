@@ -4,6 +4,7 @@ var loadProg = 0;
 var statuss = document.getElementById('statuss');
 var progress = document.getElementById('progress');
 var promise;
+var EMPTY_FUN=function () {};
 
 onload = function() {
     var glc = document.getElementById('wobaglccc');
@@ -36,10 +37,48 @@ onload = function() {
     thegl.set_cam_info(camera_info);
     thegl.set_cam_ptype();
 
+
+    var sb=skybox([
+        'skyboxs/bluesky/X.png',
+        'skyboxs/bluesky/-X.png',
+        'skyboxs/bluesky/Y.png',
+        'skyboxs/bluesky/-Y.png',
+        'skyboxs/bluesky/Z.png',
+        'skyboxs/bluesky/-Z.png'],thegl.gl);
+
+    rewrite_edraw(sb,function (glg) {
+        this.set_pos(thegl.camera_pos[0],thegl.camera_pos[1],thegl.camera_pos[2]);
+        //glg.gl.cullFace(glg.gl.FRONT);
+    });
+    rewrite_ldraw(sb,function (glg) {
+        //glg.gl.cullFace(glg.gl.BACK);
+    });
+
     var objs1 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_phone');
+
+    var objs11 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_edge_phone');
+    rewrite_edraw (objs11,function(glg) {
+        glg.gl.cullFace(glg.gl.FRONT);
+    });
+    rewrite_ldraw(objs11,function (glg) {
+        glg.gl.cullFace(glg.gl.BACK);
+    });
+
     var objs2 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'text_phone');
+    set_obj_info(objs2,function (tran) {
+        tran.set_pos(0,0,2)
+    });
+
     var objs3 = [donghnut(30, 36, 1, 3, thegl)];
-    var objs = [objs1, objs2, objs3];
+    set_obj_info(objs3,function (tran) {
+        tran.set_pos(5,10,0);
+    });
+    rewrite_edraw(objs3,function () {
+        this.set_rx(date.getTime() / 1000);
+    });
+
+    var objs = [objs1,objs11,objs2, objs3];
+
 
 
     var update = function () {
@@ -50,10 +89,6 @@ onload = function() {
         for (var i = 0, l = objs.length; i < l; i++) {
             for (var tran in objs[i]) {
                 objs[i][tran].draw(thegl);
-                if (i == 2) {
-                    objs[i][tran].set_rx(date.getTime() / 1000);
-                }
-                console.log('draw', i + tran);
             }
         }
 
@@ -71,11 +106,7 @@ onload = function() {
 
             for (var i = 0, l = objs.length; i < l; i++) {
                 for (var tran in objs[i]) {
-
-                    objs[i][tran].set_pos(3 * i, 3 * i, 0);
-
                     objs[i][tran].init(thegl);
-                    console.log('init', i + tran);
                 }
             }
             statuss.innerText = 'Done';

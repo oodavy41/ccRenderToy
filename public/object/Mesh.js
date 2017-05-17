@@ -21,7 +21,7 @@ class Mesh {
         var program=this.material.prog;
         if (!program)
             console.log("no Program Binded!");
-        gl.useProgram(program);
+        //gl.useProgram(program);
 
         for (var i = 0, l = this.arrs.length; i < l; i++) {
             var arr = this.arrs[i];

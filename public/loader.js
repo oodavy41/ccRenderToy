@@ -448,6 +448,7 @@ function mtlLoader(path, mtlname, mtllib, gl, mtlflag) {
             var fpath = shadpas + shadname + '.frag';
 
             thismtl = mtllib[value] = new Material(vpath, fpath, gl);
+            console.log('mtlload',value);
             thismtl.set_uniform(Material._1f, 'powup', 0.1, gl);
 
         } else if (thismtl) {

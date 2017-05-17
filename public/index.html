@@ -26,6 +26,25 @@
     <label id="fps">fps:</label>
     <p id="texture_p"></p>
 
+<div>
+    LightDirection
+    <div>
+        X:
+        <input type="range" min="-10" max="10" value="-10" step="0.1" onmousemove="LDchangex(this)"/>
+        <label id="LDx">-10</label>
+    </div>
+    <div>
+        Y:
+        <input type="range" min="-10" max="10" value="0" step="0.1" onmousemove="LDchangey(this)"/>
+        <label id="LDy">0</label>
+    </div>
+    <div>
+        Z:
+        <input type="range" min="-10" max="10" value="-1" step="0.1" onmousemove="LDchangez(this)"/>
+        <label id="LDz">-1</label>
+    </div>
+</div>
+
 
     <script src="entry.js" type="text/javascript"></script>
 </body>

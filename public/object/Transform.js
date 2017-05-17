@@ -34,17 +34,24 @@ class Transform {
     }
 
     draw(glg) {
+        this.earlydraw(glg);
+
         for (var mesh in this.Mesh) {
             mesh = this.Mesh[mesh];
+            mesh.material.set_uniform(Material.V4f, 'lightDirection', glg.light_d, glg.gl);
+            mesh.material.set_uniform(Material.V3f, 'cameraPos', glg.camera_pos, glg.gl);
+            mesh.material.set_uniform(Material.M4f, 'mvpMatrix', glg.mvp, glg.gl);
             mesh.material.set_uniform(Material.M4f, 'modelMatrix', this.m, glg.gl);
             mesh.material.set_uniform(Material.M3f, 'normalMatrix', this.nm, glg.gl);
-            mesh.material.set_uniform(Material.M4f, 'mvpMatrix', glg.mvp, glg.gl);
-            mesh.material.set_uniform(Material.V3f, 'cameraPos', glg.camera_pos, glg.gl);
             mesh.draw(glg.gl);
         }
+
+        this.latedraw(glg);
     }
 
+    earlydraw(){}
 
+    latedraw(){}
 
     make_transform() {
         var rot = quat.create();

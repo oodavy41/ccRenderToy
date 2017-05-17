@@ -18,38 +18,52 @@ class Material {
         switch (type) {
             case Material.M4f:
                 this.uniforms[name] = gl.getUniformLocation(this.prog, name);
-                gl.uniformMatrix4fv(this.uniforms[name], false, value);
-                this.uniforms[name].value = value;
+                if(this.uniforms[name]) {
+                    gl.uniformMatrix4fv(this.uniforms[name], false, value);
+                    this.uniforms[name].value = value;
+                }
                 break;
             case Material.M3f:
                 this.uniforms[name] = gl.getUniformLocation(this.prog, name);
-                gl.uniformMatrix3fv(this.uniforms[name], false, value);
-                this.uniforms[name].value = value;
+                if(this.uniforms[name]) {
+                    gl.uniformMatrix3fv(this.uniforms[name], false, value);
+                    this.uniforms[name].value = value;
+                }
                 break;
             case Material.V3f:
                 this.uniforms[name] = gl.getUniformLocation(this.prog, name);
-                gl.uniform3fv(this.uniforms[name], value);
-                this.uniforms[name].value = value;
+                if(this.uniforms[name]) {
+                    gl.uniform3fv(this.uniforms[name], value);
+                    this.uniforms[name].value = value;
+                }
                 break;
             case Material.V4f:
                 this.uniforms[name] = gl.getUniformLocation(this.prog, name);
-                gl.uniform4fv(this.uniforms[name], value);
-                this.uniforms[name].value = value;
+                if(this.uniforms[name]) {
+                    gl.uniform4fv(this.uniforms[name], value);
+                    this.uniforms[name].value = value;
+                }
                 break;
             case Material.I1i:
                 this.uniforms[name] = gl.getUniformLocation(this.prog, name);
-                gl.uniform1i(this.uniforms[name], value.index);
-                this.uniforms[name].value = value;
+                if(this.uniforms[name]) {
+                    gl.uniform1i(this.uniforms[name], value.index);
+                    this.uniforms[name].value = value;
+                }
                 break;
             case Material._1f:
                 this.uniforms[name] = gl.getUniformLocation(this.prog, name);
-                gl.uniform1f(this.uniforms[name], value);
-                this.uniforms[name].value = value;
+                if(this.uniforms[name]) {
+                    gl.uniform1f(this.uniforms[name], value);
+                    this.uniforms[name].value = value;
+                }
                 break;
             case Material._1b:
                 this.uniforms[name] = gl.getUniformLocation(this.prog, name);
-                gl.uniform1i(this.uniforms[name], value);
-                this.uniforms[name].value = value;
+                if(this.uniforms[name]) {
+                    gl.uniform1i(this.uniforms[name], value);
+                    this.uniforms[name].value = value;
+                }
                 break;
         }
 

@@ -13,7 +13,6 @@ function initgl(id) {
     gl.depthFunc(gl.LEQUAL);
 
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    //gl.pixelStorei(gl.UNPACK_FLIP_X_WEBGL, true);
 
     return gl;
 }
@@ -128,4 +127,22 @@ function create_texture(src, gl) {
         'img': img,
         'tex': texture
     };
+}
+
+function set_obj_info(obj,fun) {
+    for(var tran in obj){
+        fun(obj[tran]);
+    }
+}
+
+function rewrite_edraw(obj,fun) {
+    for(var tran in obj){
+        obj[tran].earlydraw=fun;
+    }
+}
+
+function rewrite_ldraw(obj,fun) {
+    for(var tran in obj){
+        obj[tran].latedraw=fun;
+    }
 }

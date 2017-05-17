@@ -48,3 +48,16 @@ function on_key_up(event) {
     }
 
 }
+
+function LDchangex(event) {
+    document.getElementById('LDx').innerText=event.value;
+    thegl.light_d[0]=event.value;
+}
+function LDchangey(event) {
+    document.getElementById('LDy').innerText=event.value;
+    thegl.light_d[1]=event.value;
+}
+function LDchangez(event) {
+    document.getElementById('LDz').innerText=event.value;
+    thegl.light_d[2]=event.value;
+}
