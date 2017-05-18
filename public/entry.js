@@ -4,7 +4,6 @@ var loadProg = 0;
 var statuss = document.getElementById('statuss');
 var progress = document.getElementById('progress');
 var promise;
-var EMPTY_FUN=function () {};
 
 onload = function() {
     var glc = document.getElementById('wobaglccc');
@@ -39,19 +38,19 @@ onload = function() {
 
 
     var sb=skybox([
-        'skyboxs/bluesky/X.png',
-        'skyboxs/bluesky/-X.png',
-        'skyboxs/bluesky/Y.png',
-        'skyboxs/bluesky/-Y.png',
-        'skyboxs/bluesky/Z.png',
-        'skyboxs/bluesky/-Z.png'],thegl.gl);
+        'skyboxs/bs2/X.png',
+        'skyboxs/bs2/-X.png',
+        'skyboxs/bs2/Y.png',
+        'skyboxs/bs2/-Y.png',
+        'skyboxs/bs2/Z.png',
+        'skyboxs/bs2/-Z.png'],thegl.gl);
 
     rewrite_edraw(sb,function (glg) {
         this.set_pos(thegl.camera_pos[0],thegl.camera_pos[1],thegl.camera_pos[2]);
-        //glg.gl.cullFace(glg.gl.FRONT);
+        glg.gl.cullFace(glg.gl.FRONT);
     });
     rewrite_ldraw(sb,function (glg) {
-        //glg.gl.cullFace(glg.gl.BACK);
+        glg.gl.cullFace(glg.gl.BACK);
     });
 
     var objs1 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_phone');
@@ -69,15 +68,38 @@ onload = function() {
         tran.set_pos(0,0,2)
     });
 
-    var objs3 = [donghnut(30, 36, 1, 3, thegl)];
+    var objsrefl = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'reflect_mat');
+    set_obj_info(objsrefl,function (tran) {
+        tran.Mesh[0].material.set_uniform(
+            Material.I1i,
+            'tex',
+            sb[0].Mesh[0].material.uniforms['tex'].value,
+            thegl.gl
+        );
+        tran.set_pos(0,0,4)
+    });
+
+    var objsrefr = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'refract_mat');
+    set_obj_info(objsrefr,function (tran) {
+        tran.Mesh[0].material.set_uniform(
+            Material.I1i,
+            'tex',
+            sb[0].Mesh[0].material.uniforms['tex'].value,
+            thegl.gl
+        );
+        tran.Mesh[0].material.set_uniform(Material._1f,'ratio',1/1.52,thegl.gl);
+        tran.set_pos(0,0,6)
+    });
+
+    var objs3 = donghnut(30, 36, 1, 3, thegl);
     set_obj_info(objs3,function (tran) {
-        tran.set_pos(5,10,0);
+        tran.set_pos(10,3,0);
     });
     rewrite_edraw(objs3,function () {
         this.set_rx(date.getTime() / 1000);
     });
 
-    var objs = [objs1,objs11,objs2, objs3];
+    var objs = [sb,objs1,objs11,objs2,objsrefl,objsrefr, objs3];
 
 
 

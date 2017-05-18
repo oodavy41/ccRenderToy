@@ -7,6 +7,7 @@ uniform mat4 modelMatrix;
 varying vec3 fcoord;
 
 void main(void){
-    gl_Position = mvpMatrix * modelMatrix* vec4(position,1.0);
+    vec4 P = mvpMatrix * modelMatrix* vec4(position,1.0);
+    gl_Position=P.xyww;
     fcoord=position;
 }

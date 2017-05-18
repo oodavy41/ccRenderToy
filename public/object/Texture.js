@@ -59,14 +59,17 @@ class CubeTexture {
                         gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z
                     ];
 
+                    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+
                     for(var j in targets){
                         gl.texImage2D(targets[j], 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, that.img[j]);
                         gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
                         gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
                     }
 
+                    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
                     gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
-                    //gl.bindTexture(gl.TEXTURE_2D, null);
 
                     loadProg--;
                     progress.innerText = loadProg + '';

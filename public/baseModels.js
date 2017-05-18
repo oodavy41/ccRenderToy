@@ -40,7 +40,7 @@ function donghnut(row, column, irad, rad, glg) {
     var mat = new Material('shaders/base_phone.vert', 'shaders/base_phone.frag', glg.gl);
     mesh.set_mat(mat);
     ret.add_mesh(mesh);
-    return ret;
+    return [ret];
 }
 
 function hsva(h, s, v, a) {
@@ -95,20 +95,38 @@ function cube(side) {
 
 function skybox(srcs,gl) {
 
-    var m=cube(2000);
+    var m=cube(50);
 
     var ret = new Transform();
     var mesh = new Mesh();
     mesh.set_mesh([
         [att_p, m[0], 3],
-        [att_c, m[1], 2],
-        [att_n, m[2], 3],
         m[3]
     ]);
     var mat = new Material('shaders/skybox.vert', 'shaders/skybox.frag', gl);
     var tex=new CubeTexture(srcs,gl);
     mat.set_uniform(Material.I1i, 'tex', tex, gl);
+    mat.set_uniform(Material._1f,'usetex',true,gl);
     mesh.set_mat(mat);
     ret.add_mesh(mesh);
-    return ret;
+    return [ret];
+}
+
+function glasscube(gl,flag) {
+
+    var m=cube(5);
+
+    var ret = new Transform();
+    var mesh = new Mesh();
+    mesh.set_mesh([
+        [att_p, m[0], 3],
+        m[3]
+    ]);
+    var mat = new Material('shaders/skybox.vert', 'shaders/skybox.frag', gl);
+    var tex=new CubeTexture(srcs,gl);
+    mat.set_uniform(Material.I1i, 'tex', tex, gl);
+    mat.set_uniform(Material._1f,'usetex',true,gl);
+    mesh.set_mat(mat);
+    ret.add_mesh(mesh);
+    return [ret];
 }

@@ -95,8 +95,10 @@ function makeMvp(view3v, pers4f) {
 
 function upload_array_att(array, att_name, program, gl, vap_argus) {
     var att = gl.getAttribLocation(program, att_name);
-    if (att === -1)
+    if (att === -1){
         console.log('no attribute such name:' + att_name);
+        return null;
+    }
     var vbo = create_vbo(array, gl);
     gl.enableVertexAttribArray(att);
     return {
