@@ -14,18 +14,17 @@ some design and implementation reference to [three.js](https://threejs.org)
 部分设计实现参考了 [three.js](https://threejs.org)
 
 
-![](http://o6qwciia9.bkt.clouddn.com/Rlyeh/dounts2.png)
-![](http://o6qwciia9.bkt.clouddn.com/Rlyeh/obj1.png)
+![](http://o6qwciia9.bkt.clouddn.com/Rlyeh/1.png)
 
 todo:
 
 - [x] 冯氏光照模型
 - [x] 事件系统
 - [x] obj模型载入
-- [ ] 天空盒
+- [x] 天空盒
 - [ ] 层次模型与动画系统
 - [ ] dae模型载入
-- [ ] 非真实渲染
+- [x] 非真实渲染
 - [ ] 法线贴图
 - [ ] 水面模拟
 - [ ] 体积光渲染
