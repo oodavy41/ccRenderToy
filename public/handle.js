@@ -61,3 +61,9 @@ function LDchangez(event) {
     document.getElementById('LDz').innerText=event.value;
     thegl.light_d[2]=event.value;
 }
+function mlchange(event) {
+    document.getElementById('mtls').innerText=event.value;
+}
+function snchange(event) {
+    document.getElementById('stns').innerText=event.value;
+}

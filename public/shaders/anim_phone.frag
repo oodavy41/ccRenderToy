@@ -49,8 +49,8 @@ void main(void)
         texture2D(tex,vec2(fcoord.s,fcoord.t)):
         vec4(diffuse,1.0);
 
-
     gl_FragColor = hlight>0.3 ?
         vec4(1.0,1.0,1.0,1.0):color*
         vec4(lightColor*bright,1.0)+vec4(specular*hlight,1.0)+color*vec4(ambient,1.0);
+
 }

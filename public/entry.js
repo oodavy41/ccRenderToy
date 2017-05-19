@@ -37,6 +37,8 @@ onload = function() {
     thegl.set_cam_ptype();
 
 
+    //----------------------------------
+
     var sb=skybox([
         'skyboxs/bs2/X.png',
         'skyboxs/bs2/-X.png',
@@ -53,6 +55,9 @@ onload = function() {
         glg.gl.cullFace(glg.gl.BACK);
     });
 
+
+    //----------------------------------
+
     var objs1 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_phone');
 
     var objs11 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_edge_phone');
@@ -63,10 +68,17 @@ onload = function() {
         glg.gl.cullFace(glg.gl.BACK);
     });
 
+
+    //----------------------------------
+
     var objs2 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'text_phone');
     set_obj_info(objs2,function (tran) {
         tran.set_pos(0,0,2)
     });
+
+
+    //----------------------------------
+
 
     var objsrefl = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'reflect_mat');
     set_obj_info(objsrefl,function (tran) {
@@ -78,6 +90,9 @@ onload = function() {
         );
         tran.set_pos(0,0,4)
     });
+
+
+    //----------------------------------
 
     var objsrefr = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'refract_mat');
     set_obj_info(objsrefr,function (tran) {
@@ -91,14 +106,24 @@ onload = function() {
         tran.set_pos(0,0,6)
     });
 
+
+    //----------------------------------
+
     var objs3 = donghnut(30, 36, 1, 3, thegl);
     set_obj_info(objs3,function (tran) {
-        tran.set_pos(10,3,0);
+        tran.set_pos(10,3,2);
     });
     rewrite_edraw(objs3,function () {
+        var metalless=parseFloat(document.getElementById('metals').value);
+        var smoothness=parseFloat(document.getElementById('smooths').value);
+        this.Mesh[0].material.set_uniform(Material._1f,'metalless',metalless,thegl.gl);
+        this.Mesh[0].material.set_uniform(Material._1f,'smoothness',smoothness,thegl.gl);
+        this.set_rz(date.getTime()/2000);
         this.set_rx(date.getTime() / 1000);
     });
 
+
+    //----------------------------------
     var objs = [sb,objs1,objs11,objs2,objsrefl,objsrefr, objs3];
 
 
@@ -114,7 +139,7 @@ onload = function() {
             }
         }
 
-        //=======a=====================
+        //============================fps display============
         var thisfps = 1000 / ((new Date()).getTime() - date.getTime());
         date = new Date();
         fps.textContent = 'FPS:' + parseInt(thisfps);

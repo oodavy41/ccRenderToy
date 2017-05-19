@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7f655692-176e-4e9d-b80e-192c907d6bc8" name="默认" comment="">
+    <list default="true" id="7f655692-176e-4e9d-b80e-192c907d6bc8" name="默认" comment="add metal material shading">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/baseModels.js" afterPath="$PROJECT_DIR$/public/baseModels.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/entry.js" afterPath="$PROJECT_DIR$/public/entry.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/glfuncs.js" afterPath="$PROJECT_DIR$/public/glfuncs.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/object/Mesh.js" afterPath="$PROJECT_DIR$/public/object/Mesh.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/object/Texture.js" afterPath="$PROJECT_DIR$/public/object/Texture.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/shaders/skybox.vert" afterPath="$PROJECT_DIR$/public/shaders/skybox.vert" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/examples/GL.js" afterPath="$PROJECT_DIR$/public/examples/GL.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/handle.js" afterPath="$PROJECT_DIR$/public/handle.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/index.html" afterPath="$PROJECT_DIR$/public/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/shaders/anim_phone.frag" afterPath="$PROJECT_DIR$/public/shaders/anim_phone.frag" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/shaders/base_phone.frag" afterPath="$PROJECT_DIR$/public/shaders/base_phone.frag" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -28,12 +28,35 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="entry.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="entry.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/entry.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="320">
-                  <caret line="95" column="25" lean-forward="false" selection-start-line="95" selection-start-column="25" selection-end-line="95" selection-end-column="25" />
+                <state relative-caret-position="316">
+                  <caret line="117" column="58" lean-forward="false" selection-start-line="117" selection-start-column="58" selection-end-line="117" selection-end-column="58" />
                   <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="handle.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/public/handle.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="778">
+                  <caret line="66" column="26" lean-forward="true" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/public/index.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="301">
+                  <caret line="49" column="91" lean-forward="false" selection-start-line="49" selection-start-column="91" selection-end-line="49" selection-end-column="91" />
+                  <folding>
+                    <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                    <element signature="n#style#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -41,7 +64,7 @@
           <file leaf-file-name="Transform.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/object/Transform.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1088">
+                <state relative-caret-position="458">
                   <caret line="68" column="0" lean-forward="false" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
                   <folding />
                 </state>
@@ -51,8 +74,18 @@
           <file leaf-file-name="Material.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/object/Material.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="400">
+                <state relative-caret-position="784">
                   <caret line="49" column="57" lean-forward="false" selection-start-line="49" selection-start-column="57" selection-end-line="49" selection-end-column="57" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="anim_phone.frag" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/public/shaders/anim_phone.frag">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="608">
+                  <caret line="38" column="19" lean-forward="true" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
                   <folding />
                 </state>
               </provider>
@@ -61,7 +94,7 @@
           <file leaf-file-name="loader.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/loader.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="390">
+                <state relative-caret-position="7504">
                   <caret line="469" column="66" lean-forward="true" selection-start-line="469" selection-start-column="66" selection-end-line="469" selection-end-column="66" />
                   <folding />
                 </state>
@@ -81,7 +114,7 @@
           <file leaf-file-name="baseModels.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/baseModels.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="196">
+                <state relative-caret-position="1536">
                   <caret line="116" column="16" lean-forward="false" selection-start-line="116" selection-start-column="16" selection-end-line="116" selection-end-column="16" />
                   <folding>
                     <element signature="n#!!block;n#hsva#0" expanded="false" />
@@ -100,36 +133,6 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="reflect_mat.frag" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/public/shaders/reflect_mat.frag">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="160">
-                  <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="skybox.frag" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/public/shaders/skybox.frag">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="160">
-                  <caret line="10" column="31" lean-forward="false" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="31" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="reflect_mat.vert" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/public/shaders/reflect_mat.vert">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="112">
-                  <caret line="7" column="18" lean-forward="false" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
         </leaf>
       </split-first>
       <split-second>
@@ -137,17 +140,27 @@
           <file leaf-file-name="GL.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/examples/GL.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="480">
-                  <caret line="30" column="32" lean-forward="false" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="32" />
+                <state relative-caret-position="875">
+                  <caret line="94" column="73" lean-forward="false" selection-start-line="94" selection-start-column="73" selection-end-line="94" selection-end-column="73" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="glfuncs.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="base_phone.frag" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/public/shaders/base_phone.frag">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="368">
+                  <caret line="23" column="40" lean-forward="true" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="glfuncs.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/glfuncs.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="176">
+                <state relative-caret-position="874">
                   <caret line="95" column="16" lean-forward="false" selection-start-line="95" selection-start-column="15" selection-end-line="95" selection-end-column="16" />
                   <folding />
                 </state>
@@ -157,7 +170,7 @@
           <file leaf-file-name="Texture.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/public/object/Texture.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="230">
+                <state relative-caret-position="1136">
                   <caret line="71" column="59" lean-forward="false" selection-start-line="71" selection-start-column="59" selection-end-line="71" selection-end-column="59" />
                   <folding />
                 </state>
@@ -175,16 +188,12 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/server.js" />
-        <option value="$PROJECT_DIR$/public/handle.js" />
-        <option value="$PROJECT_DIR$/public/index.html" />
-        <option value="$PROJECT_DIR$/public/shaders/base_phone.frag" />
         <option value="$PROJECT_DIR$/public/shaders/anim_phone.vert" />
         <option value="$PROJECT_DIR$/public/loader.js" />
         <option value="$PROJECT_DIR$/public/object/Material.js" />
         <option value="$PROJECT_DIR$/public/object/Transform.js" />
         <option value="$PROJECT_DIR$/public/shaders/anim_edge_phone.frag" />
         <option value="$PROJECT_DIR$/public/shaders/anim_edge_phone.vert" />
-        <option value="$PROJECT_DIR$/public/shaders/anim_phone.frag" />
         <option value="$PROJECT_DIR$/public/shaders/skybox.frag" />
         <option value="$PROJECT_DIR$/public/shaders/skybox.vert" />
         <option value="$PROJECT_DIR$/public/object/Texture.js" />
@@ -194,7 +203,12 @@
         <option value="$PROJECT_DIR$/public/baseModels.js" />
         <option value="$PROJECT_DIR$/public/glfuncs.js" />
         <option value="$PROJECT_DIR$/public/object/Mesh.js" />
+        <option value="$PROJECT_DIR$/public/examples/GL.js" />
+        <option value="$PROJECT_DIR$/public/shaders/anim_phone.frag" />
+        <option value="$PROJECT_DIR$/public/handle.js" />
         <option value="$PROJECT_DIR$/public/entry.js" />
+        <option value="$PROJECT_DIR$/public/index.html" />
+        <option value="$PROJECT_DIR$/public/shaders/base_phone.frag" />
       </list>
     </option>
   </component>
@@ -356,8 +370,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -463,7 +477,9 @@
       <workItem from="1494774746123" duration="598000" />
       <workItem from="1494834275419" duration="18339000" />
       <workItem from="1495035203564" duration="7986000" />
-      <workItem from="1495079999265" duration="11959000" />
+      <workItem from="1495079999265" duration="13674000" />
+      <workItem from="1495126901210" duration="2259000" />
+      <workItem from="1495168611421" duration="4398000" />
     </task>
     <task id="LOCAL-00001" summary="delete some th">
       <created>1494505055532</created>
@@ -479,11 +495,18 @@
       <option name="project" value="LOCAL" />
       <updated>1495043711458</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="reflect shader and refract shader done">
+      <created>1495105467864</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1495105467864</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40099000" />
+    <option name="totallyTimeSpent" value="48471000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="71" y="-8" width="1857" height="1096" extended-state="6" />
@@ -517,7 +540,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="delete some th" />
     <MESSAGE value="skyboxing" />
-    <option name="LAST_COMMIT_MESSAGE" value="skyboxing" />
+    <MESSAGE value="reflect shader and refract shader done" />
+    <MESSAGE value="add metal material shading" />
+    <option name="LAST_COMMIT_MESSAGE" value="add metal material shading" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -528,7 +553,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="128">
           <caret line="8" column="16" lean-forward="false" selection-start-line="8" selection-start-column="16" selection-end-line="8" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -578,7 +602,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="384">
           <caret line="24" column="37" lean-forward="false" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -665,7 +688,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="384">
           <caret line="24" column="37" lean-forward="false" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -689,7 +711,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -705,7 +730,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -739,29 +767,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/handle.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="61" column="33" lean-forward="true" selection-start-line="61" selection-start-column="33" selection-end-line="61" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="42" column="69" lean-forward="false" selection-start-line="42" selection-start-column="69" selection-end-line="42" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/shaders/base_phone.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="27" column="49" lean-forward="false" selection-start-line="27" selection-start-column="49" selection-end-line="27" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/WebGL.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="177">
@@ -773,7 +778,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="384">
           <caret line="24" column="37" lean-forward="false" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -809,30 +813,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
           <caret line="11" column="20" lean-forward="true" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/examples/GL.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="30" column="32" lean-forward="false" selection-start-line="30" selection-start-column="23" selection-end-line="30" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/object/Texture.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
+        <state relative-caret-position="1136">
           <caret line="71" column="59" lean-forward="false" selection-start-line="71" selection-start-column="59" selection-end-line="71" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/shaders/anim_phone.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="42" column="10" lean-forward="false" selection-start-line="42" selection-start-column="10" selection-end-line="42" selection-end-column="10" />
           <folding />
         </state>
       </provider>
@@ -841,7 +828,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
           <caret line="7" column="18" lean-forward="false" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -871,7 +857,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/loader.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
+        <state relative-caret-position="7504">
           <caret line="469" column="66" lean-forward="true" selection-start-line="469" selection-start-column="66" selection-end-line="469" selection-end-column="66" />
           <folding />
         </state>
@@ -879,35 +865,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/baseModels.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
+        <state relative-caret-position="1536">
           <caret line="116" column="16" lean-forward="false" selection-start-line="116" selection-start-column="16" selection-end-line="116" selection-end-column="16" />
           <folding>
             <element signature="n#!!block;n#hsva#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/object/Material.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="49" column="57" lean-forward="false" selection-start-line="49" selection-start-column="57" selection-end-line="49" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/object/Transform.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1088">
-          <caret line="68" column="0" lean-forward="false" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/glfuncs.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="95" column="16" lean-forward="false" selection-start-line="95" selection-start-column="15" selection-end-line="95" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -919,10 +881,77 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/public/examples/GL.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="875">
+          <caret line="94" column="73" lean-forward="false" selection-start-line="94" selection-start-column="73" selection-end-line="94" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/object/Material.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="784">
+          <caret line="49" column="57" lean-forward="false" selection-start-line="49" selection-start-column="57" selection-end-line="49" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/shaders/anim_phone.frag">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="608">
+          <caret line="38" column="19" lean-forward="true" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/glfuncs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="874">
+          <caret line="95" column="16" lean-forward="false" selection-start-line="95" selection-start-column="15" selection-end-line="95" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/object/Transform.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="458">
+          <caret line="68" column="0" lean-forward="false" selection-start-line="68" selection-start-column="0" selection-end-line="68" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public/entry.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="95" column="25" lean-forward="false" selection-start-line="95" selection-start-column="25" selection-end-line="95" selection-end-column="25" />
+        <state relative-caret-position="316">
+          <caret line="117" column="58" lean-forward="false" selection-start-line="117" selection-start-column="58" selection-end-line="117" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/handle.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="778">
+          <caret line="66" column="26" lean-forward="true" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="49" column="91" lean-forward="false" selection-start-line="49" selection-start-column="91" selection-end-line="49" selection-end-column="91" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/shaders/base_phone.frag">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="23" column="40" lean-forward="true" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
           <folding />
         </state>
       </provider>

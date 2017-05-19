@@ -91,8 +91,8 @@ class GLg {
         this.fps_angel[1] += Math.asin(-ret[0] / set.FPSraid);
 
 
-        this.fps_angel[0] = Math.min(this.fps_angel[0], Math.PI / 2);
-        this.fps_angel[0] = Math.max(this.fps_angel[0], -Math.PI / 2);
+        this.fps_angel[0] = Math.min(this.fps_angel[0], Math.PI / 2-0.04);
+        this.fps_angel[0] = Math.max(this.fps_angel[0], -Math.PI / 2-0.04);
         if (this.fps_angel[1] > Math.PI)
             this.fps_angel[1] += -Math.PI * 2;
         if (this.fps_angel[1] < -Math.PI)

@@ -18,35 +18,47 @@
 
 <body>
 <canvas id="wobaglccc" width="1280" height="720"></canvas>
-    <hr>
-    <label>status: </label>
-    <label id="progress"></label>
-    <label id="statuss">source loading</label>
-    |||
-    <label id="fps">fps:</label>
-    <p id="texture_p"></p>
-
+<hr>
+<label>status: </label>
+<label id="progress"></label>
+<label id="statuss">source loading</label>
+|||
+<label id="fps">fps:</label>
+<p id="texture_p"></p>
 <div>
-    LightDirection
-    <div>
-        X:
-        <input type="range" min="-10" max="10" value="-10" step="0.1" onmousemove="LDchangex(this)"/>
-        <label id="LDx">-10</label>
+    <div style="float: left;">
+        LightDirection
+        <div>
+            X:
+            <input type="range" min="-10" max="10" value="-10" step="0.1" onmousemove="LDchangex(this)"/>
+            <label id="LDx">-10</label>
+        </div>
+        <div>
+            Y:
+            <input type="range" min="-10" max="10" value="0" step="0.1" onmousemove="LDchangey(this)"/>
+            <label id="LDy">0</label>
+        </div>
+        <div>
+            Z:
+            <input type="range" min="-10" max="10" value="-1" step="0.1" onmousemove="LDchangez(this)"/>
+            <label id="LDz">-1</label>
+        </div>
     </div>
-    <div>
-        Y:
-        <input type="range" min="-10" max="10" value="0" step="0.1" onmousemove="LDchangey(this)"/>
-        <label id="LDy">0</label>
-    </div>
-    <div>
-        Z:
-        <input type="range" min="-10" max="10" value="-1" step="0.1" onmousemove="LDchangez(this)"/>
-        <label id="LDz">-1</label>
+    <div style="float: left;padding-left: 20px;">
+        <div>
+            metalless   :
+            <input id='metals' type="range" min="0.0" max="1.0" value="0.0" step="0.01" onmousemove="mlchange(this)"/>
+            <label id="mtls">0.0</label>
+        </div>
+        <div>
+            smoothness:
+            <input id='smooths' type="range" min="1" max="512" value="32" step="1" onmousemove="snchange(this)"/>
+            <label id="stns">1</label>
+        </div>
     </div>
 </div>
 
-
-    <script src="entry.js" type="text/javascript"></script>
+<script src="entry.js" type="text/javascript"></script>
 </body>
 
 </html>
