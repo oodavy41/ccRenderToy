@@ -17,7 +17,7 @@ void main(void)
     vec3 Mnormal=normalize(normalMatrix*fnormal);
     //视线
     vec3 camDir=normalize(vec3(fpos)-cameraPos);
-    //反射视线
+    //折射视线
     vec3 refract=refract(camDir,Mnormal,ratio);
 
     gl_FragColor = textureCube(tex,refract)*0.8;

@@ -112,6 +112,12 @@ onload = function() {
     var objs3 = donghnut(30, 36, 1, 3, thegl);
     set_obj_info(objs3,function (tran) {
         tran.set_pos(10,3,2);
+        tran.Mesh[0].material.set_uniform(
+            Material.I1i,
+            'tex',
+            sb[0].Mesh[0].material.uniforms['tex'].value,
+            thegl.gl
+        );
     });
     rewrite_edraw(objs3,function () {
         var metalless=parseFloat(document.getElementById('metals').value);
