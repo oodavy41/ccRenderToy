@@ -1,13 +1,11 @@
 class Texture {
 
-    constructor(src, gl) {
-        this.index = Texture.count;
-        Texture.count++;
+    constructor(src, gl, mat) {
+        this.index = mat.textures.length;
+        mat.textures.push(this);
         this.img = new Image();
         var that = this;
         this.img.onload = function () {
-
-
             that.texture = gl.createTexture();
             gl.activeTexture(gl.TEXTURE0 + that.index);
             console.log('tex',that.index + ':' + src);
@@ -19,7 +17,7 @@ class Texture {
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
 
             gl.generateMipmap(gl.TEXTURE_2D);
-            //gl.bindTexture(gl.TEXTURE_2D, null);
+            gl.bindTexture(gl.TEXTURE_2D, null);
 
             loadProg--;
             progress.innerText = loadProg + '';
@@ -29,17 +27,19 @@ class Texture {
         loadProg++;
         progress.innerText = loadProg + '';
     }
+
+    bind(gl){
+        gl.activeTexture(gl.TEXTURE0 + this.index);
+        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+    }
 }
-
-Texture.count = 0;
-
 
 class CubeTexture {
 
     //src:[+x,-x,+y,-y,+z,-z]
-    constructor(src, gl) {
-        this.index = Texture.count;
-        Texture.count++;
+    constructor(src, gl,mat) {
+        this.index = mat.textures.length;
+        mat.textures.push(this);
         this.img = new Array(6);
         var that = this;
         this.cubePromise=0;
@@ -80,5 +80,10 @@ class CubeTexture {
         }
         loadProg++;
         progress.innerText = loadProg + '';
+    }
+
+    bind(gl){
+        gl.activeTexture(gl.TEXTURE0 + this.index);
+        gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.texture);
     }
 }

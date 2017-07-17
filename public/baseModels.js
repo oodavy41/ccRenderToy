@@ -104,7 +104,7 @@ function skybox(srcs,gl) {
         m[3]
     ]);
     var mat = new Material('shaders/skybox.vert', 'shaders/skybox.frag', gl);
-    var tex=new CubeTexture(srcs,gl);
+    var tex=new CubeTexture(srcs,gl,mat);
     mat.set_uniform(Material.I1i, 'tex', tex, gl);
     mat.set_uniform(Material._1f,'usetex',true,gl);
     mesh.set_mat(mat);

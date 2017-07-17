@@ -466,7 +466,7 @@ function mtlLoader(path, mtlname, mtllib, gl, mtlflag) {
             } else if (key === 'map_kd') {
 
                 thismtl.set_uniform(Material._1b, 'usetex', true, gl);
-                var tex = new Texture(path + value, gl);
+                var tex = new Texture(path + value, gl,thismtl);
                 thismtl.set_uniform(Material.I1i, 'tex', tex, gl);
             }
 

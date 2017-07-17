@@ -5,11 +5,15 @@ class Material {
         this.vs = create_shader(ver_path, gl, gl.VERTEX_SHADER);
         this.fs = create_shader(fra_path, gl, gl.FRAGMENT_SHADER);
         this.prog = create_program(this.vs, this.fs, gl);
+        this.textures=[];
         this.uniforms = {};
     }
 
     use(gl) {
         gl.useProgram(this.prog);
+        this.textures.forEach(function(element) {
+            element.bind(gl);
+        });
     }
 
     //value:数据类型传入数组，纹理类型传入Texture  此前需要useProgram
