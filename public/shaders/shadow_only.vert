@@ -1,7 +1,7 @@
 attribute vec3 position;
 
-uniform mat4 mvpMatrix;
-uniform mat4 modelMatrix;
+uniform mat4 mvpMatrix_light;
+uniform mat4 modelMatrix_light;
 
 
 

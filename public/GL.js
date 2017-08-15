@@ -37,14 +37,17 @@ class GLg {
     }
 
     set_cam_front(f) {
-        this.camera_front = vec3.fromValues(f[0], f[1], f[2]);
+        this.camera_front = vec4.fromValues(f[0], f[1], f[2], f[3]);
         this.makemvp();
     }
 
     make_cam_look() {
-        var pos = this.camera_pos;
-        var front = this.camera_front;
-        return [pos[0] + front[0], pos[1] + front[1], pos[2] + front[2]];
+        if (this.camera_front[3] == 0) {
+            var pos = this.camera_pos;
+            var front = this.camera_front;
+            return [pos[0] + front[0], pos[1] + front[1], pos[2] + front[2]];
+        } else
+            return [this.camera_front[0], this.camera_front[1], this.camera_front[2]];
     }
 
     set_cam_up(up) {
@@ -91,8 +94,8 @@ class GLg {
         this.fps_angel[1] += Math.asin(-ret[0] / set.FPSraid);
 
 
-        this.fps_angel[0] = Math.min(this.fps_angel[0], Math.PI / 2-0.04);
-        this.fps_angel[0] = Math.max(this.fps_angel[0], -Math.PI / 2-0.04);
+        this.fps_angel[0] = Math.min(this.fps_angel[0], Math.PI / 2 - 0.04);
+        this.fps_angel[0] = Math.max(this.fps_angel[0], -Math.PI / 2 - 0.04);
         if (this.fps_angel[1] > Math.PI)
             this.fps_angel[1] += -Math.PI * 2;
         if (this.fps_angel[1] < -Math.PI)
@@ -121,7 +124,8 @@ class GLg {
     }
 
     movectrl() {
-        var abf = vec3.create(), abr = vec3.create();
+        var abf = vec3.create(),
+            abr = vec3.create();
         var wasd = [
             this.camera_front,
             vec3.scale(abr, this.camera_right, -1),
@@ -179,7 +183,7 @@ class GLg {
     set_uniform(uni_arr) {
         var that = this;
         var gl = this.gl;
-        uni_arr.forEach(function(e) {
+        uni_arr.forEach(function (e) {
             var uni;
             switch (e[0]) {
                 case that.M4F:

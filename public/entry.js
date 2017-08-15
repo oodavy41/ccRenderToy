@@ -5,7 +5,7 @@ var statuss = document.getElementById('statuss');
 var progress = document.getElementById('progress');
 var promise;
 
-onload = function() {
+onload = function () {
     var glc = document.getElementById('wobaglccc');
     var fps = document.getElementById('fps');
 
@@ -39,19 +39,20 @@ onload = function() {
 
     //----------------------------------
 
-    var sb=skybox([
+    var sb = skybox([
         'skyboxs/bs2/X.png',
         'skyboxs/bs2/-X.png',
         'skyboxs/bs2/Y.png',
         'skyboxs/bs2/-Y.png',
         'skyboxs/bs2/Z.png',
-        'skyboxs/bs2/-Z.png'],thegl.gl);
+        'skyboxs/bs2/-Z.png'
+    ], thegl.gl);
 
-    rewrite_edraw(sb,function (glg) {
-        this.set_pos(thegl.camera_pos[0],thegl.camera_pos[1],thegl.camera_pos[2]);
+    rewrite_edraw(sb, function (glg) {
+        this.set_pos(thegl.camera_pos[0], thegl.camera_pos[1], thegl.camera_pos[2]);
         glg.gl.cullFace(glg.gl.FRONT);
     });
-    rewrite_ldraw(sb,function (glg) {
+    rewrite_ldraw(sb, function (glg) {
         glg.gl.cullFace(glg.gl.BACK);
     });
 
@@ -61,10 +62,10 @@ onload = function() {
     var objs1 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_phone');
 
     var objs11 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_edge_phone');
-    rewrite_edraw (objs11,function(glg) {
+    rewrite_edraw(objs11, function (glg) {
         glg.gl.cullFace(glg.gl.FRONT);
     });
-    rewrite_ldraw(objs11,function (glg) {
+    rewrite_ldraw(objs11, function (glg) {
         glg.gl.cullFace(glg.gl.BACK);
     });
 
@@ -72,8 +73,8 @@ onload = function() {
     //----------------------------------
 
     var objs2 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'text_phone');
-    set_obj_info(objs2,function (tran) {
-        tran.set_pos(0,0,2)
+    set_obj_info(objs2, function (tran) {
+        tran.set_pos(0, 0, 2)
     });
 
 
@@ -81,37 +82,37 @@ onload = function() {
 
 
     var objsrefl = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'reflect_mat');
-    set_obj_info(objsrefl,function (tran) {
+    set_obj_info(objsrefl, function (tran) {
         tran.Mesh[0].material.set_uniform(
             Material.I1i,
             'tex',
             sb[0].Mesh[0].material.uniforms['tex'].value,
             thegl.gl
         );
-        tran.set_pos(0,0,4)
+        tran.set_pos(0, 0, 4)
     });
 
 
     //----------------------------------
 
     var objsrefr = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'refract_mat');
-    set_obj_info(objsrefr,function (tran) {
+    set_obj_info(objsrefr, function (tran) {
         tran.Mesh[0].material.set_uniform(
             Material.I1i,
             'tex',
             sb[0].Mesh[0].material.uniforms['tex'].value,
             thegl.gl
         );
-        tran.Mesh[0].material.set_uniform(Material._1f,'ratio',1/1.52,thegl.gl);
-        tran.set_pos(0,0,6)
+        tran.Mesh[0].material.set_uniform(Material._1f, 'ratio', 1 / 1.52, thegl.gl);
+        tran.set_pos(0, 0, 6)
     });
 
 
     //----------------------------------
 
     var objs3 = donghnut(30, 36, 1, 3, thegl);
-    set_obj_info(objs3,function (tran) {
-        tran.set_pos(10,3,2);
+    set_obj_info(objs3, function (tran) {
+        tran.set_pos(10, 3, 2);
         tran.Mesh[0].material.set_uniform(
             Material.I1i,
             'tex',
@@ -119,19 +120,31 @@ onload = function() {
             thegl.gl
         );
     });
-    rewrite_edraw(objs3,function () {
-        var metalless=parseFloat(document.getElementById('metals').value);
-        var smoothness=parseFloat(document.getElementById('smooths').value);
-        this.Mesh[0].material.set_uniform(Material._1f,'metalless',metalless,thegl.gl);
-        this.Mesh[0].material.set_uniform(Material._1f,'smoothness',smoothness,thegl.gl);
-        this.set_rz(date.getTime()/2000);
+    rewrite_edraw(objs3, function () {
+        var metalless = parseFloat(document.getElementById('metals').value);
+        var smoothness = parseFloat(document.getElementById('smooths').value);
+        this.Mesh[0].material.set_uniform(Material._1f, 'metalless', metalless, thegl.gl);
+        this.Mesh[0].material.set_uniform(Material._1f, 'smoothness', smoothness, thegl.gl);
+        this.set_rz(date.getTime() / 2000);
         this.set_rx(date.getTime() / 1000);
     });
 
 
     //----------------------------------
-    var objs = [sb,objs1,objs11,objs2,objsrefl,objsrefr, objs3];
+    var objs = [sb, objs1, objs11, objs2, objsrefl, objsrefr, objs3];
 
+    // var gl=thegl.gl;
+    // var texture = gl.createTexture();
+    // //使用如下的设置来创建texture，这样对texture的设置可以使我们对任何尺寸的图片进行处理
+    // gl.bindTexture(gl.TEXTURE_2D, texture);
+    // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    // var shadow_fbo = gl.createFramebuffer();
+    // gl.bindFramebuffer(gl.FRAMMERBUFFER, shadow_fbo);
+    // shadow_fbo.width = shadow_fbo.height = 512;
+    // gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.TEXTURE_2D, texture, 0);
 
 
     var update = function () {
@@ -170,4 +183,3 @@ onload = function() {
     };
 
 };
-
