@@ -1,9 +1,10 @@
 
-import * as glm from "gl-matrix"
+import { Transform } from './object/Transform';
+import { mat4 } from 'gl-matrix';
 
-export function initgl(id) {
+export function initgl(id: string) {
     var glc = document.getElementById(id) as HTMLCanvasElement;
-    var gl:WebGLRenderingContext = glc.getContext('webgl');
+    var gl: WebGLRenderingContext = glc.getContext('webgl');
 
     if (!gl) {
         alert('no support for Webgl in this browser\nWEBGL无法在此浏览器初始化');
@@ -20,12 +21,12 @@ export function initgl(id) {
     return gl;
 }
 
-export function glclear(gl:WebGLRenderingContext) {
+export function glclear(gl: WebGLRenderingContext) {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 }
 
 
-export function create_shader(path:string, gl:WebGLRenderingContext, type) {
+export function create_shader(path: string, gl: WebGLRenderingContext, type: number) {
     var shader;
     var shaderSRC = loadFile(path);
     shader = gl.createShader(type);
@@ -38,7 +39,7 @@ export function create_shader(path:string, gl:WebGLRenderingContext, type) {
         console.log(type.toString() + ":" + gl.getShaderInfoLog(shader));
 }
 
-export function create_program(vs, fs, gl) {
+export function create_program(vs: WebGLShader, fs: WebGLShader, gl: WebGLRenderingContext) {
     var program = gl.createProgram();
 
     gl.attachShader(program, vs);
@@ -53,7 +54,7 @@ export function create_program(vs, fs, gl) {
 
 }
 
-export function create_vbo(data, gl) {
+export function create_vbo(data: number[], gl: WebGLRenderingContext) {
     var vbo = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
@@ -61,7 +62,7 @@ export function create_vbo(data, gl) {
     return vbo;
 }
 
-export function create_ibo(data, gl) {
+export function create_ibo(data: number[], gl: WebGLRenderingContext) {
     var ibo = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Int16Array(data), gl.STATIC_DRAW);
@@ -69,7 +70,7 @@ export function create_ibo(data, gl) {
     return ibo;
 }
 
-export function loadFile(path) {
+export function loadFile(path: string) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', path, false);
     xhr.send();
@@ -81,25 +82,25 @@ export function loadFile(path) {
 }
 
 
-export function makeMvp(view3v, pers4f) {
-    var mMat = glm.mat4.create();
-    var vMat = glm.mat4.create();
-    var pMat = glm.mat4.create();
-    var mvp = glm.mat4.create();
+export function makeMvp(view3v: number[][], pers4f: number[]) {
+    var mMat = mat4.create();
+    var vMat = mat4.create();
+    var pMat = mat4.create();
+    var mvp = mat4.create();
 
-    glm.mat4.lookAt(vMat, view3v[0], view3v[1], view3v[2]);
+    mat4.lookAt(vMat, view3v[0], view3v[1], view3v[2]);
 
-    glm.mat4.perspective(pMat, pers4f[0], pers4f[1], pers4f[2], pers4f[3]);
+    mat4.perspective(pMat, pers4f[0], pers4f[1], pers4f[2], pers4f[3]);
 
-    glm.mat4.multiply(mvp, pMat, vMat);
-    glm.mat4.multiply(mvp, mvp, mMat);
+    mat4.multiply(mvp, pMat, vMat);
+    mat4.multiply(mvp, mvp, mMat);
     return mvp;
 }
 
-export function upload_array_att(array, att_name, program, gl, vap_argus) {
+export function upload_array_att(array: number[], att_name: string, program: WebGLProgram, gl: WebGLRenderingContext) {
     var att = gl.getAttribLocation(program, att_name);
-    if (att === -1){
-        console.log('no attribute such name:' + att_name);
+    if (att === -1) {
+        console.log('no attribute called:' + att_name);
         return null;
     }
     var vbo = create_vbo(array, gl);
@@ -110,16 +111,16 @@ export function upload_array_att(array, att_name, program, gl, vap_argus) {
     };
 }
 
-export function static_uni(arr, smvp) {
-    var ret = glm.vec4.fromValues(arr[0], arr[1], arr[2], arr[3]);
-    glm.vec4.transformMat4(ret, ret, smvp);
-    return [ret[0], ret[1], ret[2]];
-}
+// export function static_uni(arr:number[], smvp:mat4) {
+//     var ret = vec4.create();
+//     vec4.transformMat4(ret, arr, smvp);
+//     return [ret[0], ret[1], ret[2]];
+// }
 
-export function create_texture(src, gl) {
+export function create_texture(src:string, gl:WebGLRenderingContext) {
     var img = new Image();
     var texture;
-    img.onload = function() {
+    img.onload = function () {
         texture = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
@@ -133,20 +134,20 @@ export function create_texture(src, gl) {
     };
 }
 
-export function set_obj_info(obj,fun) {
-    for(var tran in obj){
+export function set_obj_info(obj:{}, fun:Function) {
+    for (var tran in obj) {
         fun(obj[tran]);
     }
 }
 
-export function rewrite_edraw(obj,fun) {
-    for(var tran in obj){
-        obj[tran].earlydraw=fun;
+export function rewrite_edraw(obj:{}, fun:Function) {
+    for (var tran in obj) {
+        obj[tran].earlydraw = fun;
     }
 }
 
-export function rewrite_ldraw(obj,fun) {
-    for(var tran in obj){
-        obj[tran].latedraw=fun;
+export function rewrite_ldraw(obj:{}, fun:Function) {
+    for (var tran in obj) {
+        obj[tran].latedraw = fun;
     }
 }

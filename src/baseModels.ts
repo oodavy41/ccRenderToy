@@ -99,7 +99,7 @@ export function cube(side) {
     return [coords,texCoords,normals,indices];
 }
 
-export function skybox(srcs,gl) {
+export function skybox(srcs:string[],gl:WebGLRenderingContext) {
 
     var m=cube(50);
 
