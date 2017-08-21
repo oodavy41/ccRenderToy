@@ -25,7 +25,7 @@ var Mesh = (function () {
         for (var i = 0, l = this.arrs.length; i < l; i++) {
             var arr = this.arrs[i];
             if (i < l - 1)
-                this.arr_bkup[arr[0]] = glfuncs_1.upload_array_att(arr[1], arr[0], program, gl, [arr[2], gl.FLOAT, false, 0, 0]);
+                this.arr_bkup[arr[0]] = glfuncs_1.upload_array_att(arr[1], arr[0], program, gl);
             else {
                 this.index_buffer = glfuncs_1.create_ibo(arr, gl);
                 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.index_buffer);

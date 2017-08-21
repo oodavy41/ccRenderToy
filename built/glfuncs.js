@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var glm = require("gl-matrix");
+var gl_matrix_1 = require("gl-matrix");
 function initgl(id) {
     var glc = document.getElementById(id);
     var gl = glc.getContext('webgl');
@@ -72,21 +72,21 @@ function loadFile(path) {
 }
 exports.loadFile = loadFile;
 function makeMvp(view3v, pers4f) {
-    var mMat = glm.mat4.create();
-    var vMat = glm.mat4.create();
-    var pMat = glm.mat4.create();
-    var mvp = glm.mat4.create();
-    glm.mat4.lookAt(vMat, view3v[0], view3v[1], view3v[2]);
-    glm.mat4.perspective(pMat, pers4f[0], pers4f[1], pers4f[2], pers4f[3]);
-    glm.mat4.multiply(mvp, pMat, vMat);
-    glm.mat4.multiply(mvp, mvp, mMat);
+    var mMat = gl_matrix_1.mat4.create();
+    var vMat = gl_matrix_1.mat4.create();
+    var pMat = gl_matrix_1.mat4.create();
+    var mvp = gl_matrix_1.mat4.create();
+    gl_matrix_1.mat4.lookAt(vMat, view3v[0], view3v[1], view3v[2]);
+    gl_matrix_1.mat4.perspective(pMat, pers4f[0], pers4f[1], pers4f[2], pers4f[3]);
+    gl_matrix_1.mat4.multiply(mvp, pMat, vMat);
+    gl_matrix_1.mat4.multiply(mvp, mvp, mMat);
     return mvp;
 }
 exports.makeMvp = makeMvp;
-function upload_array_att(array, att_name, program, gl, vap_argus) {
+function upload_array_att(array, att_name, program, gl) {
     var att = gl.getAttribLocation(program, att_name);
     if (att === -1) {
-        console.log('no attribute such name:' + att_name);
+        console.log('no attribute called:' + att_name);
         return null;
     }
     var vbo = create_vbo(array, gl);
@@ -97,12 +97,11 @@ function upload_array_att(array, att_name, program, gl, vap_argus) {
     };
 }
 exports.upload_array_att = upload_array_att;
-function static_uni(arr, smvp) {
-    var ret = glm.vec4.fromValues(arr[0], arr[1], arr[2], arr[3]);
-    glm.vec4.transformMat4(ret, ret, smvp);
-    return [ret[0], ret[1], ret[2]];
-}
-exports.static_uni = static_uni;
+// export function static_uni(arr:number[], smvp:mat4) {
+//     var ret = vec4.create();
+//     vec4.transformMat4(ret, arr, smvp);
+//     return [ret[0], ret[1], ret[2]];
+// }
 function create_texture(src, gl) {
     var img = new Image();
     var texture;

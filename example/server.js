@@ -4,11 +4,11 @@ var port = process.env.PORT || 2333;
 
 app.use(express.static(__dirname + '/public'));
 
-app.use(function (req, res) {
-    res.sendfile('./static/index.html')
+app.use(function(req, res) {
+    res.sendfile('./index.html')
 });
 
 
-app.listen(port, function () {
+app.listen(port, function() {
     console.log('server is on port' + port + '!')
 });

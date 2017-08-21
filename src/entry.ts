@@ -37,15 +37,16 @@ onload = function () {
     thegl.set_cam_ptype();
 
 
+    var resPah="../resource/";
     //----------------------------------
 
     var sb = skybox([
-        'skyboxs/bs2/X.png',
-        'skyboxs/bs2/-X.png',
-        'skyboxs/bs2/Y.png',
-        'skyboxs/bs2/-Y.png',
-        'skyboxs/bs2/Z.png',
-        'skyboxs/bs2/-Z.png'
+        resPah+'skyboxs/bs2/X.png',
+        resPah+'skyboxs/bs2/-X.png',
+        resPah+'skyboxs/bs2/Y.png',
+        resPah+'skyboxs/bs2/-Y.png',
+        resPah+'skyboxs/bs2/Z.png',
+        resPah+'skyboxs/bs2/-Z.png'
     ], thegl.gl);
 
     rewrite_edraw(sb, function (glg) {
@@ -59,9 +60,9 @@ onload = function () {
 
     //----------------------------------
 
-    var objs1 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_phone');
+    var objs1 = objLoader(resPah+'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_phone');
 
-    var objs11 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_edge_phone');
+    var objs11 = objLoader(resPah+'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_edge_phone');
     rewrite_edraw(objs11, function (glg) {
         glg.gl.cullFace(glg.gl.FRONT);
     });
@@ -72,7 +73,7 @@ onload = function () {
 
     //----------------------------------
 
-    var objs2 = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'text_phone');
+    var objs2 = objLoader(resPah+'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'text_phone');
     set_obj_info(objs2, function (tran) {
         tran.set_pos(0, 0, 2)
     });
@@ -81,7 +82,7 @@ onload = function () {
     //----------------------------------
 
 
-    var objsrefl = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'reflect_mat');
+    var objsrefl = objLoader(resPah+'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'reflect_mat');
     set_obj_info(objsrefl, function (tran) {
         tran.Mesh[0].material.set_uniform(
             Material.I1i,
@@ -95,7 +96,7 @@ onload = function () {
 
     //----------------------------------
 
-    var objsrefr = objLoader('models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'refract_mat');
+    var objsrefr = objLoader(resPah+'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'refract_mat');
     set_obj_info(objsrefr, function (tran) {
         tran.Mesh[0].material.set_uniform(
             Material.I1i,

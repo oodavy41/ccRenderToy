@@ -5,7 +5,7 @@ import { Mesh } from "./object/Mesh";
 import { Texture } from "./object/Texture";
 
 
-export function objLoader(objpath:string, objname:string, mtllib:{}, gl:WebGLRenderingContext, mtlflag:number) {
+export function objLoader(objpath:string, objname:string, mtllib:{}, gl:WebGLRenderingContext, mtlflag:string) {
 
     var obj = loadFile(objpath + objname);
 
