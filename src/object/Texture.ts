@@ -1,5 +1,6 @@
 import "../glfuncs"
 import "../GL"
+import { Material } from './Material';
 
 export class Texture {
 
@@ -7,7 +8,7 @@ export class Texture {
     img:HTMLImageElement;
     texture:WebGLTexture;
 
-    constructor(src, gl, mat) {
+    constructor(src:string, gl:WebGLRenderingContext, mat:Material,mag:TexManager) {
         this.index = mat.textures.length;
         mat.textures.push(this);
         this.img = new Image();
@@ -19,20 +20,17 @@ export class Texture {
             gl.bindTexture(gl.TEXTURE_2D, that.texture);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
             gl.texImage2D(
-                gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this);
+                gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this as HTMLCanvasElement);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
 
             gl.generateMipmap(gl.TEXTURE_2D);
             gl.bindTexture(gl.TEXTURE_2D, null);
 
-            loadProg--;
-            progress.innerText = loadProg + '';
-            promise();
+            mag.receive();
         };
         this.img.src = src;
-        loadProg++;
-        progress.innerText = loadProg + '';
+        mag.request();
     }
 
     bind(gl:WebGLRenderingContext){
@@ -49,7 +47,7 @@ export class CubeTexture {
     cubePromise:number;
     
     //src:[+x,-x,+y,-y,+z,-z]
-    constructor(src, gl,mat) {
+    constructor(src:string, gl:WebGLRenderingContext,mat:Material,mag:TexManager) {
         this.index = mat.textures.length;
         mat.textures.push(this);
         this.img = new Array(6);
@@ -83,19 +81,46 @@ export class CubeTexture {
 
                     gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
 
-                    loadProg--;
-                    progress.innerText = loadProg + '';
-                    promise();
+                    mag.receive();
                 }
             };
             this.img[i].src = src[i];
         }
-        loadProg++;
-        progress.innerText = loadProg + '';
+        mag.request();
     }
 
     bind(gl){
         gl.activeTexture(gl.TEXTURE0 + this.index);
         gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.texture);
     }
+}
+
+export class TexManager{
+    
+    private loadProg:number;
+    private max:number;
+    private promise:Function;
+    private onProgChange:Function;
+
+    constructor(promise:Function,onProgC:Function){
+        this.loadProg=0;
+        this.max=0;
+        this.promise=promise;
+        this.onProgChange=onProgC;
+    }
+
+    request(){
+        this.loadProg++;
+        this.max++;
+    }
+
+    receive(){
+        this.loadProg--;
+        this.onProgChange(1-this.loadProg/this.max)
+        if(this.loadProg==0){
+            this.promise();
+        }
+    }
+
+
 }

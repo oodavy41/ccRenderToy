@@ -3,9 +3,12 @@ import { GLg } from "./GL";
 import { objLoader } from "./loader";
 import { Material } from "./object/Material";
 import { skybox, donghnut } from "./baseModels";
+import "./GLOBAL/GLOBAL.d"
 
+GLOBAL.statuss = document.getElementById('statuss');
+progress = document.getElementById('progress');
 
-onload = function () {
+window.onload = function () {
     var glc = document.getElementById('wobaglccc') as HTMLCanvasElement;
     var fps = document.getElementById('fps');
 
@@ -13,6 +16,7 @@ onload = function () {
     var date = new Date();
 
     thegl = new GLg();
+    loadProg=0;
 
     glc.addEventListener('click', can_on_click);
     window.addEventListener('mousemove', on_mouse_move);

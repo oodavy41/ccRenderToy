@@ -2,8 +2,7 @@
 import { Transform } from './object/Transform';
 import { mat4 } from 'gl-matrix';
 
-export function initgl(id: string) {
-    var glc = document.getElementById(id) as HTMLCanvasElement;
+export function initgl(glc:HTMLCanvasElement) {
     var gl: WebGLRenderingContext = glc.getContext('webgl');
 
     if (!gl) {

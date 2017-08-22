@@ -2,10 +2,11 @@ import { loadFile } from "./glfuncs";
 import { Material } from "./object/Material";
 import { Transform } from "./object/Transform";
 import { Mesh } from "./object/Mesh";
-import { Texture } from "./object/Texture";
+import { TexManager, Texture } from './object/Texture';
+import { att_p, att_n, att_uv } from './GLOBAL/GLOBAL';
 
 
-export function objLoader(objpath:string, objname:string, mtllib:{}, gl:WebGLRenderingContext, mtlflag:string) {
+export function objLoader(objpath:string, objname:string, mtllib:{}, gl:WebGLRenderingContext, mtlflag:string,texMan:TexManager) {
 
     var obj = loadFile(objpath + objname);
 
@@ -357,7 +358,7 @@ export function objLoader(objpath:string, objname:string, mtllib:{}, gl:WebGLRen
 
             // mtl file
 
-            mtlLoader(objpath, line.substring(7).trim(), mtllib, gl, mtlflag);
+            mtlLoader(objpath, line.substring(7).trim(), mtllib, gl, mtlflag,texMan);
 
         } else if ((result = regexp.smoothing_pattern.exec(line)) !== null) {
 
@@ -405,7 +406,7 @@ export function objLoader(objpath:string, objname:string, mtllib:{}, gl:WebGLRen
     return retObjs;
 }
 
-function mtlLoader(path, mtlname, mtllib, gl, mtlflag) {
+function mtlLoader(path:string, mtlname:string, mtllib:{}, gl:WebGLRenderingContext, mtlflag:string,texMan:TexManager) {
     var mtl = loadFile(path + mtlname);
 
     var shadpas = 'shaders/';
@@ -464,7 +465,7 @@ function mtlLoader(path, mtlname, mtllib, gl, mtlflag) {
             } else if (key === 'map_kd') {
 
                 thismtl.set_uniform(Material._1b, 'usetex', true, gl);
-                var tex = new Texture(path + value, gl,thismtl);
+                var tex = new Texture(path + value, gl,thismtl,texMan);
                 thismtl.set_uniform(Material.I1i, 'tex', tex, gl);
             }
 

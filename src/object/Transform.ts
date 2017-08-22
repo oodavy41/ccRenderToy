@@ -1,6 +1,7 @@
 import * as glm from "gl-matrix"
-import { Mesh } from "./Mesh";
+import { Mesh } from './Mesh';
 import { Material } from "./Material";
+import { GLg } from '../GL';
 
 
 export class Transform {
@@ -28,11 +29,11 @@ export class Transform {
         this.make_transform();
     }
 
-    add_mesh(mesh){
+    add_mesh(mesh:Mesh){
         this.Mesh.push(mesh);
     }
 
-    init(glg) {
+    init(glg:GLg) {
         if (!(glg.mvp && glg.light_d && glg.light_c)) {
             console.log('no camera or light info');
         } else {
@@ -49,7 +50,7 @@ export class Transform {
         }
     }
 
-    draw(glg) {
+    draw(glg:GLg) {
         this.earlydraw(glg);
 
         for (var ms in this.Mesh) {
@@ -65,9 +66,9 @@ export class Transform {
         this.latedraw(glg);
     }
 
-    earlydraw(gl){}
+    earlydraw(gl:GLg){}
 
-    latedraw(gl){}
+    latedraw(gl:GLg){}
 
     make_transform() {
         var rot = glm.quat.create();
@@ -78,25 +79,25 @@ export class Transform {
         glm.mat3.normalFromMat4(this.nm, this.m);
     }
 
-    set_pos(x, y, z) {
+    set_pos(x:number, y:number, z:number) {
         this.position = glm.vec3.fromValues(x, y, z);
         this.make_transform();
     }
 
-    set_rx(x) {
+    set_rx(x:number) {
         this.rotate.x = x;
         this.make_transform();
     }
-    set_ry(y) {
+    set_ry(y:number) {
         this.rotate.y = y;
         this.make_transform();
     }
-    set_rz(z) {
+    set_rz(z:number) {
         this.rotate.z = z;
         this.make_transform();
     }
 
-    set_scale(x, y, z) {
+    set_scale(x:number, y:number, z:number) {
         this.scale = glm.vec3.fromValues(x, y, z);
         this.make_transform();
     }

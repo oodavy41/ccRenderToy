@@ -46,22 +46,22 @@ export class GLg {
         this.mvp = null;
     }
 
-    create(id) {
-        this.gl = initgl(id);
+    create(canv:HTMLCanvasElement) {
+        this.gl = initgl(canv);
     }
 
-    set_light(direction, color) {
-        this.light_c = color;
-        this.light_d = direction;
+    set_light(direction_v4:number[], color_v3:number[]) {
+        this.light_c = color_v3;
+        this.light_d = direction_v4;
     }
 
-    set_cam_pos(pos) {
-        this.camera_pos = glm.vec3.fromValues(pos[0], pos[1], pos[2]);
+    set_cam_pos(pos_v3:number[]) {
+        this.camera_pos = glm.vec3.fromValues(pos_v3[0], pos_v3[1], pos_v3[2]);
         this.makemvp();
     }
 
-    set_cam_front(f) {
-        this.camera_front = glm.vec4.fromValues(f[0], f[1], f[2], f[3]);
+    set_cam_front(front_v4:number[]) {
+        this.camera_front = glm.vec4.fromValues(front_v4[0], front_v4[1], front_v4[2], front_v4[3]);
         this.makemvp();
     }
 
@@ -74,13 +74,13 @@ export class GLg {
             return [this.camera_front[0], this.camera_front[1], this.camera_front[2]];
     }
 
-    set_cam_up(up) {
-        this.camera_up = glm.vec3.fromValues(up[0], up[1], up[2]);
+    set_cam_up(up_v3:number[]) {
+        this.camera_up = glm.vec3.fromValues(up_v3[0], up_v3[1], up_v3[2]);
         this.makemvp();
     }
 
-    set_cam_info(info) {
-        this.camera_info = info;
+    set_cam_info(camInfo_4f:number[]) {
+        this.camera_info = camInfo_4f;
         this.makemvp();
     }
 

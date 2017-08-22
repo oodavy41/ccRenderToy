@@ -1,7 +1,7 @@
 
 
 import { create_shader, create_program } from "../glfuncs";
-import { Texture } from "./Texture";
+import { Texture, CubeTexture } from './Texture';
 
 export class Material {
 
@@ -15,7 +15,7 @@ export class Material {
 
     vs:WebGLShader;
     fs:WebGLShader;
-    textures:Array<Texture>;
+    textures:Array<any>;
     uniforms:any;
     
     prog:WebGLProgram;
