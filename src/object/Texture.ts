@@ -1,5 +1,5 @@
-import "../glfuncs"
-import "../GL"
+
+import { TexManager } from "../ResManager"
 import { Material } from './Material';
 
 export class Texture {
@@ -47,7 +47,7 @@ export class CubeTexture {
     cubePromise:number;
     
     //src:[+x,-x,+y,-y,+z,-z]
-    constructor(src:string, gl:WebGLRenderingContext,mat:Material,mag:TexManager) {
+    constructor(src:string[], gl:WebGLRenderingContext,mat:Material,mag:TexManager) {
         this.index = mat.textures.length;
         mat.textures.push(this);
         this.img = new Array(6);
@@ -95,32 +95,3 @@ export class CubeTexture {
     }
 }
 
-export class TexManager{
-    
-    private loadProg:number;
-    private max:number;
-    private promise:Function;
-    private onProgChange:Function;
-
-    constructor(promise:Function,onProgC:Function){
-        this.loadProg=0;
-        this.max=0;
-        this.promise=promise;
-        this.onProgChange=onProgC;
-    }
-
-    request(){
-        this.loadProg++;
-        this.max++;
-    }
-
-    receive(){
-        this.loadProg--;
-        this.onProgChange(1-this.loadProg/this.max)
-        if(this.loadProg==0){
-            this.promise();
-        }
-    }
-
-
-}

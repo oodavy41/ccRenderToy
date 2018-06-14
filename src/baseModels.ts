@@ -2,7 +2,10 @@ import { Transform } from "./object/Transform";
 import { Mesh } from "./object/Mesh";
 import { Material } from "./object/Material";
 import { CubeTexture } from "./object/Texture";
-import { GLg } from "./GL";
+import { GLg } from "./GLCore/GL";
+import { att_p, att_c, att_n } from "./GLOBAL/GLOBAL";
+import { TexManager } from "./ResManager";
+import { Object } from "./object/Object";
 
 export function donghnut(row: number, column: number, irad: number, rad: number, glg: GLg) {
     var pos = new Array(),
@@ -46,7 +49,7 @@ export function donghnut(row: number, column: number, irad: number, rad: number,
     var mat = new Material('shaders/base_phone.vert', 'shaders/base_phone.frag', glg.gl);
     mesh.set_mat(mat);
     ret.add_mesh(mesh);
-    return [ret];
+    return new Object([ret]);
 }
 
 export function hsva(h:number, s:number, v:number, a:number) {
@@ -99,7 +102,7 @@ export function cube(side) {
     return [coords,texCoords,normals,indices];
 }
 
-export function skybox(srcs:string[],gl:WebGLRenderingContext) {
+export function skybox(srcs:string[],gl:WebGLRenderingContext,texMgr:TexManager) {
 
     var m=cube(50);
 
@@ -110,10 +113,10 @@ export function skybox(srcs:string[],gl:WebGLRenderingContext) {
         m[3]
     ]);
     var mat = new Material('shaders/skybox.vert', 'shaders/skybox.frag', gl);
-    var tex=new CubeTexture(srcs,gl,mat);
+    var tex=new CubeTexture(srcs,gl,mat,texMgr);
     mat.set_uniform(Material.I1i, 'tex', tex, gl);
     mat.set_uniform(Material._1f,'usetex',true,gl);
     mesh.set_mat(mat);
     ret.add_mesh(mesh);
-    return [ret];
+    return new Object([ret]);
 }

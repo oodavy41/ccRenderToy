@@ -1,7 +1,7 @@
 
 
 import { Material } from "./Material";
-import { upload_array_att, create_ibo } from "../glfuncs";
+import { upload_array_att, create_ibo } from "../GLCore/glfuncs";
 
 export class Mesh {
     

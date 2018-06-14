@@ -1,8 +1,10 @@
-import { loadFile } from "./glfuncs";
+import { loadFile } from "./GLCore/glfuncs";
 import { Material } from "./object/Material";
 import { Transform } from "./object/Transform";
+import {Object} from './object/Object';
 import { Mesh } from "./object/Mesh";
-import { TexManager, Texture } from './object/Texture';
+import { Texture } from './object/Texture';
+import {TexManager} from "./ResManager"
 import { att_p, att_n, att_uv } from './GLOBAL/GLOBAL';
 
 
@@ -36,7 +38,7 @@ export function objLoader(objpath:string, objname:string, mtllib:{}, gl:WebGLRen
         material_use_pattern: /^usemtl /
     };
 
-    var retObjs = {};
+    var retObjs = new Object();
 
     var state;
     var name;
@@ -298,7 +300,7 @@ export function objLoader(objpath:string, objname:string, mtllib:{}, gl:WebGLRen
                     [att_n, state.normals, 3],
                     state.indexs
                 ]);
-                retObjs[name].add_mesh(mesh);
+                retObjs.addmesh(name,mesh);
 
             }
 
@@ -315,7 +317,7 @@ export function objLoader(objpath:string, objname:string, mtllib:{}, gl:WebGLRen
 
             name = result[0].substr(1).trim();
 
-            retObjs[name] = new Transform();
+            retObjs.newT(name);
 
         } else if (regexp.material_use_pattern.test(line)) {
 
@@ -333,7 +335,7 @@ export function objLoader(objpath:string, objname:string, mtllib:{}, gl:WebGLRen
                     [att_n, state.normals, 3],
                     state.indexs
                 ]);
-                retObjs[name].add_mesh(mesh);
+                retObjs.addmesh(name,mesh);
 
             }
             state = {
@@ -400,7 +402,7 @@ export function objLoader(objpath:string, objname:string, mtllib:{}, gl:WebGLRen
         [att_n, state.normals, 3],
         state.indexs
     ]);
-    retObjs[name].add_mesh(mesh);
+    retObjs.addmesh(name,mesh);
 
 
     return retObjs;

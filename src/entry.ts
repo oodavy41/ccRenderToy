@@ -1,38 +1,69 @@
-import { rewrite_edraw, rewrite_ldraw, set_obj_info, glclear } from "./glfuncs";
-import { GLg } from "./GL";
+
+import { glclear } from "./GLCore/glfuncs";
 import { objLoader } from "./loader";
 import { Material } from "./object/Material";
 import { skybox, donghnut } from "./baseModels";
+import { Sence } from "./Sence"
 import "./GLOBAL/GLOBAL.d"
+import { TexManager } from "./ResManager";
+import { Transform } from "./object/Transform";
+import { GLg } from "./GLCore/GL";
+import { keyboardCtrl } from "./handle";
 
-GLOBAL.statuss = document.getElementById('statuss');
-progress = document.getElementById('progress');
+let statuss = document.getElementById('statuss');
+let progress = document.getElementById('progress');
 
 window.onload = function () {
-    var glc = document.getElementById('wobaglccc') as HTMLCanvasElement;
-    var fps = document.getElementById('fps');
+    let glc = document.getElementById('wobaglccc') as HTMLCanvasElement;
+    let fps = document.getElementById('fps');
+    let LDx=document.getElementById('LDx');
+    let LDy=document.getElementById('LDy');
+    let LDz=document.getElementById('LDz');
+    let LDxL=document.getElementById('LDxL');
+    let LDyL=document.getElementById('LDyL');
+    let LDzL=document.getElementById('LDzL');
+    let metals=document.getElementById('metals');
+    let smooths=document.getElementById('smooths');
+    
 
 
-    var date = new Date();
+    let date = new Date();
 
-    thegl = new GLg();
-    loadProg=0;
+    let demoSence = new Sence(glc);
+    let thegl = demoSence.GLCtrl;
+    let texMgr = new TexManager(() => {
+        statuss.innerText = 'Done';
+        progress.innerText = '';
 
-    glc.addEventListener('click', can_on_click);
-    window.addEventListener('mousemove', on_mouse_move);
-    window.addEventListener('keypress', on_key_press);
-    window.addEventListener('keyup', on_key_up);
+        demoSence.update();
+
+    }, () => {
+        progress.innerText = (1 - texMgr.loadProg / texMgr.max) + '%'
+    })
+    statuss.innerText = 'Loading...';
+
+    let keyCtrl=new keyboardCtrl(thegl);
+
+    glc.addEventListener('click', keyCtrl.canv_on_click);
+    window.addEventListener('mousemove', keyCtrl.on_mouse_move);
+    window.addEventListener('keypress', keyCtrl.on_key_press);
+    window.addEventListener('keyup', keyCtrl.on_key_up);
+    LDx.addEventListener('mousemove',keyCtrl.LDchangex);
+    LDy.addEventListener('mousemove',keyCtrl.LDchangey);
+    LDz.addEventListener('mousemove',keyCtrl.LDchangez);
+    metals.addEventListener('mousemove',keyCtrl.mlchange);
+    smooths.addEventListener('mousemove',keyCtrl.snchange);
 
 
-    var light_direction = [-10, 0, -1, 0];
-    var light_color = [1, 1, 1];
-    var camera_pos = [-3, 6, 6];
-    var camera_front = [0, 0, -1];
-    var camera_up = [0, 1, 0];
-    var camera_info = [Math.PI / 3, glc.width / glc.height, 0.01, 100];
+    let light_direction = [-10, 0, -1, 0];
+    let light_color = [1, 1, 1];
+    let camera_pos = [-3, 6, 6];
+    let camera_front = [0, 0, -1];
+    let camera_up = [0, 1, 0];
+    let camera_info = [Math.PI / 3, glc.width / glc.height, 0.01, 100];
 
 
-    thegl.create('wobaglccc');
+    thegl.create(glc);
     thegl.set_light(light_direction, light_color);
     thegl.set_cam_pos(camera_pos);
     thegl.set_cam_front(camera_front);
@@ -41,44 +72,44 @@ window.onload = function () {
     thegl.set_cam_ptype();
 
 
-    var resPah="../resource/";
+    let resPah = "../resource/";
     //----------------------------------
 
-    var sb = skybox([
-        resPah+'skyboxs/bs2/X.png',
-        resPah+'skyboxs/bs2/-X.png',
-        resPah+'skyboxs/bs2/Y.png',
-        resPah+'skyboxs/bs2/-Y.png',
-        resPah+'skyboxs/bs2/Z.png',
-        resPah+'skyboxs/bs2/-Z.png'
-    ], thegl.gl);
+    let sb = skybox([
+        resPah + 'skyboxs/bs2/X.png',
+        resPah + 'skyboxs/bs2/-X.png',
+        resPah + 'skyboxs/bs2/Y.png',
+        resPah + 'skyboxs/bs2/-Y.png',
+        resPah + 'skyboxs/bs2/Z.png',
+        resPah + 'skyboxs/bs2/-Z.png'
+    ], thegl.gl, texMgr);
 
-    rewrite_edraw(sb, function (glg) {
-        this.set_pos(thegl.camera_pos[0], thegl.camera_pos[1], thegl.camera_pos[2]);
+    sb.setEarlyDraw((transform: Transform, glg: GLg) => {
+        transform.set_pos(thegl.camera_pos[0], thegl.camera_pos[1], thegl.camera_pos[2]);
         glg.gl.cullFace(glg.gl.FRONT);
     });
-    rewrite_ldraw(sb, function (glg) {
+    sb.setLateDraw((transform: Transform, glg: GLg) => {
         glg.gl.cullFace(glg.gl.BACK);
     });
 
 
     //----------------------------------
 
-    var objs1 = objLoader(resPah+'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_phone');
+    let objs1 = objLoader(resPah + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_phone', texMgr);
 
-    var objs11 = objLoader(resPah+'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_edge_phone');
-    rewrite_edraw(objs11, function (glg) {
+    let objs11 = objLoader(resPah + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_edge_phone', texMgr);
+    objs11.setEarlyDraw((transform: Transform, glg: GLg) => {
         glg.gl.cullFace(glg.gl.FRONT);
     });
-    rewrite_ldraw(objs11, function (glg) {
+    objs11.setLateDraw((transform: Transform, glg: GLg) => {
         glg.gl.cullFace(glg.gl.BACK);
     });
 
 
     //----------------------------------
 
-    var objs2 = objLoader(resPah+'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'text_phone');
-    set_obj_info(objs2, function (tran) {
+    let objs2 = objLoader(resPah + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'text_phone', texMgr);
+    objs2.setInfo((tran: Transform) => {
         tran.set_pos(0, 0, 2)
     });
 
@@ -86,8 +117,8 @@ window.onload = function () {
     //----------------------------------
 
 
-    var objsrefl = objLoader(resPah+'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'reflect_mat');
-    set_obj_info(objsrefl, function (tran) {
+    let objsrefl = objLoader(resPah + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'reflect_mat', texMgr);
+    objsrefl.setInfo((tran: Transform) => {
         tran.Mesh[0].material.set_uniform(
             Material.I1i,
             'tex',
@@ -100,8 +131,8 @@ window.onload = function () {
 
     //----------------------------------
 
-    var objsrefr = objLoader(resPah+'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'refract_mat');
-    set_obj_info(objsrefr, function (tran) {
+    let objsrefr = objLoader(resPah + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'refract_mat', texMgr);
+    objsrefr.setInfo((tran: Transform) => {
         tran.Mesh[0].material.set_uniform(
             Material.I1i,
             'tex',
@@ -115,8 +146,8 @@ window.onload = function () {
 
     //----------------------------------
 
-    var objs3 = donghnut(30, 36, 1, 3, thegl);
-    set_obj_info(objs3, function (tran) {
+    let objs3 = donghnut(30, 36, 1, 3, thegl);
+    objs3.setInfo((tran: Transform) => {
         tran.set_pos(10, 3, 2);
         tran.Mesh[0].material.set_uniform(
             Material.I1i,
@@ -125,52 +156,18 @@ window.onload = function () {
             thegl.gl
         );
     });
-    rewrite_edraw(objs3, function () {
-        var metalless = parseFloat((document.getElementById('metals') as HTMLInputElement).value);
-        var smoothness = parseFloat((document.getElementById('smooths') as HTMLInputElement).value);
-        this.Mesh[0].material.set_uniform(Material._1f, 'metalless', metalless, thegl.gl);
-        this.Mesh[0].material.set_uniform(Material._1f, 'smoothness', smoothness, thegl.gl);
-        this.set_rz(date.getTime() / 2000);
-        this.set_rx(date.getTime() / 1000);
+    objs3.setEarlyDraw((transform: Transform, glg: GLg) => {
+        let metalless = parseFloat((document.getElementById('metals') as HTMLInputElement).value);
+        let smoothness = parseFloat((document.getElementById('smooths') as HTMLInputElement).value);
+        transform.Mesh[0].material.set_uniform(Material._1f, 'metalless', metalless, thegl.gl);
+        transform.Mesh[0].material.set_uniform(Material._1f, 'smoothness', smoothness, thegl.gl);
+        transform.set_rz(date.getTime() / 2000);
+        transform.set_rx(date.getTime() / 1000);
     });
 
 
-    //----------------------------------
-    var objs = [sb, objs1, objs11, objs2, objsrefl, objsrefr, objs3];
+    demoSence.LoadSence( [sb, objs1, objs11, objs2, objsrefl, objsrefr, objs3]);
 
-    var update = function () {
-        glclear(thegl.gl);
-
-        thegl.fps_ctrl();
-
-        for (var i = 0, l = objs.length; i < l; i++) {
-            for (var tran in objs[i]) {
-                objs[i][tran].draw(thegl);
-            }
-        }
-
-        //============================fps display============
-        var thisfps = 1000 / ((new Date()).getTime() - date.getTime());
-        date = new Date();
-        fps.textContent = 'FPS:' + parseInt(thisfps + "");
-        thegl.gl.flush();
-        requestAnimationFrame(update);
-    };
-
-
-    promise = function () {
-        if (loadProg == 0) {
-
-            for (var i = 0, l = objs.length; i < l; i++) {
-                for (var tran in objs[i]) {
-                    objs[i][tran].init(thegl);
-                }
-            }
-            statuss.innerText = 'Done';
-            progress.innerText = '';
-
-            update();
-        }
-    };
+    demoSence.Run()
 
 };

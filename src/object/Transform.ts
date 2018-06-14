@@ -1,7 +1,7 @@
 import * as glm from "gl-matrix"
 import { Mesh } from './Mesh';
 import { Material } from "./Material";
-import { GLg } from '../GL';
+import { GLg } from '../GLCore/GL';
 
 
 export class Transform {
@@ -16,6 +16,8 @@ export class Transform {
         z:number
     };
     scale:glm.vec3;
+    earlyDarwFuncs:Array<Function>;
+    lateDarwFuncs:Array<Function>;
 
     constructor() {
         this.m = glm.mat4.create();
@@ -27,6 +29,8 @@ export class Transform {
         this.rotate.z = 0;
         this.scale = glm.vec3.fromValues(1, 1, 1);
         this.make_transform();
+        this.earlyDarwFuncs=[];
+        this.lateDarwFuncs=[];
     }
 
     add_mesh(mesh:Mesh){
@@ -51,7 +55,9 @@ export class Transform {
     }
 
     draw(glg:GLg) {
-        this.earlydraw(glg);
+        this.earlyDarwFuncs.forEach(element => {
+            element(this,glg)
+        });
 
         for (var ms in this.Mesh) {
             var mesh = this.Mesh[ms];
@@ -63,12 +69,24 @@ export class Transform {
             mesh.draw(glg.gl);
         }
 
-        this.latedraw(glg);
+        this.lateDarwFuncs.forEach(element => {
+            element(this,glg)
+        });
     }
 
-    earlydraw(gl:GLg){}
-
-    latedraw(gl:GLg){}
+    addEarlyDrawFunc(fun:Function){
+        this.earlyDarwFuncs.push(fun);
+    }
+    cleanEarlyDrawFunc(){
+        this.earlyDarwFuncs=[];
+    }
+    
+    addLateDrawFunc(fun:Function){
+        this.lateDarwFuncs.push(fun);
+    }
+    cleanLateDrawFunc(){
+        this.lateDarwFuncs=[];
+    }
 
     make_transform() {
         var rot = glm.quat.create();

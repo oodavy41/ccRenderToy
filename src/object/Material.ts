@@ -1,6 +1,6 @@
 
 
-import { create_shader, create_program } from "../glfuncs";
+import { create_shader, create_program } from "../GLCore/glfuncs";
 import { Texture, CubeTexture } from './Texture';
 
 export class Material {
