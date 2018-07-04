@@ -1,44 +1,45 @@
 
 
-import { Material } from "./Material";
-import { upload_array_att, create_ibo } from "../GLCore/glfuncs";
+import { Material } from './Material';
+import { upload_array_att, create_ibo } from '../GLCore/glfuncs';
 
 export class Mesh {
-    
-    arrs:Array<Array<any>>;
-    material:Material;
+
+    arrs: Array<Array<any>>;
+    material: Material;
     arr_bkup = {};
-    index_buffer :WebGLBuffer;
-    index_length:number;
+    index_buffer: WebGLBuffer;
+    index_length: number;
 
     //
-    //arr格式 [[name,[arr],length],[name1,[arr1],len]...,[index_arr]]
+    // arr格式 [[name,[arr],length],[name1,[arr1],len]...,[index_arr]]
     constructor() {
         this.arrs = null;
-        this.material=null;
+        this.material = null;
         this.arr_bkup = {};
         this.index_buffer = null;
-        this.index_length=0;
+        this.index_length = 0;
     }
 
-    set_mesh(arr:Array<Array<any>>){
-        this.arrs=arr;
+    set_mesh(arr: Array<Array<any>>) {
+        this.arrs = arr;
     }
-    set_mat(mat:Material){
-        this.material=mat;
+    set_mat(mat: Material) {
+        this.material = mat;
     }
 
 
-    init(gl:WebGLRenderingContext) {
-        var program=this.material.prog;
-        if (!program)
-            console.log("no Program Binded!");
+    init(gl: WebGLRenderingContext) {
+        const program = this.material.prog;
+        if (!program) {
+            console.log('no Program Binded!');
+        }
 
-        for (var i = 0, l = this.arrs.length; i < l; i++) {
-            var arr = this.arrs[i];
-            if (i < l - 1)
+        for (let i = 0, l = this.arrs.length; i < l; i++) {
+            const arr = this.arrs[i];
+            if (i < l - 1) {
                 this.arr_bkup[arr[0]] = upload_array_att(arr[1], arr[0], program, gl);
-            else {
+            } else {
                 this.index_buffer = create_ibo(arr, gl);
                 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.index_buffer);
                 this.index_length = arr.length;
@@ -46,11 +47,11 @@ export class Mesh {
         }
     }
 
-    draw(gl:WebGLRenderingContext){
+    draw(gl: WebGLRenderingContext) {
         this.material.use(gl);
-        for(var i = 0, l = this.arrs.length-1; i < l; i++) {
-            var arr=this.arrs[i];
-            if(this.arr_bkup[arr[0]]) {
+        for (let i = 0, l = this.arrs.length - 1; i < l; i++) {
+            const arr = this.arrs[i];
+            if (this.arr_bkup[arr[0]]) {
                 gl.bindBuffer(gl.ARRAY_BUFFER, this.arr_bkup[arr[0]].vbo);
                 gl.vertexAttribPointer(this.arr_bkup[arr[0]].att, arr[2], gl.FLOAT, false, 0, 0);
             }

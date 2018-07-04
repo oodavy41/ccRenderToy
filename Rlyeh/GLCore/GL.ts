@@ -1,37 +1,40 @@
-import * as glm from "gl-matrix";
-import { initgl, makeMvp } from "./glfuncs";
+import * as glm from 'gl-matrix';
+import { initgl, makeMvp } from './glfuncs';
+import { RLSettings } from '../setting';
+
+const set = RLSettings;
 
 export class GLg {
 
-    gl:WebGLRenderingContext;
-    mouseCTRL_flag:boolean;
-    client_pos:number[];
-    fps_angel:number[];
-    movement:number[];
+    gl: WebGLRenderingContext;
+    mouseCTRL_flag: boolean;
+    client_pos: number[];
+    fps_angel: number[];
+    movement: number[];
 
-    mtllib :any;
-    light_d ;
-    light_c ;
-    camera_pos:glm.vec3;
-    camera_front ;
-    camera_up ;
-    camera_right ;
-    camera_info ;
-    camera_ptype ;
+    mtllib: any;
+    light_d;
+    light_c;
+    camera_pos: glm.vec3;
+    camera_front;
+    camera_up;
+    camera_right;
+    camera_info;
+    camera_ptype;
 
-    mvp :glm.mat4;
-    stat_mvp_mat:glm.mat4;
+    mvp: glm.mat4;
+    stat_mvp_mat: glm.mat4;
 
     constructor() {
-        
+
         this.gl = null;
 
-        //fpsctrl
+        // fpsctrl
         this.mouseCTRL_flag = false;
         this.client_pos = [-1, 0, -1, 0];
         this.fps_angel = [0, 0];
 
-        //movectrl     w a s d
+        // movectrl     w a s d
         this.movement = [0, 0, 0, 0];
 
         this.mtllib = {};
@@ -44,47 +47,50 @@ export class GLg {
         this.camera_info = null;
         this.camera_ptype = null;
         this.mvp = null;
+
     }
 
-    create(canv:HTMLCanvasElement) {
+    create(canv: HTMLCanvasElement) {
         this.gl = initgl(canv);
     }
 
-    set_light(direction_v4:number[], color_v3:number[]) {
+    set_light(direction_v4: number[], color_v3: number[]) {
         this.light_c = color_v3;
         this.light_d = direction_v4;
     }
 
-    set_cam_pos(pos_v3:number[]) {
+    set_cam_pos(pos_v3: number[]) {
         this.camera_pos = glm.vec3.fromValues(pos_v3[0], pos_v3[1], pos_v3[2]);
         this.makemvp();
     }
 
-    set_cam_front(front_v4:number[]) {
+    set_cam_front(front_v4: number[]) {
         this.camera_front = glm.vec4.fromValues(front_v4[0], front_v4[1], front_v4[2], front_v4[3]);
         this.makemvp();
     }
 
     make_cam_look() {
-        if (this.camera_front[3] == 0) {
-            var pos = this.camera_pos;
-            var front = this.camera_front;
+        if (this.camera_front[3] === 0) {
+            const pos = this.camera_pos;
+            const front = this.camera_front;
             return [pos[0] + front[0], pos[1] + front[1], pos[2] + front[2]];
-        } else
+        } else {
             return [this.camera_front[0], this.camera_front[1], this.camera_front[2]];
+        }
     }
 
-    set_cam_up(up_v3:number[]) {
+
+    set_cam_up(up_v3: number[]) {
         this.camera_up = glm.vec3.fromValues(up_v3[0], up_v3[1], up_v3[2]);
         this.makemvp();
     }
 
-    set_cam_info(camInfo_4f:number[]) {
+    set_cam_info(camInfo_4f: number[]) {
         this.camera_info = camInfo_4f;
         this.makemvp();
     }
 
-    //设定初始相机朝向，作为今后视角转向基础
+    // 设定初始相机朝向，作为今后视角转向基础
     set_cam_ptype() {
         this.camera_ptype = this.make_cam_look();
     }
@@ -98,10 +104,10 @@ export class GLg {
     }
 
     fps_ctrl() {
-        var ret = [0, 0];
+        const ret = [0, 0];
 
-        if (this.client_pos[2] != -1) {
-            if (this.client_pos[0] != -1) {
+        if (this.client_pos[2] !== -1) {
+            if (this.client_pos[0] !== -1) {
                 ret[0] = this.client_pos[2] - this.client_pos[0];
                 ret[1] = this.client_pos[3] - this.client_pos[1];
             }
@@ -120,16 +126,18 @@ export class GLg {
 
         this.fps_angel[0] = Math.min(this.fps_angel[0], Math.PI / 2 - 0.04);
         this.fps_angel[0] = Math.max(this.fps_angel[0], -Math.PI / 2 - 0.04);
-        if (this.fps_angel[1] > Math.PI)
+        if (this.fps_angel[1] > Math.PI) {
             this.fps_angel[1] += -Math.PI * 2;
-        if (this.fps_angel[1] < -Math.PI)
+        }
+        if (this.fps_angel[1] < -Math.PI) {
             this.fps_angel[1] += Math.PI * 2;
+        }
 
-        //console.log(this.fps_angel[0] + '|' + this.fps_angel[1] + '|' + ret[0] + '|' + ret[1]);
+        // console.log(this.fps_angel[0] + '|' + this.fps_angel[1] + '|' + ret[0] + '|' + ret[1]);
 
 
-        var lookat = this.camera_ptype;
-        var nlookat = glm.vec3.create();
+        const lookat = this.camera_ptype;
+        const nlookat = glm.vec3.create();
         glm.vec3.rotateX(nlookat, lookat, this.camera_pos, this.fps_angel[0]);
         glm.vec3.rotateY(nlookat, nlookat, this.camera_pos, this.fps_angel[1]);
 
@@ -148,18 +156,18 @@ export class GLg {
     }
 
     movectrl() {
-        var abf = glm.vec3.create(),
+        const abf = glm.vec3.create(),
             abr = glm.vec3.create();
-        var wasd = [
+        const wasd = [
             this.camera_front,
             glm.vec3.scale(abr, this.camera_right, -1),
             glm.vec3.scale(abf, this.camera_front, -1),
             this.camera_right
-        ]
+        ];
 
-        var ret = glm.vec3.fromValues(0, 0, 0);
+        const ret = glm.vec3.fromValues(0, 0, 0);
 
-        for (var i = 0; i < 4; i++) {
+        for (let i = 0; i < 4; i++) {
             if (this.movement[i] === 1) {
                 glm.vec3.add(ret, ret, wasd[i]);
             }
@@ -176,7 +184,7 @@ export class GLg {
         this.stat_mvp_mat = mvp;
     }
 
-    //arr格式[[positions],[normals],[color/textureCood],[index],textureSrc]
+    // arr格式[[positions],[normals],[color/textureCood],[index],textureSrc]
     // get_model(arr, flag) {
     //     var c4t2;
     //     switch (flag) {
@@ -205,7 +213,7 @@ export class GLg {
 
     // }
 
-    //若传入texture需要传入经过create_texture返回的['tex']
+    // 若传入texture需要传入经过create_texture返回的['tex']
     // set_uniform(uni_arr) {
     //     var that = this;
     //     var gl = this.gl;

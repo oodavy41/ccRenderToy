@@ -19,8 +19,8 @@ export class TexManager {
 
     receive() {
         this.loadProg--;
-        this.onProgChange()
-        if (this.loadProg == 0) {
+        this.onProgChange();
+        if (this.loadProg === 0) {
             this.promise();
         }
     }

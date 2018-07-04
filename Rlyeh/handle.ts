@@ -1,6 +1,6 @@
-import { GLg } from "./GLCore/GL";
+import { GLg } from './GLCore/GL';
 
-export class keyboardCtrl {
+export class KeyBoardCtrl {
     thegl: GLg;
 
     constructor(glg: GLg) {
@@ -14,8 +14,8 @@ export class keyboardCtrl {
 
     on_mouse_move(event) {
         if (this.thegl.mouseCTRL_flag) {
-            var x = event.clientX;
-            var y = event.clientY;
+            let x = event.clientX;
+            let y = event.clientY;
             this.thegl.client_pos[2] = x;
             this.thegl.client_pos[3] = y;
         } else {
