@@ -1,0 +1,51 @@
+<div class="parent">
+  <div class="rangebox">
+    light direction X
+    <nz-row>
+      <nz-col nzSpan="12">
+        <nz-slider [nzMin]="-10" [nzMax]="10" [(ngModel)]="LightDirectionX"></nz-slider>
+      </nz-col>
+      <div nz-col nzSpan="4">
+        <nz-input-number [nzMin]="-10" [nzMax]="10" [ngStyle]="{ 'marginLeft': '16px' }" [(ngModel)]="LightDirectionX"></nz-input-number>
+      </div>
+    </nz-row>
+    light direction Y
+    <nz-row>
+      <nz-col nzSpan="12">
+        <nz-slider [nzMin]="-10" [nzMax]="10" [(ngModel)]="LightDirectionY"></nz-slider>
+      </nz-col>
+      <div nz-col nzSpan="4">
+        <nz-input-number [nzMin]="-10" [nzMax]="10" [ngStyle]="{ 'marginLeft': '16px' }" [(ngModel)]="LightDirectionY"></nz-input-number>
+      </div>
+    </nz-row>
+    light direction Z
+    <nz-row>
+      <nz-col nzSpan="12">
+        <nz-slider [nzMin]="-10" [nzMax]="10" [(ngModel)]="LightDirectionZ"></nz-slider>
+      </nz-col>
+      <div nz-col nzSpan="4">
+        <nz-input-number [nzMin]="-10" [nzMax]="10" [ngStyle]="{ 'marginLeft': '16px' }" [(ngModel)]="LightDirectionZ"></nz-input-number>
+      </div>
+    </nz-row>
+  </div>
+  <div class="rangebox2">
+    Metaless
+    <nz-row>
+      <nz-col nzSpan="12">
+        <nz-slider [nzMin]="0" [nzMax]="1" [nzStep]="0.01" [(ngModel)]="Metaless"></nz-slider>
+      </nz-col>
+      <nz-col nzSpan="4">
+        <nz-input-number [nzMin]="0" [nzMax]="1" [ngStyle]="{ marginLeft: '16px' }" [nzStep]="0.01" [(ngModel)]="Metaless"></nz-input-number>
+      </nz-col>
+    </nz-row>
+    Smoothness
+    <nz-row>
+      <nz-col nzSpan="12">
+        <nz-slider [nzMin]="4" [nzMax]="128" [nzStep]="1" [(ngModel)]="Smoothness"></nz-slider>
+      </nz-col>
+      <nz-col nzSpan="4">
+        <nz-input-number [nzMin]="4" [nzMax]="128" [ngStyle]="{ marginLeft: '16px' }" [nzStep]="1" [(ngModel)]="Smoothness"></nz-input-number>
+      </nz-col>
+    </nz-row>
+  </div>
+</div>

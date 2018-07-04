@@ -1,0 +1,24 @@
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzCollapsedWidth]="64" [nzBreakpoint]="'lg'">
+    <div class="logo" style="height:2px;margin:30px;background-color:deepskyblue">
+    </div>
+    <ul nz-menu [nzTheme]="'dark'" [nzMode]="isCollapsed?'vertical':'inline'">
+      <li nz-menu-item *ngFor="let item of navItems">
+        <a routerLink={{item.link}}></a>
+        <span>
+          <i class="anticon {{item.icon}}"></i>
+          <span class="nav-text">{{item.name}}</span>
+        </span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout style="height:-webkit-fill-available;">
+    <nz-header style="background: #fff; padding:0;"></nz-header>
+    <nz-content style="margin:24px 16px 0;">
+      <div style=" padding:24px; background: #fff; ">
+
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

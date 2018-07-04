@@ -1,0 +1,11 @@
+
+.parent{
+    display: grid;
+    grid-template-columns:40% 40% 20%;
+}
+.rangebox{
+    min-width: 300px;
+}
+.rangebox2{
+    min-width: 300px;
+}
