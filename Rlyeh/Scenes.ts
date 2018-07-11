@@ -2,15 +2,14 @@ import { glclear } from './GLCore/glfuncs';
 import { GLg } from './GLCore/GL';
 import { Material } from './object/Material';
 import { skybox, donghnut } from './baseModels';
-import './GLOBAL/GLOBAL.d';
 import { TexManager } from './ResManager';
 import { Transform } from './object/Transform';
 import { Object } from './object/Object';
 
 
-export class Sence {
+export class Scenes {
 
-    SELF: Sence;
+    SELF: Scenes;
     GLCtrl: GLg;
     Time: number;
     deltaTime: number;

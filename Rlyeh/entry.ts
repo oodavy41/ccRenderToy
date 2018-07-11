@@ -1,9 +1,10 @@
 
+
 import { glclear } from './GLCore/glfuncs';
 import { objLoader } from './loader';
 import { Material } from './object/Material';
 import { skybox, donghnut } from './baseModels';
-import { Sence } from './Sence';
+import { Scenes } from './Scenes';
 import './GLOBAL/GLOBAL.d';
 import { TexManager } from './ResManager';
 import { Transform } from './object/Transform';
@@ -29,7 +30,7 @@ window.onload = function () {
 
     let date = new Date();
 
-    let demoSence = new Sence(glc);
+    let demoSence = new Scenes(glc);
     let thegl = demoSence.GLCtrl;
     let texMgr = new TexManager(() => {
         statuss.innerText = 'Done';

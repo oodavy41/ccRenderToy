@@ -26,16 +26,16 @@ export function glclear(gl: WebGLRenderingContext) {
 }
 
 
-export function create_shader(path: string, gl: WebGLRenderingContext, type: number) {
+export function create_shader(source: string, gl: WebGLRenderingContext, type: number) {
     let shader;
     shader = gl.createShader(type);
-    gl.shaderSource(shader, loadFile(path));
+    gl.shaderSource(shader, source);
 
     gl.compileShader(shader);
     if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
         return shader;
     } else {
-        console.log(type.toString() + ':' + gl.getShaderInfoLog(shader));
+        console.error(type.toString() + ':' + gl.getShaderInfoLog(shader));
     }
 }
 
@@ -50,7 +50,7 @@ export function create_program(vs: WebGLShader, fs: WebGLShader, gl: WebGLRender
     if (gl.getProgramParameter(program, gl.LINK_STATUS)) {
         return program;
     } else {
-        console.log('pro:' + gl.getProgramInfoLog(program));
+        console.error('pro:' + gl.getProgramInfoLog(program));
     }
 
 }
@@ -80,7 +80,6 @@ export function loadFile(path: string) {
     } else {
         console.log('no such file:' + path);
     }
-
 }
 
 

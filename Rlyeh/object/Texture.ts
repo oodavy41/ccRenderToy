@@ -47,45 +47,37 @@ export class CubeTexture {
     cubePromise: number;
 
     // src:[+x,-x,+y,-y,+z,-z]
-    constructor(src: string[], gl: WebGLRenderingContext, mat: Material, mag: TexManager) {
+    constructor(src: HTMLImageElement[], gl: WebGLRenderingContext, mat: Material, mag: TexManager) {
         this.index = mat.textures.length;
         mat.textures.push(this);
-        this.img = new Array(6);
-        const that = this;
+        this.img = src;
         this.cubePromise = 0;
+        console.log('cubemap', this.index);
+
+        this.texture = gl.createTexture();
+        gl.activeTexture(gl.TEXTURE0 + this.index);
+        gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.texture);
+
+        const targets = [
+            gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
+            gl.TEXTURE_CUBE_MAP_POSITIVE_Y, gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
+            gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z
+        ];
+
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+
         for (let i = 0; i < 6; i++) {
-            this.img[i] = new Image();
-            this.img[i].onload = function () {
-                that.cubePromise++;
-                console.log('cubemap', that.index + ':' + (this as HTMLImageElement).src);
-                if (that.cubePromise === 6) {
-                    that.texture = gl.createTexture();
-                    gl.activeTexture(gl.TEXTURE0 + that.index);
-                    gl.bindTexture(gl.TEXTURE_CUBE_MAP, that.texture);
-
-                    const targets = [
-                        gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-                        gl.TEXTURE_CUBE_MAP_POSITIVE_Y, gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-                        gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z
-                    ];
-
-                    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-
-                    for (let j = 0; j < 6; j++) {
-                        gl.texImage2D(targets[j], 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, that.img[j]);
-                        gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-                        gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-                    }
-
-                    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-
-                    gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
-
-                    mag.receive();
-                }
-            };
-            this.img[i].src = src[i];
+            gl.texImage2D(targets[i], 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.img[i]);
+            gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
         }
+
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+        gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+
+        mag.receive();
+
         mag.request();
     }
 
