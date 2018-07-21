@@ -1,5 +1,5 @@
-import { TexManager } from './../../../../Rlyeh/ResManager';
-import { Scenes } from './../../../../Rlyeh/Scenes';
+import { TexManager } from 'Rlyeh/ResManager';
+import { Scenes } from 'Rlyeh/Scenes';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { HeroService } from '../../hero.service';
 

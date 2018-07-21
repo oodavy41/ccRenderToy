@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { HeroService } from './../hero.service';
+import { HeroService } from '../hero.service';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';

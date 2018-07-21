@@ -1,4 +1,4 @@
-import { GLg } from './../GLCore/GL';
+import { GLg } from '../GLCore/GL';
 import { Transform } from './Transform';
 import { Mesh } from './Mesh';
 

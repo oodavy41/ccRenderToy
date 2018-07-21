@@ -1,6 +1,6 @@
 import * as glm from 'gl-matrix';
 import { initgl, makeMvp } from './glfuncs';
-import { RLSettings } from '../setting';
+import { RLSettings } from '../GLOBAL/setting';
 
 const set = RLSettings;
 
