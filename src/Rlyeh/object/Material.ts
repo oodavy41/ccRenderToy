@@ -1,6 +1,7 @@
 
 import { create_shader, create_program } from '../GLCore/glfuncs';
 import { Texture, CubeTexture } from './Texture';
+import { ResManager } from '../ResManager';
 
 export enum MTL_TYPE { M4f, M3f, V3f, V4f, I1i, _1f, _1b, }
 export class Material {
@@ -12,9 +13,9 @@ export class Material {
 
     prog: WebGLProgram;
 
-    constructor(ver_path: string, fra_path: string, gl: WebGLRenderingContext) {
-        this.vs = create_shader(ver_path, gl, gl.VERTEX_SHADER);
-        this.fs = create_shader(fra_path, gl, gl.FRAGMENT_SHADER);
+    constructor(ver_path: string, fra_path: string, gl: WebGLRenderingContext, res: ResManager) {
+        this.vs = create_shader(res.get(ver_path), gl, gl.VERTEX_SHADER, res);
+        this.fs = create_shader(res.get(fra_path), gl, gl.FRAGMENT_SHADER, res);
         this.prog = create_program(this.vs, this.fs, gl);
         this.textures = [];
         this.uniforms = {};

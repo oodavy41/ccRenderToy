@@ -1,16 +1,17 @@
-import { loadFile } from './GLCore/glfuncs';
+
 import { Material, MTL_TYPE } from './object/Material';
 import { Transform } from './object/Transform';
 import { RObject } from './object/Object';
 import { Mesh } from './object/Mesh';
 import { Texture } from './object/Texture';
-import { TexManager } from './ResManager';
+import { ResManager } from './ResManager';
 import { att_p, att_n, att_uv } from './GLOBAL/GLOBAL';
 
 
-export function objLoader(objpath: string, objname: string, mtllib: {}, gl: WebGLRenderingContext, mtlflag: string, texMan: TexManager) {
+export function objLoader(
+    objpath: string, objname: string, mtllib: {}, gl: WebGLRenderingContext, mtlflag: string, resManager: ResManager) {
 
-    let obj = loadFile(objpath + objname);
+    let obj = resManager.get(objpath + objname);
 
 
     const regexp = {
@@ -367,7 +368,7 @@ export function objLoader(objpath: string, objname: string, mtllib: {}, gl: WebG
 
             // mtl file
 
-            mtlLoader(objpath, line.substring(7).trim(), mtllib, gl, mtlflag);
+            mtlLoader(objpath, line.substring(7).trim(), mtllib, gl, mtlflag, resManager);
 
         } else if ((result = regexp.smoothing_pattern.exec(line)) !== null) {
 
@@ -415,10 +416,10 @@ export function objLoader(objpath: string, objname: string, mtllib: {}, gl: WebG
     return retObjs;
 }
 
-function mtlLoader(path: string, mtlname: string, mtllib: {}, gl: WebGLRenderingContext, mtlflag: string) {
-    let mtl = loadFile(path + mtlname);
+function mtlLoader(path: string, mtlname: string, mtllib: {}, gl: WebGLRenderingContext, mtlflag: string, resManager: ResManager) {
+    let mtl = resManager.get(path + mtlname);
 
-    let shadpas = '../assets/resource/shaders/';
+    let shadpas = 'assets/resource/shaders/';
     let shadname = mtlflag;
 
     let keyhash = { ka: 'ambient', kd: 'diffuse', ks: 'specular' };
@@ -456,7 +457,7 @@ function mtlLoader(path: string, mtlname: string, mtllib: {}, gl: WebGLRendering
             const vpath = shadpas + shadname + '.vert';
             const fpath = shadpas + shadname + '.frag';
 
-            thismtl = mtllib[value] = new Material(vpath, fpath, gl);
+            thismtl = mtllib[value] = new Material(vpath, fpath, gl, resManager);
             console.log('mtlload', value);
             thismtl.set_uniform(MTL_TYPE._1f, 'powup', 0.1, gl);
 
@@ -475,7 +476,7 @@ function mtlLoader(path: string, mtlname: string, mtllib: {}, gl: WebGLRendering
             } else if (key === 'map_kd') {
 
                 thismtl.set_uniform(MTL_TYPE._1b, 'usetex', true, gl);
-                const tex = new Texture(path + value, gl, thismtl);
+                const tex = new Texture(path + value, gl, thismtl, resManager);
                 thismtl.set_uniform(MTL_TYPE.I1i, 'tex', tex, gl);
             }
 

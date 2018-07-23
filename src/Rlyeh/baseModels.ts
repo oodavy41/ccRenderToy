@@ -1,10 +1,11 @@
+
 import { Transform } from './object/Transform';
 import { Mesh } from './object/Mesh';
 import { Material, MTL_TYPE } from './object/Material';
 import { CubeTexture } from './object/Texture';
 import { GLg } from './GLCore/GL';
 import { att_p, att_c, att_n } from './GLOBAL/GLOBAL';
-import { TexManager } from './ResManager';
+import { ResManager } from './ResManager';
 import { RObject } from './object/Object';
 
 export function donghnut(row: number, column: number, irad: number, rad: number, glg: GLg) {
@@ -46,7 +47,10 @@ export function donghnut(row: number, column: number, irad: number, rad: number,
         [att_n, nor, 3],
         idx
     ]);
-    const mat = new Material('../assets/resource/shaders/base_phone.vert', '../assets/resource/shaders/base_phone.frag', glg.gl);
+    const mat = new Material(
+        'assets/resource/shaders/base_phone.vert',
+        'assets/resource/shaders/base_phone.frag',
+        glg.gl, glg.resManager);
     mesh.set_mat(mat);
     ret.add_mesh(mesh);
     return new RObject([ret]);
@@ -102,7 +106,7 @@ export function cube(side) {
     return [coords, texCoords, normals, indices];
 }
 
-export function skybox(srcs: HTMLImageElement[], gl: WebGLRenderingContext) {
+export function skybox(srcs: string[], glg: GLg) {
 
     const m = cube(50);
 
@@ -112,10 +116,13 @@ export function skybox(srcs: HTMLImageElement[], gl: WebGLRenderingContext) {
         [att_p, m[0], 3],
         m[3]
     ]);
-    const mat = new Material('../assets/resource/shaders/skybox.vert', '../assets/resource/shaders/skybox.frag', gl);
-    const tex = new CubeTexture(srcs, gl, mat);
-    mat.set_uniform(MTL_TYPE.I1i, 'tex', tex, gl);
-    mat.set_uniform(MTL_TYPE._1f, 'usetex', true, gl);
+    const mat = new Material(
+        'assets/resource/shaders/skybox.vert',
+        'assets/resource/shaders/skybox.frag',
+        glg.gl, glg.resManager);
+    const tex = new CubeTexture(srcs, glg.gl, mat, glg.resManager);
+    mat.set_uniform(MTL_TYPE.I1i, 'tex', tex, glg.gl);
+    mat.set_uniform(MTL_TYPE._1f, 'usetex', true, glg.gl);
     mesh.set_mat(mat);
     ret.add_mesh(mesh);
     return new RObject([ret]);

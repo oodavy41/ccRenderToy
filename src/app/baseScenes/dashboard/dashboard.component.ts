@@ -1,10 +1,9 @@
 
-import { TexManager } from '../../../Rlyeh/ResManager';
 import { Scenes } from '../../../Rlyeh/Scenes';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { HeroService } from '../../hero.service';
 import { RObject } from '../../../Rlyeh/object/Object';
-import { forkJoin } from '../../../../node_modules/rxjs';
+import { forkJoin, Observable } from '../../../../node_modules/rxjs';
 import { skybox, donghnut } from '../../../Rlyeh/baseModels';
 import { Transform } from '../../../Rlyeh/object/Transform';
 import { GLg } from '../../../Rlyeh/GLCore/GL';
@@ -23,7 +22,6 @@ export class DashboardComponent implements OnInit {
   private gl: WebGLRenderingContext;
   private scenes: Scenes;
   private time: Date;
-  private texManager: TexManager;
   private objs: RObject[];
   constructor(private heroService: HeroService) { }
 
@@ -52,32 +50,66 @@ export class DashboardComponent implements OnInit {
     thegl.set_cam_info(camera_info);
     thegl.set_cam_ptype();
 
-    let resPath = '../../../assets/resource/';
-    let skyboxPath = [
+    let resPath = 'assets/resource/';
+    let imgPath = [
+      // skybox
       'skyboxs/bs2/X.png',
       'skyboxs/bs2/-X.png',
       'skyboxs/bs2/Y.png',
       'skyboxs/bs2/-Y.png',
       'skyboxs/bs2/Z.png',
-      'skyboxs/bs2/-Z.png'
+      'skyboxs/bs2/-Z.png',
+      // models
+      'models/teapot/default.png',
     ];
-    let skyboxImage = [];
-    let sb;
-    let sbpromise = await forkJoin([
-      this.heroService.getBlob(resPath + skyboxPath[0]),
-      this.heroService.getBlob(resPath + skyboxPath[1]),
-      this.heroService.getBlob(resPath + skyboxPath[2]),
-      this.heroService.getBlob(resPath + skyboxPath[3]),
-      this.heroService.getBlob(resPath + skyboxPath[4]),
-      this.heroService.getBlob(resPath + skyboxPath[5]),
-    ]).toPromise();
-    sbpromise.forEach((value, index) => {
+    let textPath = [
+      // shaders
+      'shaders/anim_edge_phone.frag',
+      'shaders/anim_edge_phone.vert',
+      'shaders/anim_phone.frag',
+      'shaders/anim_phone.vert',
+      'shaders/base_phone.frag',
+      'shaders/base_phone.vert',
+      'shaders/reflect_mat.frag',
+      'shaders/reflect_mat.vert',
+      'shaders/refract_mat.frag',
+      'shaders/refract_mat.vert',
+      'shaders/shadow_only.frag',
+      'shaders/shadow_only.vert',
+      'shaders/skybox.frag',
+      'shaders/skybox.vert',
+      'shaders/text_phone.frag',
+      'shaders/text_phone.vert',
+      // texture
+      'models/teapot/default.mtl',
+      'models/teapot/teapot.obj',
+    ];
+
+    let imagePromise = await forkJoin(
+      imgPath.map<Observable<Blob>>(value => this.heroService.getBlob(`${resPath}${value}`))
+    ).toPromise();
+    imagePromise.forEach((value, index) => {
       let im = new Image();
-      im.onload = () => { window.URL.revokeObjectURL(im.src); };
+      im.onload = () => window.URL.revokeObjectURL(im.src);
       im.src = window.URL.createObjectURL(value);
-      skyboxImage[index] = im;
+      thegl.resManager.add(imgPath[index], im);
     });
-    sb = skybox(skyboxImage, thegl.gl, this.texManager);
+
+    let textPromise = await forkJoin(
+      textPath.map<Observable<string>>((value) => this.heroService.getText(`${resPath}${value}`))
+    ).toPromise();
+    textPromise.forEach((value, index) => {
+      thegl.resManager.add(textPath[index], value);
+    });
+
+    let sb = skybox([
+      `${resPath}${imgPath[0]}`,
+      `${resPath}${imgPath[1]}`,
+      `${resPath}${imgPath[2]}`,
+      `${resPath}${imgPath[3]}`,
+      `${resPath}${imgPath[4]}`,
+      `${resPath}${imgPath[5]}`,
+    ], thegl);
     sb.setEarlyDraw((transform: Transform, glg: GLg) => {
       transform.set_pos(thegl.camera_pos[0], thegl.camera_pos[1], thegl.camera_pos[2]);
       glg.gl.cullFace(glg.gl.FRONT);
@@ -113,14 +145,13 @@ export class DashboardComponent implements OnInit {
 
   objsss() {
     let thegl = this.scenes.GLCtrl;
-    let resPah = '', resPath = '';
+    let resPath = '';
     let sb = [];
-    let texMgr = this.texManager;
     // ----------------------------------
 
-    let objs1 = objLoader(resPah + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_phone', texMgr);
+    let objs1 = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_phone', thegl.resManager);
 
-    let objs11 = objLoader(resPah + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_edge_phone', texMgr);
+    let objs11 = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_edge_phone', thegl.resManager);
     objs11.setEarlyDraw((transform: Transform, glg: GLg) => {
       glg.gl.cullFace(glg.gl.FRONT);
     });
@@ -131,7 +162,7 @@ export class DashboardComponent implements OnInit {
 
     // ----------------------------------
 
-    let objs2 = objLoader(resPah + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'text_phone', texMgr);
+    let objs2 = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'text_phone', thegl.resManager);
     objs2.setInfo((tran: Transform) => {
       tran.set_pos(0, 0, 2);
     });
@@ -140,7 +171,7 @@ export class DashboardComponent implements OnInit {
     // ----------------------------------
 
 
-    let objsrefl = objLoader(resPah + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'reflect_mat', texMgr);
+    let objsrefl = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'reflect_mat', thegl.resManager);
     objsrefl.setInfo((tran: Transform) => {
       tran.Mesh[0].material.set_uniform(
         MTL_TYPE.I1i,
@@ -154,7 +185,7 @@ export class DashboardComponent implements OnInit {
 
     // ----------------------------------
 
-    let objsrefr = objLoader(resPah + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'refract_mat', texMgr);
+    let objsrefr = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'refract_mat', thegl.resManager);
     objsrefr.setInfo((tran: Transform) => {
       tran.Mesh[0].material.set_uniform(
         MTL_TYPE.I1i,

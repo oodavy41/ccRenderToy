@@ -1,29 +1,16 @@
-export class TexManager {
+export class ResManager {
 
-    loadProg: number;
-    max: number;
-    private promise: Function;
-    private onProgChange: Function;
+    pool: {};
 
-    constructor(promise: Function, onProgC: Function) {
-        this.loadProg = 0;
-        this.max = 0;
-        this.promise = promise;
-        this.onProgChange = onProgC;
+    constructor() {
+        this.pool = {};
     }
 
-    request() {
-        this.loadProg++;
-        this.max++;
+    add(path: string, res: any) {
+        this.pool[path] = res;
     }
 
-    receive() {
-        this.loadProg--;
-        this.onProgChange();
-        if (this.loadProg === 0) {
-            this.promise();
-        }
+    get(path: string) {
+        return this.pool[path];
     }
-
-
 }

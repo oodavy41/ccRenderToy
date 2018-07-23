@@ -2,7 +2,7 @@ import { glclear } from './GLCore/glfuncs';
 import { GLg } from './GLCore/GL';
 import { Material } from './object/Material';
 import { skybox, donghnut } from './baseModels';
-import { TexManager } from './ResManager';
+import { ResManager } from './ResManager';
 import { Transform } from './object/Transform';
 import { RObject } from './object/Object';
 
@@ -26,7 +26,7 @@ export class Scenes {
         this.updtFuns = new Array;
 
         this.glc = canvas;
-        this.GLCtrl = new GLg();
+        this.GLCtrl = new GLg(canvas);
         this.GLCtrl.create(this.glc);
 
         this.Time = 0;

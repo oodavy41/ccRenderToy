@@ -1,3 +1,4 @@
+import { ResManager } from './../ResManager';
 
 import { Transform } from '../object/Transform';
 import { mat4 } from 'gl-matrix';
@@ -26,10 +27,10 @@ export function glclear(gl: WebGLRenderingContext) {
 }
 
 
-export function create_shader(source: string, gl: WebGLRenderingContext, type: number) {
+export function create_shader(source: string, gl: WebGLRenderingContext, type: number, res: ResManager) {
     let shader;
     shader = gl.createShader(type);
-    gl.shaderSource(shader, loadFile(source));
+    gl.shaderSource(shader, source);
 
     gl.compileShader(shader);
     if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
@@ -69,17 +70,6 @@ export function create_ibo(data: number[], gl: WebGLRenderingContext) {
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Int16Array(data), gl.STATIC_DRAW);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
     return ibo;
-}
-
-export function loadFile(path: string) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', path, false);
-    xhr.send();
-    if (xhr.status === 200) {
-        return xhr.responseText;
-    } else {
-        console.log('no such file:' + path);
-    }
 }
 
 

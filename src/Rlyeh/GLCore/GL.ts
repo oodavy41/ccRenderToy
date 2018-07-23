@@ -1,12 +1,15 @@
 import * as glm from 'gl-matrix';
 import { initgl, makeMvp } from './glfuncs';
 import { RLSettings } from '../GLOBAL/setting';
+import { ResManager } from '../ResManager';
 
 const set = RLSettings;
 
 export class GLg {
 
     gl: WebGLRenderingContext;
+    resManager: ResManager;
+
     mouseCTRL_flag: boolean;
     client_pos: number[];
     fps_angel: number[];
@@ -25,9 +28,10 @@ export class GLg {
     mvp: glm.mat4;
     stat_mvp_mat: glm.mat4;
 
-    constructor() {
+    constructor(canv: HTMLCanvasElement) {
 
-        this.gl = null;
+        this.gl = initgl(canv);
+        this.resManager = new ResManager();
 
         // fpsctrl
         this.mouseCTRL_flag = false;
