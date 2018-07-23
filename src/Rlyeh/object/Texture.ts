@@ -8,7 +8,7 @@ export class Texture {
     img: HTMLImageElement;
     texture: WebGLTexture;
 
-    constructor(src: string, gl: WebGLRenderingContext, mat: Material, mag: TexManager) {
+    constructor(src: string, gl: WebGLRenderingContext, mat: Material) {
         this.index = mat.textures.length;
         mat.textures.push(this);
         this.img = new Image();
@@ -27,10 +27,8 @@ export class Texture {
             gl.generateMipmap(gl.TEXTURE_2D);
             gl.bindTexture(gl.TEXTURE_2D, null);
 
-            mag.receive();
         };
         this.img.src = src;
-        mag.request();
     }
 
     bind(gl: WebGLRenderingContext) {
@@ -47,7 +45,7 @@ export class CubeTexture {
     cubePromise: number;
 
     // src:[+x,-x,+y,-y,+z,-z]
-    constructor(src: HTMLImageElement[], gl: WebGLRenderingContext, mat: Material, mag: TexManager) {
+    constructor(src: HTMLImageElement[], gl: WebGLRenderingContext, mat: Material) {
         this.index = mat.textures.length;
         mat.textures.push(this);
         this.img = src;
@@ -76,9 +74,6 @@ export class CubeTexture {
 
         gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
 
-        mag.receive();
-
-        mag.request();
     }
 
     bind(gl) {

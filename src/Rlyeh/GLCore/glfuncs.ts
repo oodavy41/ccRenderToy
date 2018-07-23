@@ -29,7 +29,7 @@ export function glclear(gl: WebGLRenderingContext) {
 export function create_shader(source: string, gl: WebGLRenderingContext, type: number) {
     let shader;
     shader = gl.createShader(type);
-    gl.shaderSource(shader, source);
+    gl.shaderSource(shader, loadFile(source));
 
     gl.compileShader(shader);
     if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {

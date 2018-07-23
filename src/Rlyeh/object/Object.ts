@@ -2,7 +2,7 @@ import { GLg } from '../GLCore/GL';
 import { Transform } from './Transform';
 import { Mesh } from './Mesh';
 
-export class Object {
+export class RObject {
     Tranforms: Transform[];
 
     constructor(trans?: Transform[]) {

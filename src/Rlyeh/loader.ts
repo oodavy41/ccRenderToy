@@ -1,7 +1,7 @@
 import { loadFile } from './GLCore/glfuncs';
 import { Material, MTL_TYPE } from './object/Material';
 import { Transform } from './object/Transform';
-import { Object } from './object/Object';
+import { RObject } from './object/Object';
 import { Mesh } from './object/Mesh';
 import { Texture } from './object/Texture';
 import { TexManager } from './ResManager';
@@ -39,7 +39,7 @@ export function objLoader(objpath: string, objname: string, mtllib: {}, gl: WebG
         material_use_pattern: /^usemtl /
     };
 
-    let retObjs = new Object();
+    let retObjs = new RObject();
 
     let state;
     let name;
@@ -367,7 +367,7 @@ export function objLoader(objpath: string, objname: string, mtllib: {}, gl: WebG
 
             // mtl file
 
-            mtlLoader(objpath, line.substring(7).trim(), mtllib, gl, mtlflag, texMan);
+            mtlLoader(objpath, line.substring(7).trim(), mtllib, gl, mtlflag);
 
         } else if ((result = regexp.smoothing_pattern.exec(line)) !== null) {
 
@@ -415,10 +415,10 @@ export function objLoader(objpath: string, objname: string, mtllib: {}, gl: WebG
     return retObjs;
 }
 
-function mtlLoader(path: string, mtlname: string, mtllib: {}, gl: WebGLRenderingContext, mtlflag: string, texMan: TexManager) {
+function mtlLoader(path: string, mtlname: string, mtllib: {}, gl: WebGLRenderingContext, mtlflag: string) {
     let mtl = loadFile(path + mtlname);
 
-    let shadpas = 'shaders/';
+    let shadpas = '../assets/resource/shaders/';
     let shadname = mtlflag;
 
     let keyhash = { ka: 'ambient', kd: 'diffuse', ks: 'specular' };
@@ -475,7 +475,7 @@ function mtlLoader(path: string, mtlname: string, mtllib: {}, gl: WebGLRendering
             } else if (key === 'map_kd') {
 
                 thismtl.set_uniform(MTL_TYPE._1b, 'usetex', true, gl);
-                const tex = new Texture(path + value, gl, thismtl, texMan);
+                const tex = new Texture(path + value, gl, thismtl);
                 thismtl.set_uniform(MTL_TYPE.I1i, 'tex', tex, gl);
             }
 

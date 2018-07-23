@@ -5,7 +5,7 @@ import { CubeTexture } from './object/Texture';
 import { GLg } from './GLCore/GL';
 import { att_p, att_c, att_n } from './GLOBAL/GLOBAL';
 import { TexManager } from './ResManager';
-import { Object } from './object/Object';
+import { RObject } from './object/Object';
 
 export function donghnut(row: number, column: number, irad: number, rad: number, glg: GLg) {
     const pos = new Array(),
@@ -46,10 +46,10 @@ export function donghnut(row: number, column: number, irad: number, rad: number,
         [att_n, nor, 3],
         idx
     ]);
-    const mat = new Material('shaders/base_phone.vert', 'shaders/base_phone.frag', glg.gl);
+    const mat = new Material('../assets/resource/shaders/base_phone.vert', '../assets/resource/shaders/base_phone.frag', glg.gl);
     mesh.set_mat(mat);
     ret.add_mesh(mesh);
-    return new Object([ret]);
+    return new RObject([ret]);
 }
 
 export function hsva(h: number, s: number, v: number, a: number) {
@@ -102,7 +102,7 @@ export function cube(side) {
     return [coords, texCoords, normals, indices];
 }
 
-export function skybox(srcs: HTMLImageElement[], gl: WebGLRenderingContext, texMgr: TexManager) {
+export function skybox(srcs: HTMLImageElement[], gl: WebGLRenderingContext) {
 
     const m = cube(50);
 
@@ -112,11 +112,11 @@ export function skybox(srcs: HTMLImageElement[], gl: WebGLRenderingContext, texM
         [att_p, m[0], 3],
         m[3]
     ]);
-    const mat = new Material('shaders/skybox.vert', 'shaders/skybox.frag', gl);
-    const tex = new CubeTexture(srcs, gl, mat, texMgr);
+    const mat = new Material('../assets/resource/shaders/skybox.vert', '../assets/resource/shaders/skybox.frag', gl);
+    const tex = new CubeTexture(srcs, gl, mat);
     mat.set_uniform(MTL_TYPE.I1i, 'tex', tex, gl);
     mat.set_uniform(MTL_TYPE._1f, 'usetex', true, gl);
     mesh.set_mat(mat);
     ret.add_mesh(mesh);
-    return new Object([ret]);
+    return new RObject([ret]);
 }

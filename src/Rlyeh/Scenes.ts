@@ -4,7 +4,7 @@ import { Material } from './object/Material';
 import { skybox, donghnut } from './baseModels';
 import { TexManager } from './ResManager';
 import { Transform } from './object/Transform';
-import { Object } from './object/Object';
+import { RObject } from './object/Object';
 
 
 export class Scenes {
@@ -15,7 +15,7 @@ export class Scenes {
     deltaTime: number;
     state: number;
     glc: HTMLCanvasElement;
-    OBJs: Object[];
+    OBJs: RObject[];
     initFuns: Function[];
     updtFuns: Function[];
 
@@ -26,6 +26,7 @@ export class Scenes {
         this.updtFuns = new Array;
 
         this.glc = canvas;
+        this.GLCtrl = new GLg();
         this.GLCtrl.create(this.glc);
 
         this.Time = 0;
@@ -52,11 +53,11 @@ export class Scenes {
         return this.OBJs.length;
     }
 
-    LoadSence(objs: Object[]) { // will overwrite exist objs
+    LoadSence(objs: RObject[]) { // will overwrite exist objs
         this.OBJs = objs;
     }
 
-    AddObj(obj: Object) {
+    AddObj(obj: RObject) {
         this.OBJs.push(obj);
     }
 

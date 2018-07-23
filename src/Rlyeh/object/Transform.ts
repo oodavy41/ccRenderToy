@@ -24,9 +24,7 @@ export class Transform {
         this.nm = glm.mat3.create();
         this.Mesh = [];
         this.position = glm.vec3.fromValues(0, 0, 0);
-        this.rotate.x = 0;
-        this.rotate.y = 0;
-        this.rotate.z = 0;
+        this.rotate = { x: 0, y: 0, z: 0 };
         this.scale = glm.vec3.fromValues(1, 1, 1);
         this.make_transform();
         this.earlyDarwFuncs = [];
