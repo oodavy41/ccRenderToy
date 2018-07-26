@@ -50,7 +50,7 @@ export class RObject {
 
     setLateDraw(fun: Function) {
         this.Tranforms.forEach(tran => {
-            tran.addEarlyDrawFunc(fun);
+            tran.addLateDrawFunc(fun);
         });
     }
 

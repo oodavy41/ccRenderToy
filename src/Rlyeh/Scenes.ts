@@ -22,8 +22,8 @@ export class Scenes {
     constructor(canvas: HTMLCanvasElement) {
         this.SELF = this;
         this.state = 0;
-        this.initFuns = new Array;
-        this.updtFuns = new Array;
+        this.initFuns = [];
+        this.updtFuns = [];
 
         this.glc = canvas;
         this.GLCtrl = new GLg(canvas);
@@ -71,10 +71,7 @@ export class Scenes {
     }
 
     Init() {
-        this.initFuns.forEach(element => {
-            element(this.SELF);
-        });
-
+        this.Time = Date.now();
         for (let i = 0, l = this.OBJs.length; i < l; i++) {
             this.OBJs[i].init(this.GLCtrl);
         }
@@ -82,9 +79,6 @@ export class Scenes {
     }
 
     update() {
-        this.updtFuns.forEach(element => {
-            element(this.SELF);
-        });
 
         this.deltaTime = Date.now() - this.Time;
         this.Time = Date.now();
@@ -99,7 +93,7 @@ export class Scenes {
         this.GLCtrl.gl.flush();
 
 
-        requestAnimationFrame(this.update);
+        requestAnimationFrame(this.update.bind(this));
     }
 
 }

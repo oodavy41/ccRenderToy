@@ -11,6 +11,7 @@ export class ResManager {
     }
 
     get(path: string) {
-        return this.pool[path];
+        let ret = this.pool[path];
+        return ret;
     }
 }

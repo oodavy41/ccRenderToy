@@ -1,14 +1,17 @@
+import { RangeBoxComponent } from './../range-box/range-box.component';
 
 import { Scenes } from '../../../Rlyeh/Scenes';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { HeroService } from '../../hero.service';
 import { RObject } from '../../../Rlyeh/object/Object';
-import { forkJoin, Observable } from '../../../../node_modules/rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { skybox, donghnut } from '../../../Rlyeh/baseModels';
 import { Transform } from '../../../Rlyeh/object/Transform';
 import { GLg } from '../../../Rlyeh/GLCore/GL';
 import { MTL_TYPE } from '../../../Rlyeh/object/Material';
 import { objLoader } from 'src/Rlyeh/loader';
+import { viewClassName } from '../../../../node_modules/@angular/compiler';
+import { MessageService } from '../../message.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,22 +22,22 @@ import { objLoader } from 'src/Rlyeh/loader';
 export class DashboardComponent implements OnInit {
 
   @ViewChild('webgl') glCanvas: ElementRef;
+  @ViewChild('rangebox') rangebox: RangeBoxComponent;
   private gl: WebGLRenderingContext;
   private scenes: Scenes;
   private time: Date;
-  private objs: RObject[];
-  constructor(private heroService: HeroService) { }
+  constructor(private heroService: HeroService, private messageService: MessageService) { }
 
   async ngOnInit() {
     let glc = <HTMLCanvasElement>this.glCanvas.nativeElement;
-    this.gl = glc.getContext('webgl');
-    const gl = this.gl;
+
 
     this.scenes = new Scenes(glc);
-    this.time = new Date();
     let thegl = this.scenes.GLCtrl;
 
-    let light_direction = [-10, 0, -1, 0];
+    let loading = this.messageService.createLoadingMSG('loading');
+
+      let light_direction = [-10, 0, -1, 0];
     let light_color = [1, 1, 1];
     let camera_pos = [-3, 6, 6];
     let camera_front = [0, 0, -1];
@@ -88,18 +91,26 @@ export class DashboardComponent implements OnInit {
     let imagePromise = await forkJoin(
       imgPath.map<Observable<Blob>>(value => this.heroService.getBlob(`${resPath}${value}`))
     ).toPromise();
-    imagePromise.forEach((value, index) => {
-      let im = new Image();
-      im.onload = () => window.URL.revokeObjectURL(im.src);
-      im.src = window.URL.createObjectURL(value);
-      thegl.resManager.add(imgPath[index], im);
-    });
+    for (let i = 0; i < imagePromise.length; i++) {
+      let value = imagePromise[i];
+      let rx = new Observable<HTMLImageElement>((ob) => {
+        let im = new Image();
+        im.onload = () => {
+          window.URL.revokeObjectURL(im.src);
+          ob.next(im);
+          ob.complete();
+        };
+        im.src = window.URL.createObjectURL(value);
+      });
+      let image = await rx.toPromise();
+      thegl.resManager.add(`${resPath}${imgPath[i]}`, image);
+    }
 
     let textPromise = await forkJoin(
       textPath.map<Observable<string>>((value) => this.heroService.getText(`${resPath}${value}`))
     ).toPromise();
     textPromise.forEach((value, index) => {
-      thegl.resManager.add(textPath[index], value);
+      thegl.resManager.add(`${resPath}${textPath[index]}`, value);
     });
 
     let sb = skybox([
@@ -122,23 +133,24 @@ export class DashboardComponent implements OnInit {
 
     let donghnut1 = donghnut(30, 36, 1, 3, thegl);
     donghnut1.setInfo((tran: Transform) => {
-      tran.set_pos(10, 3, 2);
+      tran.set_pos(1, 3, 2);
       tran.Mesh[0].material.set_uniform(
         MTL_TYPE.I1i,
         'tex',
-        sb[0].Mesh[0].material.uniforms['tex'].value,
+        sb.Tranforms[0].Mesh[0].material.uniforms['tex'].value,
         thegl.gl
       );
     });
     donghnut1.setEarlyDraw((transform: Transform, glg: GLg) => {
-      let metalless = parseFloat((document.getElementById('metals') as HTMLInputElement).value);
-      let smoothness = parseFloat((document.getElementById('smooths') as HTMLInputElement).value);
+      let metalless = this.rangebox.Metaless;
+      let smoothness = this.rangebox.Smoothness;
       transform.Mesh[0].material.set_uniform(MTL_TYPE._1f, 'metalless', metalless, thegl.gl);
       transform.Mesh[0].material.set_uniform(MTL_TYPE._1f, 'smoothness', smoothness, thegl.gl);
-      transform.set_rz(this.time.getTime() / 2000);
-      transform.set_rx(this.time.getTime() / 1000);
+      transform.set_rz(Date.now() / 2000);
+      transform.set_rx(Date.now() / 1000);
     });
 
+    this.messageService.endLoadingMSG(loading);
     this.scenes.LoadSence([sb, donghnut1]);
     this.scenes.Run();
   }
