@@ -1,4 +1,4 @@
-import { RangeBoxComponent } from './../range-box/range-box.component';
+import { RangeBoxComponent } from '../range-box/range-box.component';
 
 import { Scenes } from '../../../Rlyeh/Scenes';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
@@ -9,9 +9,10 @@ import { skybox, donghnut } from '../../../Rlyeh/baseModels';
 import { Transform } from '../../../Rlyeh/object/Transform';
 import { GLg } from '../../../Rlyeh/GLCore/GL';
 import { MTL_TYPE } from '../../../Rlyeh/object/Material';
-import { objLoader } from 'src/Rlyeh/loader';
-import { viewClassName } from '../../../../node_modules/@angular/compiler';
+import { objLoader } from '../../../Rlyeh/loader';
+import { viewClassName } from '@angular/compiler';
 import { MessageService } from '../../message.service';
+import { ResManager } from '../../../Rlyeh/ResManager';
 
 @Component({
   selector: 'app-dashboard',
@@ -31,27 +32,25 @@ export class DashboardComponent implements OnInit {
   async ngOnInit() {
     let glc = <HTMLCanvasElement>this.glCanvas.nativeElement;
 
-
-    this.scenes = new Scenes(glc);
-    let thegl = this.scenes.GLCtrl;
+    let resMgr = new ResManager();
+    this.scenes = new Scenes(glc, resMgr);
+    let thegl = this.scenes.GL;
 
     let loading = this.messageService.createLoadingMSG('loading');
 
-      let light_direction = [-10, 0, -1, 0];
+    let light_direction = [-10, 0, -1, 0];
     let light_color = [1, 1, 1];
     let camera_pos = [-3, 6, 6];
     let camera_front = [0, 0, -1];
     let camera_up = [0, 1, 0];
     let camera_info = [Math.PI / 3, glc.width / glc.height, 0.01, 100];
 
-
-    thegl.create(glc);
-    thegl.set_light(light_direction, light_color);
-    thegl.set_cam_pos(camera_pos);
-    thegl.set_cam_front(camera_front);
-    thegl.set_cam_up(camera_up);
-    thegl.set_cam_info(camera_info);
-    thegl.set_cam_ptype();
+    this.scenes.mainCamera.set_light(light_direction, light_color);
+    this.scenes.mainCamera.set_cam_pos(camera_pos);
+    this.scenes.mainCamera.set_cam_front(camera_front);
+    this.scenes.mainCamera.set_cam_up(camera_up);
+    this.scenes.mainCamera.set_cam_info(camera_info);
+    this.scenes.mainCamera.set_cam_ptype();
 
     let resPath = 'assets/resource/';
     let imgPath = [
@@ -103,14 +102,14 @@ export class DashboardComponent implements OnInit {
         im.src = window.URL.createObjectURL(value);
       });
       let image = await rx.toPromise();
-      thegl.resManager.add(`${resPath}${imgPath[i]}`, image);
+      resMgr.add(`${resPath}${imgPath[i]}`, image);
     }
 
     let textPromise = await forkJoin(
       textPath.map<Observable<string>>((value) => this.heroService.getText(`${resPath}${value}`))
     ).toPromise();
     textPromise.forEach((value, index) => {
-      thegl.resManager.add(`${resPath}${textPath[index]}`, value);
+      resMgr.add(`${resPath}${textPath[index]}`, value);
     });
 
     let sb = skybox([
@@ -120,13 +119,13 @@ export class DashboardComponent implements OnInit {
       `${resPath}${imgPath[3]}`,
       `${resPath}${imgPath[4]}`,
       `${resPath}${imgPath[5]}`,
-    ], thegl);
-    sb.setEarlyDraw((transform: Transform, glg: GLg) => {
+    ], thegl, resMgr);
+    sb.setEarlyDraw((transform: Transform, gl: WebGLRenderingContext) => {
       transform.set_pos(thegl.camera_pos[0], thegl.camera_pos[1], thegl.camera_pos[2]);
-      glg.gl.cullFace(glg.gl.FRONT);
+      gl.cullFace(gl.FRONT);
     });
-    sb.setLateDraw((transform: Transform, glg: GLg) => {
-      glg.gl.cullFace(glg.gl.BACK);
+    sb.setLateDraw((transform: Transform, gl: WebGLRenderingContext) => {
+      gl.cullFace(gl.BACK);
     });
 
 
@@ -134,18 +133,17 @@ export class DashboardComponent implements OnInit {
     let donghnut1 = donghnut(30, 36, 1, 3, thegl);
     donghnut1.setInfo((tran: Transform) => {
       tran.set_pos(1, 3, 2);
-      tran.Mesh[0].material.set_uniform(
-        MTL_TYPE.I1i,
+      tran.Mesh[0].material.set_uniform[MTL_TYPE.I1i](
         'tex',
         sb.Tranforms[0].Mesh[0].material.uniforms['tex'].value,
-        thegl.gl
+        thegl
       );
     });
-    donghnut1.setEarlyDraw((transform: Transform, glg: GLg) => {
+    donghnut1.setEarlyDraw((transform: Transform, gl: WebGLRenderingContext) => {
       let metalless = this.rangebox.Metaless;
       let smoothness = this.rangebox.Smoothness;
-      transform.Mesh[0].material.set_uniform(MTL_TYPE._1f, 'metalless', metalless, thegl.gl);
-      transform.Mesh[0].material.set_uniform(MTL_TYPE._1f, 'smoothness', smoothness, thegl.gl);
+      transform.Mesh[0].material.set_uniform[MTL_TYPE._1f]('metalless', metalless, thegl.gl);
+      transform.Mesh[0].material.set_uniform[MTL_TYPE._1f]('smoothness', smoothness, thegl.gl);
       transform.set_rz(Date.now() / 2000);
       transform.set_rx(Date.now() / 1000);
     });
@@ -156,7 +154,7 @@ export class DashboardComponent implements OnInit {
   }
 
   objsss() {
-    let thegl = this.scenes.GLCtrl;
+    let thegl = this.scenes.GL;
     let resPath = '';
     let sb = [];
     // ----------------------------------
@@ -164,11 +162,11 @@ export class DashboardComponent implements OnInit {
     let objs1 = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_phone', thegl.resManager);
 
     let objs11 = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_edge_phone', thegl.resManager);
-    objs11.setEarlyDraw((transform: Transform, glg: GLg) => {
-      glg.gl.cullFace(glg.gl.FRONT);
+    objs11.setEarlyDraw((transform: Transform, gl: WebGLRenderingContext) => {
+      gl.cullFace(gl.FRONT);
     });
-    objs11.setLateDraw((transform: Transform, glg: GLg) => {
-      glg.gl.cullFace(glg.gl.BACK);
+    objs11.setLateDraw((transform: Transform, gl: WebGLRenderingContext) => {
+      gl.cullFace(gl.BACK);
     });
 
 

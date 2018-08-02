@@ -1,38 +1,26 @@
 import * as glm from 'gl-matrix';
-import { initgl, makeMvp } from './glfuncs';
-import { RLSettings } from '../GLOBAL/setting';
-import { ResManager } from '../ResManager';
+import { RLSettings } from './GLOBAL/setting';
 
 const set = RLSettings;
-
-export class GLg {
-
-    gl: WebGLRenderingContext;
-    resManager: ResManager;
-
+export class Camera {
     mouseCTRL_flag: boolean;
     client_pos: number[];
     fps_angel: number[];
     movement: number[];
 
-    mtllib: any;
-    light_d;
-    light_c;
+    light_d: number[];
+    light_c: number[];
     camera_pos: glm.vec3;
-    camera_front;
-    camera_up;
-    camera_right;
-    camera_info;
-    camera_ptype;
+    camera_front: glm.vec3;
+    camera_up: glm.vec3;
+    camera_right: glm.vec3;
+    camera_info: number[];
+    camera_ptype: number[];
 
     mvp: glm.mat4;
     stat_mvp_mat: glm.mat4;
 
-    constructor(canv: HTMLCanvasElement) {
-
-        this.gl = initgl(canv);
-        this.resManager = new ResManager();
-
+    constructor() {
         // fpsctrl
         this.mouseCTRL_flag = false;
         this.client_pos = [-1, 0, -1, 0];
@@ -41,9 +29,6 @@ export class GLg {
         // movectrl     w a s d
         this.movement = [0, 0, 0, 0];
 
-        this.mtllib = {};
-        this.light_d = null;
-        this.light_c = null;
         this.camera_pos = null;
         this.camera_front = null;
         this.camera_up = null;
@@ -51,16 +36,6 @@ export class GLg {
         this.camera_info = null;
         this.camera_ptype = null;
         this.mvp = null;
-
-    }
-
-    create(canv: HTMLCanvasElement) {
-        this.gl = initgl(canv);
-    }
-
-    set_light(direction_v4: number[], color_v3: number[]) {
-        this.light_c = color_v3;
-        this.light_d = direction_v4;
     }
 
     set_cam_pos(pos_v3: number[]) {
@@ -68,8 +43,8 @@ export class GLg {
         this.makemvp();
     }
 
-    set_cam_front(front_v4: number[]) {
-        this.camera_front = glm.vec4.fromValues(front_v4[0], front_v4[1], front_v4[2], front_v4[3]);
+    set_cam_front(front_v3: number[]) {
+        this.camera_front = glm.vec3.fromValues(front_v3[0], front_v3[1], front_v3[2]);
         this.makemvp();
     }
 
@@ -188,70 +163,4 @@ export class GLg {
         this.stat_mvp_mat = mvp;
     }
 
-    // arr格式[[positions],[normals],[color/textureCood],[index],textureSrc]
-    // get_model(arr, flag) {
-    //     var c4t2;
-    //     switch (flag) {
-    //         case this.COLOR:
-    //             c4t2 = 4;
-    //             break;
-    //         case this.TEXTURE:
-    //             c4t2 = 2;
-    //             if (arr[4])
-    //                 this.textures.push(create_texture(arr[4]));
-    //             break;
-    //     }
-
-    //     this.vert_arr['pos'] = upload_array_att(
-    //         arr[0], 'position', this.prog, this.gl, [3, this.gl.FLOAT, false, 0, 0]);
-
-    //     this.vert_arr['nor'] = upload_array_att(
-    //         arr[1], 'normal', this.prog, this.gl, [3, this.gl.FLOAT, false, 0, 0]);
-
-    //     this.vert_arr['col/coo'] = upload_array_att(
-    //         arr[2], 'color', this.prog, this.gl, [c4t2, this.gl.FLOAT, false, 0, 0]);
-
-    //     this.vert_arr['ind'] = create_ibo(arr[3], this.gl);
-    //     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.vert_arr['ind']);
-    //     this.IBOlength = arr[3].length;
-
-    // }
-
-    // 若传入texture需要传入经过create_texture返回的['tex']
-    // set_uniform(uni_arr) {
-    //     var that = this;
-    //     var gl = this.gl;
-    //     uni_arr.forEach(function (e) {
-    //         var uni;
-    //         switch (e[0]) {
-    //             case that.M4F:
-    //                 uni = gl.getUniformLocation(that.prog, e[1]);
-    //                 gl.uniformMatrix4fv(uni, false, e[2]);
-    //                 break;
-    //             case that.V3F:
-    //                 uni = gl.getUniformLocation(that.prog, e[1]);
-    //                 gl.uniform3fv(uni, e[2]);
-    //                 break;
-    //             case that.I1I:
-    //                 uni = gl.getUniformLocation(that.prog, e[1]);
-    //                 gl.activeTexture(gl.TEXTURE0);
-    //                 gl.bindTexture(gl.TEXTURE_2D, e[2]);
-    //                 gl.uniform1i(uni, 0);
-    //                 break;
-    //         }
-    //         that.uniforms[e[1]] = uni;
-    //     })
-    // }
-
-
-
-    // update() {
-    //     var m = glm.mat4.create();
-    //     glm.mat4.rotateY(m, this.stat_mvp_mat, (new Date()).getTime() / 1000);
-    //     //mat4.rotateX(m, m, (new Date()).getTime() / 2000);
-    //     //mat4.rotateZ(m, m, (new Date()).getTime() / 3000);
-    //     this.gl.uniformMatrix4fv(this.uniforms['mvpMatrix'], false, m);
-
-    //     this.gl.drawElements(this.gl.TRIANGLES, this.IBOlength, this.gl.UNSIGNED_SHORT, 0);
-    // }
 }

@@ -8,10 +8,10 @@ import { ResManager } from './ResManager';
 import { att_p, att_n, att_uv } from './GLOBAL/GLOBAL';
 
 
-export function objLoader(
-    objpath: string, objname: string, mtllib: {}, gl: WebGLRenderingContext, mtlflag: string, resManager: ResManager) {
+export function objLoader(objpath: string, objname: string,
+    mtllib: { [key: string]: Material }, gl: WebGLRenderingContext, mtlflag: string, resManager: ResManager) {
 
-    let obj = resManager.get(objpath + objname);
+    let obj = '' + resManager.get(objpath + objname);
 
 
     const regexp = {
@@ -416,8 +416,10 @@ export function objLoader(
     return retObjs;
 }
 
-function mtlLoader(path: string, mtlname: string, mtllib: {}, gl: WebGLRenderingContext, mtlflag: string, resManager: ResManager) {
-    let mtl = resManager.get(path + mtlname);
+function mtlLoader(path: string, mtlname: string,
+    mtllib: { [key: string]: Material }, gl: WebGLRenderingContext, mtlflag: string, resManager: ResManager) {
+
+    let mtl = '' + resManager.get(path + mtlname);
 
     let shadpas = 'assets/resource/shaders/';
     let shadname = mtlflag;
@@ -459,7 +461,7 @@ function mtlLoader(path: string, mtlname: string, mtllib: {}, gl: WebGLRendering
 
             thismtl = mtllib[value] = new Material(vpath, fpath, gl, resManager);
             console.log('mtlload', value);
-            thismtl.set_uniform(MTL_TYPE._1f, 'powup', 0.1, gl);
+            thismtl.set_uniform[MTL_TYPE._1f]('powup', 0.1, gl);
 
         } else if (thismtl) {
 
@@ -467,17 +469,17 @@ function mtlLoader(path: string, mtlname: string, mtllib: {}, gl: WebGLRendering
 
                 const ss = value.split(delimiter_pattern, 3);
                 const v = [parseFloat(ss[0]), parseFloat(ss[1]), parseFloat(ss[2])];
-                thismtl.set_uniform(MTL_TYPE.V3f, keyhash[key], v, gl);
+                thismtl.set_uniform[MTL_TYPE.V3f](keyhash[key], v, gl);
 
             } else if (key === 'ns') {
 
-                thismtl.set_uniform(MTL_TYPE._1f, 'powup', parseFloat(value), gl);
+                thismtl.set_uniform[MTL_TYPE._1f]('powup', parseFloat(value), gl);
 
             } else if (key === 'map_kd') {
 
-                thismtl.set_uniform(MTL_TYPE._1b, 'usetex', true, gl);
+                thismtl.set_uniform[MTL_TYPE._1b]('usetex', true, gl);
                 const tex = new Texture(path + value, gl, thismtl, resManager);
-                thismtl.set_uniform(MTL_TYPE.I1i, 'tex', tex, gl);
+                thismtl.set_uniform[MTL_TYPE.I1i]('tex', tex, gl);
             }
 
         }

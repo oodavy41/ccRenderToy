@@ -8,7 +8,7 @@ import { att_p, att_c, att_n } from './GLOBAL/GLOBAL';
 import { ResManager } from './ResManager';
 import { RObject } from './object/Object';
 
-export function donghnut(row: number, column: number, irad: number, rad: number, glg: GLg) {
+export function donghnut(row: number, column: number, irad: number, rad: number, gl: WebGLRenderingContext, resManager: ResManager) {
     const pos = new Array(),
         nor = new Array(),
         col = new Array(),
@@ -50,7 +50,7 @@ export function donghnut(row: number, column: number, irad: number, rad: number,
     const mat = new Material(
         'assets/resource/shaders/base_phone.vert',
         'assets/resource/shaders/base_phone.frag',
-        glg.gl, glg.resManager);
+        gl, resManager);
     mesh.set_mat(mat);
     ret.add_mesh(mesh);
     return new RObject([ret]);
@@ -106,7 +106,7 @@ export function cube(side) {
     return [coords, texCoords, normals, indices];
 }
 
-export function skybox(srcs: string[], glg: GLg) {
+export function skybox(srcs: string[], gl: WebGLRenderingContext, resManager: ResManager) {
 
     const m = cube(50);
 
@@ -119,10 +119,10 @@ export function skybox(srcs: string[], glg: GLg) {
     const mat = new Material(
         'assets/resource/shaders/skybox.vert',
         'assets/resource/shaders/skybox.frag',
-        glg.gl, glg.resManager);
-    const tex = new CubeTexture(srcs, glg.gl, mat, glg.resManager);
-    mat.set_uniform(MTL_TYPE.I1i, 'tex', tex, glg.gl);
-    mat.set_uniform(MTL_TYPE._1f, 'usetex', true, glg.gl);
+        gl, resManager);
+    const tex = new CubeTexture(srcs, gl, mat, resManager);
+    mat.set_uniform[MTL_TYPE.I1i]('tex', tex, gl);
+    mat.set_uniform[MTL_TYPE._1f]('usetex', true, gl);
     mesh.set_mat(mat);
     ret.add_mesh(mesh);
     return new RObject([ret]);

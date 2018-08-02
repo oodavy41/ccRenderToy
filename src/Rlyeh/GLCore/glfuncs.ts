@@ -1,4 +1,4 @@
-import { ResManager } from './../ResManager';
+import { ResManager } from '../ResManager';
 
 import { Transform } from '../object/Transform';
 import { mat4 } from 'gl-matrix';

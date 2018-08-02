@@ -1,12 +1,12 @@
 export class ResManager {
 
-    pool: {};
+    pool: { [key: string]: string | HTMLImageElement };
 
     constructor() {
         this.pool = {};
     }
 
-    add(path: string, res: any) {
+    add(path: string, res: string | HTMLImageElement) {
         this.pool[path] = res;
     }
 
