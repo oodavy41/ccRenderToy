@@ -1,7 +1,7 @@
 import { ResManager } from '../ResManager';
 
 import { Transform } from '../object/Transform';
-import { mat4 } from 'gl-matrix';
+import { mat4, vec3 } from 'gl-matrix';
 
 export function initgl(glc: HTMLCanvasElement) {
     const gl: WebGLRenderingContext = glc.getContext('webgl');
@@ -73,7 +73,7 @@ export function create_ibo(data: number[], gl: WebGLRenderingContext) {
 }
 
 
-export function makeMvp(view3v: number[][], pers4f: number[]) {
+export function makeMvp(view3v: vec3[], pers4f: number[]) {
     const mMat = mat4.create();
     const vMat = mat4.create();
     const pMat = mat4.create();

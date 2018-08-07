@@ -1,4 +1,4 @@
-import { GLg } from '../GLCore/GL';
+
 import { Transform } from './Transform';
 import { Mesh } from './Mesh';
 
@@ -17,44 +17,44 @@ export class RObject {
         this.Tranforms[name].addmesh(mesh);
     }
 
-    init(glg: GLg) {
+    init(gl: WebGLRenderingContext) {
         this.Tranforms.forEach(tran => {
-            tran.init(glg);
+            tran.init(gl);
         });
     }
 
-    draw(glg: GLg) {
+    draw(gl: WebGLRenderingContext) {
         this.Tranforms.forEach(tran => {
-            tran.draw(glg);
+            tran.draw(gl);
         });
     }
 
 
-    setInfo(fun: Function) {
+    setInfo(gl: WebGLRenderingContext, fun: (arg: Transform, arg2: WebGLRenderingContext) => null) {
         this.Tranforms.forEach(tran => {
-            fun(tran);
+            fun(tran, gl);
         });
     }
 
-    setEarlyDraw(fun: Function) {
+    setEarlyDraw(fun: (arg: Transform, arg2: WebGLRenderingContext) => null) {
         this.Tranforms.forEach(tran => {
             tran.addEarlyDrawFunc(fun);
         });
     }
 
-    cleanEarlyDraw(fun: Function) {
+    cleanEarlyDraw() {
         this.Tranforms.forEach(tran => {
             tran.cleanEarlyDrawFunc();
         });
     }
 
-    setLateDraw(fun: Function) {
+    setLateDraw(fun: (arg: Transform, arg2: WebGLRenderingContext) => null) {
         this.Tranforms.forEach(tran => {
             tran.addLateDrawFunc(fun);
         });
     }
 
-    cleanLateDraw(fun: Function) {
+    cleanLateDraw() {
         this.Tranforms.forEach(tran => {
             tran.cleanLateDrawFunc();
         });

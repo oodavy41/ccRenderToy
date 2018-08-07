@@ -130,7 +130,7 @@ export class DashboardComponent implements OnInit {
 
 
 
-    let donghnut1 = donghnut(30, 36, 1, 3, thegl);
+    let donghnut1 = donghnut(30, 36, 1, 3, thegl, resMgr);
     donghnut1.setInfo((tran: Transform) => {
       tran.set_pos(1, 3, 2);
       tran.Mesh[0].material.set_uniform[MTL_TYPE.I1i](

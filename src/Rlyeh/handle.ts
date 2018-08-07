@@ -1,9 +1,8 @@
-import { GLg } from './GLCore/GL';
 
 export class KeyBoardCtrl {
     thegl: GLg;
 
-    constructor(glg: GLg) {
+    constructor(gl: WebGLRenderingContext) {
         this.thegl = glg;
     }
 
@@ -16,10 +15,10 @@ export class KeyBoardCtrl {
         if (this.thegl.mouseCTRL_flag) {
             let x = event.clientX;
             let y = event.clientY;
-            this.thegl.client_pos[2] = x;
-            this.thegl.client_pos[3] = y;
+            this.thegl.mouse_pos[2] = x;
+            this.thegl.mouse_pos[3] = y;
         } else {
-            this.thegl.client_pos = [-1, 0, -1, 0];
+            this.thegl.mouse_pos = [-1, 0, -1, 0];
         }
     }
 

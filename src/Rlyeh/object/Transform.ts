@@ -1,6 +1,5 @@
 import * as glm from 'gl-matrix';
 import { Mesh } from './Mesh';
-import { GLg } from '../GLCore/GL';
 import { MTL_TYPE } from './Material';
 import { CTransform } from '../component/CTransform';
 
@@ -18,7 +17,7 @@ export class Transform extends CTransform {
         this.Mesh.push(mesh);
     }
 
-    init(glg: GLg) {
+    init(gl: WebGLRenderingContext) {
         if (!(glg.mvp && glg.light_d && glg.light_c)) {
             console.log('no camera or light info');
         } else {
@@ -34,9 +33,9 @@ export class Transform extends CTransform {
         }
     }
 
-    draw(glg: GLg) {
+    draw(gl: WebGLRenderingContext) {
         this.earlyDarwFuncs.forEach(element => {
-            element(this, glg);
+            element(this, gl);
         });
 
         this.Mesh.forEach(mesh => {
@@ -45,11 +44,11 @@ export class Transform extends CTransform {
             mesh.material.set_uniform[MTL_TYPE.M4f]('mvpMatrix', glg.mvp, glg.gl);
             mesh.material.set_uniform[MTL_TYPE.M4f]('modelMatrix', this.m, glg.gl);
             mesh.material.set_uniform[MTL_TYPE.M3f]('normalMatrix', this.nm, glg.gl);
-            mesh.draw(glg.gl);
+            mesh.draw(gl);
         });
 
         this.lateDarwFuncs.forEach(element => {
-            element(this, glg);
+            element(this, gl);
         });
     }
 

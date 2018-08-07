@@ -1,17 +1,47 @@
 import * as glm from 'gl-matrix';
+import { Transform } from '../object/Transform';
 
 export class CTransform {
-    m: glm.mat4;
-    nm: glm.mat3;
-    position: glm.vec3;
+
+    set m(value: glm.mat4) { this.m = value; }
+    get m(): glm.mat4 {
+        if (this.modifyFLAG) {
+            this.make_transform();
+            this.modifyFLAG = false;
+            return this.m;
+        } else {
+            return this.m;
+        }
+    }
+
+    set nm(value: glm.mat3) { this.nm = value; }
+    get nm(): glm.mat3 {
+        if (this.modifyFLAG) {
+            this.make_transform();
+            this.modifyFLAG = false;
+            return this.nm;
+        } else {
+            return this.nm;
+        }
+    }
+
+    modifyFLAG: boolean;
+    set position(value: glm.vec3) {
+        this.position = value;
+        this.modifyFLAG = true;
+    }
+    get position() { return this.position; }
     rotate: {
         x: number,
         y: number,
-        z: number
+        z: number,
     };
-    scale: glm.vec3;
-    earlyDarwFuncs: Array<Function>;
-    lateDarwFuncs: Array<Function>;
+    set scale(value: glm.vec3) {
+        this.scale = value;
+        this.modifyFLAG = true;
+    }
+    earlyDarwFuncs: Array<(arg: Transform, arg2: WebGLRenderingContext) => null>;
+    lateDarwFuncs: Array<(arg: Transform, arg2: WebGLRenderingContext) => null>;
 
     constructor() {
         this.m = glm.mat4.create();
@@ -19,19 +49,21 @@ export class CTransform {
         this.position = glm.vec3.fromValues(0, 0, 0);
         this.rotate = { x: 0, y: 0, z: 0 };
         this.scale = glm.vec3.fromValues(1, 1, 1);
-        this.make_transform();
+        this.modifyFLAG = true;
         this.earlyDarwFuncs = [];
         this.lateDarwFuncs = [];
     }
 
-    addEarlyDrawFunc(fun: Function) {
+
+
+    addEarlyDrawFunc(fun: (arg: Transform, arg2: WebGLRenderingContext) => null) {
         this.earlyDarwFuncs.push(fun);
     }
     cleanEarlyDrawFunc() {
         this.earlyDarwFuncs = [];
     }
 
-    addLateDrawFunc(fun: Function) {
+    addLateDrawFunc(fun: (arg: Transform, arg2: WebGLRenderingContext) => null) {
         this.lateDarwFuncs.push(fun);
     }
     cleanLateDrawFunc() {
@@ -47,27 +79,19 @@ export class CTransform {
         glm.mat3.normalFromMat4(this.nm, this.m);
     }
 
-    set_pos(x: number, y: number, z: number) {
-        this.position = glm.vec3.fromValues(x, y, z);
-        this.make_transform();
-    }
-
     set_rx(x: number) {
         this.rotate.x = x;
-        this.make_transform();
+        this.modifyFLAG = true;
     }
     set_ry(y: number) {
         this.rotate.y = y;
-        this.make_transform();
+        this.modifyFLAG = true;
     }
     set_rz(z: number) {
         this.rotate.z = z;
-        this.make_transform();
+        this.modifyFLAG = true;
     }
 
-    set_scale(x: number, y: number, z: number) {
-        this.scale = glm.vec3.fromValues(x, y, z);
-        this.make_transform();
-    }
+
 
 }
