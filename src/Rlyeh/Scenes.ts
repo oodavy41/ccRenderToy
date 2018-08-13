@@ -6,6 +6,7 @@ import { ResManager } from './ResManager';
 import { Transform } from './object/Transform';
 import { RObject } from './object/Object';
 import { Camera } from './Camera';
+import { Light } from './Light';
 
 
 export class Scenes {
@@ -14,6 +15,7 @@ export class Scenes {
     GL: WebGLRenderingContext;
     mainCamera: Camera;
     cameras: { [key: string]: Camera };
+    lights: { [key: string]: Light }; // todo: lights feature
     resManager: ResManager;
     mtllib: { [key: string]: Material };
     Time: number;
@@ -21,7 +23,6 @@ export class Scenes {
     state: number;
     glc: HTMLCanvasElement;
     OBJs: RObject[];
-    lights;
     initFuns: Function[];
     updtFuns: Function[];
 

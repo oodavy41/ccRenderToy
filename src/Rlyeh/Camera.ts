@@ -2,23 +2,28 @@ import * as glm from 'gl-matrix';
 import { RLSettings } from './GLOBAL/setting';
 import { makeMvp } from './GLCore/glfuncs';
 import { CTransform } from './component/CTransform';
+import { NullTemplateVisitor } from '../../node_modules/@angular/compiler';
 
 const set = RLSettings;
 export class Camera extends CTransform {
     mouseCTRL_flag: boolean;
 
+    set camera_up(value: glm.vec3) { this.camera_up = value; }
+    get camera_up(): glm.vec3 { return this.camera_up; }
+    set camera_right(value: glm.vec3) { this.camera_right = value; }
+    get camera_right(): glm.vec3 { return this.camera_right; }
+    set camera_aim(value: glm.vec3) { this.camera_aim = value; }
+    get camera_aim(): glm.vec3 { return this.camera_aim; }
     // mouse
     mouse_pos: number[];
     fpsXYAngel: number[];
     movement: number[];
-    camera_aim: glm.vec3;
-    camera_up: glm.vec3;
-    camera_right: glm.vec3;
+
     camera_info: number[];
     camera_ptype: glm.vec3;
 
     mvp: glm.mat4;
-    stat_mvp_mat: glm.mat4;
+
 
     constructor() {
         super();
@@ -39,20 +44,7 @@ export class Camera extends CTransform {
     }
 
 
-    set_cam_front(front_v3: number[]) {
-        this.camera_aim = glm.vec3.fromValues(front_v3[0], front_v3[1], front_v3[2]);
-        this.makemvp();
-    }
 
-    set_cam_up(up_v3: number[]) {
-        this.camera_up = glm.vec3.fromValues(up_v3[0], up_v3[1], up_v3[2]);
-        this.makemvp();
-    }
-
-    set_cam_info(camInfo_4f: number[]) {
-        this.camera_info = camInfo_4f;
-        this.makemvp();
-    }
 
     // 设定初始相机朝向，作为今后视角转向基础
     set_cam_ptype() {
@@ -61,9 +53,11 @@ export class Camera extends CTransform {
 
     makemvp() {
         if (this.position && this.camera_aim && this.camera_up && this.camera_info) {
+            // todo: aim rotate/aim modify
             this.mvp = makeMvp([this.position, this.camera_aim, this.camera_up], this.camera_info);
-            this.camera_right = glm.vec3.create();
-            glm.vec3.cross(this.camera_right, this.camera_aim, this.camera_up);
+            glm.vec3.cross(this.camera_right,
+                glm.vec3.subtract(null, this.camera_aim, this.position),
+                this.camera_up);
         }
     }
 
@@ -84,26 +78,26 @@ export class Camera extends CTransform {
         ret[0] = Math.min(ret[0], set.FPSraid);
         ret[1] = Math.min(ret[1], set.FPSraid);
 
-        this.fpsXYAngel[0] += Math.asin(-ret[1] / set.FPSraid);
-        this.fpsXYAngel[1] += Math.asin(-ret[0] / set.FPSraid);
+        this.rotate.x += Math.asin(-ret[1] / set.FPSraid);
+        this.rotate.y += Math.asin(-ret[0] / set.FPSraid);
 
 
-        this.fpsXYAngel[0] = Math.min(this.fpsXYAngel[0], Math.PI / 2 - 0.04);
-        this.fpsXYAngel[0] = Math.max(this.fpsXYAngel[0], -Math.PI / 2 - 0.04);
-        if (this.fpsXYAngel[1] > Math.PI) {
-            this.fpsXYAngel[1] += -Math.PI * 2;
+        this.rotate.x = Math.min(this.rotate.x, Math.PI / 2 - 0.04);
+        this.rotate.x = Math.max(this.rotate.x, -Math.PI / 2 - 0.04);
+        if (this.rotate.y > Math.PI) {
+            this.rotate.y += -Math.PI * 2;
         }
-        if (this.fpsXYAngel[1] < -Math.PI) {
-            this.fpsXYAngel[1] += Math.PI * 2;
+        if (this.rotate.y < -Math.PI) {
+            this.rotate.y += Math.PI * 2;
         }
 
-        // console.log(this.fpsXYAngel[0] + '|' + this.fpsXYAngel[1] + '|' + ret[0] + '|' + ret[1]);
+        // console.log(this.rotate.x + '|' + this.rotate.y + '|' + ret[0] + '|' + ret[1]);
 
 
         const lookat = this.camera_ptype;
         const nlookat = glm.vec3.create();
-        glm.vec3.rotateX(nlookat, lookat, this.position, this.fpsXYAngel[0]);
-        glm.vec3.rotateY(nlookat, nlookat, this.position, this.fpsXYAngel[1]);
+        glm.vec3.rotateX(nlookat, lookat, this.position, this.rotate.x);
+        glm.vec3.rotateY(nlookat, nlookat, this.position, this.rotate.y);
 
         glm.vec3.subtract(this.camera_aim, nlookat, this.position);
 
@@ -144,9 +138,6 @@ export class Camera extends CTransform {
 
         glm.vec3.add(this.position, this.position, ret);
         glm.vec3.add(this.camera_ptype, this.camera_ptype, ret);
-    }
-    set_static_mvp(mvp) {
-        this.stat_mvp_mat = mvp;
     }
 
 }

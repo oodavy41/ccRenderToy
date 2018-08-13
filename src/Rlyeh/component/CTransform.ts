@@ -2,12 +2,12 @@ import * as glm from 'gl-matrix';
 import { Transform } from '../object/Transform';
 
 export class CTransform {
-
+    parent: CTransform;
     set m(value: glm.mat4) { this.m = value; }
     get m(): glm.mat4 {
         if (this.modifyFLAG) {
-            this.make_transform();
             this.modifyFLAG = false;
+            this.make_transform();
             return this.m;
         } else {
             return this.m;
@@ -17,8 +17,8 @@ export class CTransform {
     set nm(value: glm.mat3) { this.nm = value; }
     get nm(): glm.mat3 {
         if (this.modifyFLAG) {
-            this.make_transform();
             this.modifyFLAG = false;
+            this.make_transform();
             return this.nm;
         } else {
             return this.nm;
@@ -76,6 +76,7 @@ export class CTransform {
         glm.quat.rotateY(rot, rot, this.rotate.y);
         glm.quat.rotateZ(rot, rot, this.rotate.z);
         glm.mat4.fromRotationTranslationScale(this.m, rot, this.position, this.scale);
+        glm.mat4.mul(this.m, this.m, this.parent.m);
         glm.mat3.normalFromMat4(this.nm, this.m);
     }
 
