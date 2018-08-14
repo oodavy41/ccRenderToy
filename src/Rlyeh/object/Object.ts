@@ -30,13 +30,13 @@ export class RObject {
     }
 
 
-    setInfo(gl: WebGLRenderingContext, fun: (arg: Transform, arg2: WebGLRenderingContext) => null) {
+    setInfo(gl: WebGLRenderingContext, fun: (arg: Transform, arg2: WebGLRenderingContext) => void) {
         this.Tranforms.forEach(tran => {
             fun(tran, gl);
         });
     }
 
-    setEarlyDraw(fun: (arg: Transform, arg2: WebGLRenderingContext) => null) {
+    setEarlyDraw(fun: (arg: Transform, arg2: WebGLRenderingContext) => void) {
         this.Tranforms.forEach(tran => {
             tran.addEarlyDrawFunc(fun);
         });
@@ -48,7 +48,7 @@ export class RObject {
         });
     }
 
-    setLateDraw(fun: (arg: Transform, arg2: WebGLRenderingContext) => null) {
+    setLateDraw(fun: (arg: Transform, arg2: WebGLRenderingContext) => void) {
         this.Tranforms.forEach(tran => {
             tran.addLateDrawFunc(fun);
         });

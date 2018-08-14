@@ -40,10 +40,11 @@ export class CTransform {
         this.scale = value;
         this.modifyFLAG = true;
     }
-    earlyDarwFuncs: Array<(arg: Transform, arg2: WebGLRenderingContext) => null>;
-    lateDarwFuncs: Array<(arg: Transform, arg2: WebGLRenderingContext) => null>;
+    earlyDarwFuncs: Array<(arg: Transform, arg2: WebGLRenderingContext) => void>;
+    lateDarwFuncs: Array<(arg: Transform, arg2: WebGLRenderingContext) => void>;
 
-    constructor() {
+    constructor(parent: CTransform = null) {
+        this.parent = parent;
         this.m = glm.mat4.create();
         this.nm = glm.mat3.create();
         this.position = glm.vec3.fromValues(0, 0, 0);
@@ -56,14 +57,14 @@ export class CTransform {
 
 
 
-    addEarlyDrawFunc(fun: (arg: Transform, arg2: WebGLRenderingContext) => null) {
+    addEarlyDrawFunc(fun: (arg: Transform, arg2: WebGLRenderingContext) => void) {
         this.earlyDarwFuncs.push(fun);
     }
     cleanEarlyDrawFunc() {
         this.earlyDarwFuncs = [];
     }
 
-    addLateDrawFunc(fun: (arg: Transform, arg2: WebGLRenderingContext) => null) {
+    addLateDrawFunc(fun: (arg: Transform, arg2: WebGLRenderingContext) => void) {
         this.lateDarwFuncs.push(fun);
     }
     cleanLateDrawFunc() {

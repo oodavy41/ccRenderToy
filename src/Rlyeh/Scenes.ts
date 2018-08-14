@@ -1,5 +1,4 @@
 import { glclear, initgl } from './GLCore/glfuncs';
-import { GLg } from './GLCore/GL';
 import { Material } from './object/Material';
 import { skybox, donghnut } from './baseModels';
 import { ResManager } from './ResManager';
@@ -94,14 +93,14 @@ export class Scenes {
         this.deltaTime = Date.now() - this.Time;
         this.Time = Date.now();
         // ===========================render cycle
-        glclear(this.GL.gl);
+        glclear(this.GL);
 
-        this.GL.fps_ctrl();
+        this.mainCamera.fps_ctrl();
 
         for (let i = 0, l = this.OBJs.length; i < l; i++) {
             this.OBJs[i].draw(this.GL);
         }
-        this.GL.gl.flush();
+        this.GL.flush();
 
 
         requestAnimationFrame(this.update.bind(this));

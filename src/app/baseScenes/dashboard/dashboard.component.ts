@@ -7,12 +7,12 @@ import { RObject } from '../../../Rlyeh/object/Object';
 import { forkJoin, Observable } from 'rxjs';
 import { skybox, donghnut } from '../../../Rlyeh/baseModels';
 import { Transform } from '../../../Rlyeh/object/Transform';
-import { GLg } from '../../../Rlyeh/GLCore/GL';
 import { MTL_TYPE } from '../../../Rlyeh/object/Material';
 import { objLoader } from '../../../Rlyeh/loader';
 import { viewClassName } from '@angular/compiler';
 import { MessageService } from '../../message.service';
 import { ResManager } from '../../../Rlyeh/ResManager';
+import { vec3 } from 'gl-matrix';
 
 @Component({
   selector: 'app-dashboard',
@@ -121,7 +121,7 @@ export class DashboardComponent implements OnInit {
       `${resPath}${imgPath[5]}`,
     ], thegl, resMgr);
     sb.setEarlyDraw((transform: Transform, gl: WebGLRenderingContext) => {
-      transform.set_pos(thegl.camera_pos[0], thegl.camera_pos[1], thegl.camera_pos[2]);
+      transform.position = this.scenes.mainCamera.position;
       gl.cullFace(gl.FRONT);
     });
     sb.setLateDraw((transform: Transform, gl: WebGLRenderingContext) => {
@@ -131,8 +131,8 @@ export class DashboardComponent implements OnInit {
 
 
     let donghnut1 = donghnut(30, 36, 1, 3, thegl, resMgr);
-    donghnut1.setInfo((tran: Transform) => {
-      tran.set_pos(1, 3, 2);
+    donghnut1.setInfo(this.gl, (tran: Transform) => {
+      tran.position = vec3.fromValues(1, 3, 2);
       tran.Mesh[0].material.set_uniform[MTL_TYPE.I1i](
         'tex',
         sb.Tranforms[0].Mesh[0].material.uniforms['tex'].value,
