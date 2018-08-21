@@ -11,13 +11,12 @@ export class Texture {
     constructor(path: string, gl: WebGLRenderingContext, mat: Material, res: ResManager) {
         this.index = mat.textures.length;
         mat.textures.push(this);
-        this.img = res.get(path);
-        const that = this;
+        this.img = <HTMLImageElement>res.get(path);
 
-        that.texture = gl.createTexture();
-        gl.activeTexture(gl.TEXTURE0 + that.index);
-        console.log('tex', that.index + ':' + path);
-        gl.bindTexture(gl.TEXTURE_2D, that.texture);
+        this.texture = gl.createTexture();
+        gl.activeTexture(gl.TEXTURE0 + this.index);
+        console.log('tex', this.index + ':' + path);
+        gl.bindTexture(gl.TEXTURE_2D, this.texture);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         gl.texImage2D(
             gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.img);

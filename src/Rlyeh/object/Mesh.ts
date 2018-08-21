@@ -60,6 +60,4 @@ export class Mesh {
         gl.drawElements(gl.TRIANGLES, this.index_length, gl.UNSIGNED_SHORT, 0);
     }
 
-
-
 }

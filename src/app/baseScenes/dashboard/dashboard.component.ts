@@ -1,18 +1,18 @@
-import { RangeBoxComponent } from '../range-box/range-box.component';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {vec3, vec4} from 'gl-matrix';
+import {forkJoin, Observable} from 'rxjs';
 
-import { Scenes } from '../../../Rlyeh/Scenes';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { HeroService } from '../../hero.service';
-import { RObject } from '../../../Rlyeh/object/Object';
-import { forkJoin, Observable } from 'rxjs';
-import { skybox, donghnut } from '../../../Rlyeh/baseModels';
-import { Transform } from '../../../Rlyeh/object/Transform';
-import { MTL_TYPE } from '../../../Rlyeh/object/Material';
-import { objLoader } from '../../../Rlyeh/loader';
-import { viewClassName } from '@angular/compiler';
-import { MessageService } from '../../message.service';
-import { ResManager } from '../../../Rlyeh/ResManager';
-import { vec3 } from 'gl-matrix';
+import {EventManager} from '../../../../node_modules/@angular/platform-browser';
+import {donghnut, skybox} from '../../../Rlyeh/baseModels';
+import {KeyBoardCtrl} from '../../../Rlyeh/handle';
+import {Light, LIGHT_TYPE} from '../../../Rlyeh/Light';
+import {objLoader} from '../../../Rlyeh/loader';
+import {Transform} from '../../../Rlyeh/object/Transform';
+import {ResManager} from '../../../Rlyeh/ResManager';
+import {Scenes} from '../../../Rlyeh/Scenes';
+import {HeroService} from '../../hero.service';
+import {MessageService} from '../../message.service';
+import {RangeBoxComponent} from '../range-box/range-box.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,36 +21,46 @@ import { vec3 } from 'gl-matrix';
 })
 
 export class DashboardComponent implements OnInit {
-
   @ViewChild('webgl') glCanvas: ElementRef;
   @ViewChild('rangebox') rangebox: RangeBoxComponent;
   private gl: WebGLRenderingContext;
+  private inputHandel: KeyBoardCtrl;
   private scenes: Scenes;
   private time: Date;
-  constructor(private heroService: HeroService, private messageService: MessageService) { }
+  constructor(
+      private heroService: HeroService, private messageService: MessageService,
+      private eventMgr: EventManager) {}
 
   async ngOnInit() {
     let glc = <HTMLCanvasElement>this.glCanvas.nativeElement;
 
     let resMgr = new ResManager();
     this.scenes = new Scenes(glc, resMgr);
+    this.inputHandel = new KeyBoardCtrl(this.scenes);
     let thegl = this.scenes.GL;
+
+    this.eventMgr.addGlobalEventListener(
+        'body', 'mousemove', (event) => this.inputHandel.on_mouse_move(event));
+    this.eventMgr.addGlobalEventListener(
+        'body', 'keydown', (event) => this.inputHandel.on_key_down(event));
+    this.eventMgr.addGlobalEventListener(
+        'body', 'keyup', (event) => this.inputHandel.on_key_up(event));
 
     let loading = this.messageService.createLoadingMSG('loading');
 
-    let light_direction = [-10, 0, -1, 0];
-    let light_color = [1, 1, 1];
-    let camera_pos = [-3, 6, 6];
-    let camera_front = [0, 0, -1];
-    let camera_up = [0, 1, 0];
-    let camera_info = [Math.PI / 3, glc.width / glc.height, 0.01, 100];
+    let light_direction = vec3.fromValues(-10, 0, -1);
+    let light_color = vec4.fromValues(1, 1, 1, 1);
+    let camera_pos = vec3.fromValues(-3, 6, 6);
+    let cameraAim = vec3.fromValues(0, 0, -5);
+    let cameraUp = vec3.fromValues(0, 1, 0);
+    let cameraInfo = [Math.PI / 3, glc.width / glc.height, 0.01, 100];
 
-    this.scenes.mainCamera.set_light(light_direction, light_color);
-    this.scenes.mainCamera.set_cam_pos(camera_pos);
-    this.scenes.mainCamera.set_cam_front(camera_front);
-    this.scenes.mainCamera.set_cam_up(camera_up);
-    this.scenes.mainCamera.set_cam_info(camera_info);
-    this.scenes.mainCamera.set_cam_ptype();
+    this.scenes.lights['Main'] =
+        new Light(LIGHT_TYPE.DIRECTION, light_direction, light_color);
+    this.scenes.mainCamera.position = camera_pos;
+    this.scenes.mainCamera.cameraAim = cameraAim;
+    this.scenes.mainCamera.cameraUp = cameraUp;
+    this.scenes.mainCamera.cameraInfo = cameraInfo;
 
     let resPath = 'assets/resource/';
     let imgPath = [
@@ -62,7 +72,7 @@ export class DashboardComponent implements OnInit {
       'skyboxs/bs2/Z.png',
       'skyboxs/bs2/-Z.png',
       // models
-      'models/teapot/default.png',
+      'models/teapot/default.jpg',
     ];
     let textPath = [
       // shaders
@@ -83,13 +93,15 @@ export class DashboardComponent implements OnInit {
       'shaders/text_phone.frag',
       'shaders/text_phone.vert',
       // texture
-      'models/teapot/default.mtl',
+      'models/teapot/teapot.mtl',
       'models/teapot/teapot.obj',
     ];
 
-    let imagePromise = await forkJoin(
-      imgPath.map<Observable<Blob>>(value => this.heroService.getBlob(`${resPath}${value}`))
-    ).toPromise();
+    let imagePromise =
+        await forkJoin(
+            imgPath.map<Observable<Blob>>(
+                value => this.heroService.getBlob(`${resPath}${value}`)))
+            .toPromise();
     for (let i = 0; i < imagePromise.length; i++) {
       let value = imagePromise[i];
       let rx = new Observable<HTMLImageElement>((ob) => {
@@ -105,21 +117,25 @@ export class DashboardComponent implements OnInit {
       resMgr.add(`${resPath}${imgPath[i]}`, image);
     }
 
-    let textPromise = await forkJoin(
-      textPath.map<Observable<string>>((value) => this.heroService.getText(`${resPath}${value}`))
-    ).toPromise();
+    let textPromise =
+        await forkJoin(
+            textPath.map<Observable<string>>(
+                (value) => this.heroService.getText(`${resPath}${value}`)))
+            .toPromise();
     textPromise.forEach((value, index) => {
       resMgr.add(`${resPath}${textPath[index]}`, value);
     });
 
-    let sb = skybox([
-      `${resPath}${imgPath[0]}`,
-      `${resPath}${imgPath[1]}`,
-      `${resPath}${imgPath[2]}`,
-      `${resPath}${imgPath[3]}`,
-      `${resPath}${imgPath[4]}`,
-      `${resPath}${imgPath[5]}`,
-    ], thegl, resMgr);
+    let sb = skybox(
+        [
+          `${resPath}${imgPath[0]}`,
+          `${resPath}${imgPath[1]}`,
+          `${resPath}${imgPath[2]}`,
+          `${resPath}${imgPath[3]}`,
+          `${resPath}${imgPath[4]}`,
+          `${resPath}${imgPath[5]}`,
+        ],
+        thegl, resMgr);
     sb.setEarlyDraw((transform: Transform, gl: WebGLRenderingContext) => {
       transform.position = this.scenes.mainCamera.position;
       gl.cullFace(gl.FRONT);
@@ -131,88 +147,95 @@ export class DashboardComponent implements OnInit {
 
 
     let donghnut1 = donghnut(30, 36, 1, 3, thegl, resMgr);
-    donghnut1.setInfo(this.gl, (tran: Transform) => {
+    donghnut1.setInfo(this.scenes, (tran: Transform) => {
       tran.position = vec3.fromValues(1, 3, 2);
-      tran.Mesh[0].material.set_uniform[MTL_TYPE.I1i](
-        'tex',
-        sb.Tranforms[0].Mesh[0].material.uniforms['tex'].value,
-        thegl
-      );
+      tran.Mesh[0].material.setUniformI1i(
+          'tex', sb.Tranforms['skybox'].Mesh[0].material.uniforms['tex'].value, thegl);
     });
-    donghnut1.setEarlyDraw((transform: Transform, gl: WebGLRenderingContext) => {
-      let metalless = this.rangebox.Metaless;
-      let smoothness = this.rangebox.Smoothness;
-      transform.Mesh[0].material.set_uniform[MTL_TYPE._1f]('metalless', metalless, thegl.gl);
-      transform.Mesh[0].material.set_uniform[MTL_TYPE._1f]('smoothness', smoothness, thegl.gl);
-      transform.set_rz(Date.now() / 2000);
-      transform.set_rx(Date.now() / 1000);
-    });
+    donghnut1.setEarlyDraw(
+        (transform: Transform, gl: WebGLRenderingContext) => {
+          let metalless = this.rangebox.Metaless;
+          let smoothness = this.rangebox.Smoothness;
+          transform.Mesh[0].material.setUniform_1f(
+              'metalless', metalless, thegl);
+          transform.Mesh[0].material.setUniform_1f(
+              'smoothness', smoothness, thegl);
+          transform.set_rz(Date.now() / 2000);
+          transform.set_rx(Date.now() / 1000);
+        });
+    let teapot = objLoader(
+        `${resPath}models/teapot/`, 'teapot.obj', this.scenes.mtllib,
+        this.scenes.GL, 'text_phone', resMgr);
 
     this.messageService.endLoadingMSG(loading);
-    this.scenes.LoadSence([sb, donghnut1]);
+    this.scenes.LoadSence([sb, donghnut1, teapot]);
     this.scenes.Run();
   }
 
-  objsss() {
-    let thegl = this.scenes.GL;
-    let resPath = '';
-    let sb = [];
-    // ----------------------------------
+  // objsss() {
+  //   let thegl = this.scenes.GL;
+  //   let resPath = '';
+  //   let sb = [];
+  //   // ----------------------------------
 
-    let objs1 = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_phone', thegl.resManager);
+  //   let objs1 = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib,
+  //   thegl.gl, 'anim_phone', thegl.resManager);
 
-    let objs11 = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'anim_edge_phone', thegl.resManager);
-    objs11.setEarlyDraw((transform: Transform, gl: WebGLRenderingContext) => {
-      gl.cullFace(gl.FRONT);
-    });
-    objs11.setLateDraw((transform: Transform, gl: WebGLRenderingContext) => {
-      gl.cullFace(gl.BACK);
-    });
-
-
-    // ----------------------------------
-
-    let objs2 = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'text_phone', thegl.resManager);
-    objs2.setInfo((tran: Transform) => {
-      tran.set_pos(0, 0, 2);
-    });
+  //   let objs11 = objLoader(resPath + 'models/mwzz/', 'mwzz.obj',
+  //   thegl.mtllib, thegl.gl, 'anim_edge_phone', thegl.resManager);
+  //   objs11.setEarlyDraw((transform: Transform, gl: WebGLRenderingContext) =>
+  //   {
+  //     gl.cullFace(gl.FRONT);
+  //   });
+  //   objs11.setLateDraw((transform: Transform, gl: WebGLRenderingContext) => {
+  //     gl.cullFace(gl.BACK);
+  //   });
 
 
-    // ----------------------------------
+  //   // ----------------------------------
+
+  //   let objs2 = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib,
+  //   thegl.gl, 'text_phone', thegl.resManager); objs2.setInfo((tran:
+  //   Transform) => {
+  //     tran.set_pos(0, 0, 2);
+  //   });
 
 
-    let objsrefl = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'reflect_mat', thegl.resManager);
-    objsrefl.setInfo((tran: Transform) => {
-      tran.Mesh[0].material.set_uniform(
-        MTL_TYPE.I1i,
-        'tex',
-        sb[0].Mesh[0].material.uniforms['tex'].value,
-        thegl.gl
-      );
-      tran.set_pos(0, 0, 4);
-    });
+  //   // ----------------------------------
 
 
-    // ----------------------------------
-
-    let objsrefr = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib, thegl.gl, 'refract_mat', thegl.resManager);
-    objsrefr.setInfo((tran: Transform) => {
-      tran.Mesh[0].material.set_uniform(
-        MTL_TYPE.I1i,
-        'tex',
-        sb[0].Mesh[0].material.uniforms['tex'].value,
-        thegl.gl
-      );
-      tran.Mesh[0].material.set_uniform(MTL_TYPE._1f, 'ratio', 1 / 1.52, thegl.gl);
-      tran.set_pos(0, 0, 6);
-    });
-
-  }
+  //   let objsrefl = objLoader(resPath + 'models/mwzz/', 'mwzz.obj',
+  //   thegl.mtllib, thegl.gl, 'reflect_mat', thegl.resManager);
+  //   objsrefl.setInfo((tran: Transform) => {
+  //     tran.Mesh[0].material.set_uniform(
+  //       MTL_TYPE.I1i,
+  //       'tex',
+  //       sb[0].Mesh[0].material.uniforms['tex'].value,
+  //       thegl.gl
+  //     );
+  //     tran.set_pos(0, 0, 4);
+  //   });
 
 
-  onMouseMove(event: any) {
-    console.log(event.clientX, event.clientY);
+  //   // ----------------------------------
+
+  //   let objsrefr = objLoader(resPath + 'models/mwzz/', 'mwzz.obj',
+  //   thegl.mtllib, thegl.gl, 'refract_mat', thegl.resManager);
+  //   objsrefr.setInfo((tran: Transform) => {
+  //     tran.Mesh[0].material.set_uniform(
+  //       MTL_TYPE.I1i,
+  //       'tex',
+  //       sb[0].Mesh[0].material.uniforms['tex'].value,
+  //       thegl.gl
+  //     );
+  //     tran.Mesh[0].material.set_uniform(MTL_TYPE._1f, 'ratio', 1 / 1.52,
+  //     thegl.gl); tran.set_pos(0, 0, 6);
+  //   });
+
+  // }
+
+
+  onClickCanvas(event: any) {
+    this.inputHandel.canv_on_click();
   }
 }
-
-

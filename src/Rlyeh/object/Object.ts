@@ -1,63 +1,80 @@
 
-import { Transform } from './Transform';
-import { Mesh } from './Mesh';
+import {Scenes} from '../Scenes';
+
+import {Mesh} from './Mesh';
+import {Transform} from './Transform';
 
 export class RObject {
-    Tranforms: Transform[];
+  Tranforms: {[key: string]: Transform};
 
-    constructor(trans?: Transform[]) {
-        this.Tranforms = trans || new Array<Transform>();
+  constructor(trans?: {[key: string]: Transform}) {
+    this.Tranforms = trans ? trans : {};
+  }
+
+  newT(name: string) {
+    this.Tranforms[name] = new Transform();
+  }
+
+  addmesh(name: string, mesh: Mesh) {
+    this.Tranforms[name].add_mesh(mesh);
+  }
+
+  init(scene: Scenes) {
+    for (let key in this.Tranforms) {
+      if (this.Tranforms[key] as Transform) {
+        this.Tranforms[key].init(scene);
+      }
     }
+  }
 
-    newT(name: string) {
-        this.Tranforms[name] = new Transform();
+  draw(scene: Scenes) {
+    for (let key in this.Tranforms) {
+      if (this.Tranforms[key] as Transform) {
+        this.Tranforms[key].draw(scene);
+      }
     }
+  }
 
-    addmesh(name: string, mesh: Mesh) {
-        this.Tranforms[name].addmesh(mesh);
+
+  setInfo(
+      scene: Scenes,
+      fun: (arg: Transform, arg2: WebGLRenderingContext) => void) {
+    for (let key in this.Tranforms) {
+      if (this.Tranforms[key] as Transform) {
+        fun(this.Tranforms[key], scene.GL);
+      }
     }
+  }
 
-    init(gl: WebGLRenderingContext) {
-        this.Tranforms.forEach(tran => {
-            tran.init(gl);
-        });
+  setEarlyDraw(fun: (arg: Transform, arg2: WebGLRenderingContext) => void) {
+    for (let key in this.Tranforms) {
+      if (this.Tranforms[key] as Transform) {
+        this.Tranforms[key].addEarlyDrawFunc(fun);
+      }
     }
+  }
 
-    draw(gl: WebGLRenderingContext) {
-        this.Tranforms.forEach(tran => {
-            tran.draw(gl);
-        });
+  cleanEarlyDraw() {
+    for (let key in this.Tranforms) {
+      if (this.Tranforms[key] as Transform) {
+        this.Tranforms[key].cleanEarlyDrawFunc();
+      }
     }
+  }
 
-
-    setInfo(gl: WebGLRenderingContext, fun: (arg: Transform, arg2: WebGLRenderingContext) => void) {
-        this.Tranforms.forEach(tran => {
-            fun(tran, gl);
-        });
+  setLateDraw(fun: (arg: Transform, arg2: WebGLRenderingContext) => void) {
+    for (let key in this.Tranforms) {
+      if (this.Tranforms[key] as Transform) {
+        this.Tranforms[key].addLateDrawFunc(fun);
+      }
     }
+  }
 
-    setEarlyDraw(fun: (arg: Transform, arg2: WebGLRenderingContext) => void) {
-        this.Tranforms.forEach(tran => {
-            tran.addEarlyDrawFunc(fun);
-        });
+  cleanLateDraw() {
+    for (let key in this.Tranforms) {
+      if (this.Tranforms[key] as Transform) {
+        this.Tranforms[key].cleanLateDrawFunc();
+      }
     }
-
-    cleanEarlyDraw() {
-        this.Tranforms.forEach(tran => {
-            tran.cleanEarlyDrawFunc();
-        });
-    }
-
-    setLateDraw(fun: (arg: Transform, arg2: WebGLRenderingContext) => void) {
-        this.Tranforms.forEach(tran => {
-            tran.addLateDrawFunc(fun);
-        });
-    }
-
-    cleanLateDraw() {
-        this.Tranforms.forEach(tran => {
-            tran.cleanLateDrawFunc();
-        });
-    }
-
+  }
 }

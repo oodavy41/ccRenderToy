@@ -3,43 +3,42 @@ import { Transform } from '../object/Transform';
 
 export class CTransform {
     parent: CTransform;
-    set m(value: glm.mat4) { this.m = value; }
+
+    private _m: glm.mat4;
+    set m(value: glm.mat4) { this._m = value; }
     get m(): glm.mat4 {
         if (this.modifyFLAG) {
-            this.modifyFLAG = false;
             this.make_transform();
-            return this.m;
-        } else {
-            return this.m;
         }
+        return this._m;
     }
-
-    set nm(value: glm.mat3) { this.nm = value; }
+    private _nm: glm.mat3;
+    set nm(value: glm.mat3) { this._nm = value; }
     get nm(): glm.mat3 {
         if (this.modifyFLAG) {
-            this.modifyFLAG = false;
             this.make_transform();
-            return this.nm;
-        } else {
-            return this.nm;
         }
+        return this._nm;
     }
 
     modifyFLAG: boolean;
+    private _position: glm.vec3;
     set position(value: glm.vec3) {
-        this.position = value;
+        this._position = value;
         this.modifyFLAG = true;
     }
-    get position() { return this.position; }
+    get position() { return this._position; }
     rotate: {
         x: number,
         y: number,
         z: number,
     };
+    private _scale: glm.vec3;
     set scale(value: glm.vec3) {
-        this.scale = value;
+        this._scale = value;
         this.modifyFLAG = true;
     }
+    get scale() { return this._scale; }
     earlyDarwFuncs: Array<(arg: Transform, arg2: WebGLRenderingContext) => void>;
     lateDarwFuncs: Array<(arg: Transform, arg2: WebGLRenderingContext) => void>;
 
@@ -72,12 +71,15 @@ export class CTransform {
     }
 
     make_transform() {
+        this.modifyFLAG = false;
         const rot = glm.quat.create();
         glm.quat.rotateX(rot, rot, this.rotate.x);
         glm.quat.rotateY(rot, rot, this.rotate.y);
         glm.quat.rotateZ(rot, rot, this.rotate.z);
         glm.mat4.fromRotationTranslationScale(this.m, rot, this.position, this.scale);
-        glm.mat4.mul(this.m, this.m, this.parent.m);
+        if (this.parent) {
+            glm.mat4.mul(this.m, this.m, this.parent.m);
+        }
         glm.mat3.normalFromMat4(this.nm, this.m);
     }
 
@@ -93,7 +95,5 @@ export class CTransform {
         this.rotate.z = z;
         this.modifyFLAG = true;
     }
-
-
 
 }

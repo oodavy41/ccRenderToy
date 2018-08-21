@@ -461,7 +461,7 @@ function mtlLoader(path: string, mtlname: string,
 
             thismtl = mtllib[value] = new Material(vpath, fpath, gl, resManager);
             console.log('mtlload', value);
-            thismtl.set_uniform[MTL_TYPE._1f]('powup', 0.1, gl);
+            thismtl.setUniform_1f('powup', 0.1, gl);
 
         } else if (thismtl) {
 
@@ -469,17 +469,17 @@ function mtlLoader(path: string, mtlname: string,
 
                 const ss = value.split(delimiter_pattern, 3);
                 const v = [parseFloat(ss[0]), parseFloat(ss[1]), parseFloat(ss[2])];
-                thismtl.set_uniform[MTL_TYPE.V3f](keyhash[key], v, gl);
+                thismtl.setUniformV3f(keyhash[key], v, gl);
 
             } else if (key === 'ns') {
 
-                thismtl.set_uniform[MTL_TYPE._1f]('powup', parseFloat(value), gl);
+                thismtl.setUniform_1f('powup', parseFloat(value), gl);
 
             } else if (key === 'map_kd') {
 
-                thismtl.set_uniform[MTL_TYPE._1b]('usetex', true, gl);
+                thismtl.setUniform_1b('usetex', true, gl);
                 const tex = new Texture(path + value, gl, thismtl, resManager);
-                thismtl.set_uniform[MTL_TYPE.I1i]('tex', tex, gl);
+                thismtl.setUniformI1i('tex', tex, gl);
             }
 
         }

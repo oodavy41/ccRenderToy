@@ -5,7 +5,8 @@ import { ResManager } from './ResManager';
 import { Transform } from './object/Transform';
 import { RObject } from './object/Object';
 import { Camera } from './Camera';
-import { Light } from './Light';
+import { Light, LIGHT_TYPE } from './Light';
+import { vec3, vec4 } from 'gl-matrix';
 
 
 export class Scenes {
@@ -32,7 +33,9 @@ export class Scenes {
         this.updtFuns = [];
         this.resManager = resMgr;
 
-        this.mainCamera = this.cameras['main'] = new Camera();
+        this.cameras = {};
+        this.lights = {};
+        this.mainCamera = this.cameras['Main'] = new Camera();
         this.mtllib = {};
 
         this.glc = canvas;
@@ -41,19 +44,17 @@ export class Scenes {
         this.Time = 0;
         this.deltaTime = 0;
 
-        this.mainCamera.set_light([1, 1, 1, 0], [1, 1, 1]);
-        this.mainCamera.set_cam_pos([-1, 1, 1]);
-        this.mainCamera.set_cam_front([0, 0, 1]);
-        this.mainCamera.set_cam_up([0, 1, 0]);
+        this.mainCamera.position = vec3.fromValues(-1, 1, 1);
+        this.mainCamera.cameraAim = vec3.fromValues(0, 0, 1);
+        this.mainCamera.cameraUp = vec3.fromValues(0, 1, 0);
 
-        this.mainCamera.set_cam_info([
+        this.mainCamera.cameraInfo = [
             Math.PI / 3,
             this.glc.width / this.glc.height,
             0.01,
             100
-        ]);
+        ];
 
-        this.mainCamera.set_cam_ptype();
         this.OBJs = [];
 
 
@@ -83,7 +84,7 @@ export class Scenes {
     Init() {
         this.Time = Date.now();
         for (let i = 0, l = this.OBJs.length; i < l; i++) {
-            this.OBJs[i].init(this.GL);
+            this.OBJs[i].init(this);
         }
         this.state++;
     }
@@ -95,10 +96,8 @@ export class Scenes {
         // ===========================render cycle
         glclear(this.GL);
 
-        this.mainCamera.fps_ctrl();
-
         for (let i = 0, l = this.OBJs.length; i < l; i++) {
-            this.OBJs[i].draw(this.GL);
+            this.OBJs[i].draw(this);
         }
         this.GL.flush();
 

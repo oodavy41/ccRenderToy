@@ -6,8 +6,8 @@ varying vec3 fnormal;
 
 uniform mat3 normalMatrix;
 
-uniform vec4 lightDirection;
-uniform vec3 lightColor;
+uniform vec3 lightDirection;
+uniform vec4 lightColor;
 uniform vec3 cameraPos;
 
 
