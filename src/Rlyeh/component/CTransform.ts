@@ -78,7 +78,7 @@ export class CTransform {
         glm.quat.rotateZ(rot, rot, this.rotate.z);
         glm.mat4.fromRotationTranslationScale(this.m, rot, this.position, this.scale);
         if (this.parent) {
-            glm.mat4.mul(this.m, this.m, this.parent.m);
+            glm.mat4.mul(this.m, this.parent.m, this.m);
         }
         glm.mat3.normalFromMat4(this.nm, this.m);
     }

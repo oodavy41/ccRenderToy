@@ -35,19 +35,22 @@ export class KeyBoardCtrl {
   on_key_down(event: KeyboardEvent) {
     switch (event.keyCode) {
       case 87:
+      case 87 + 32:
         this.movement[0] = true;
         break;
       case 65:
+      case 65 + 32:
         this.movement[1] = true;
         break;
       case 83:
+      case 83 + 32:
         this.movement[2] = true;
         break;
       case 68:
+      case 68 + 32:
         this.movement[3] = true;
         break;
     }
-    this.scene.mainCamera.movectrl(this.movement);
   }
 
   on_key_up(event: KeyboardEvent) {
@@ -65,9 +68,11 @@ export class KeyBoardCtrl {
         this.movement[3] = false;
         break;
     }
-    this.scene.mainCamera.movectrl(this.movement);
   }
 
+  moveCtrl() {
+    this.scene.mainCamera.movectrl(this.movement);
+  }
   LDchangex(event) {
     document.getElementById('LDxL').innerText = event.value;
     this.scene.lights['Main'].lightDirection[0] = event.value;

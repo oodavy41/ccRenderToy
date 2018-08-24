@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
     this.eventMgr.addGlobalEventListener(
         'body', 'mousemove', (event) => this.inputHandel.on_mouse_move(event));
     this.eventMgr.addGlobalEventListener(
-        'body', 'keydown', (event) => this.inputHandel.on_key_down(event));
+        'body', 'keypress', (event) => this.inputHandel.on_key_down(event));
     this.eventMgr.addGlobalEventListener(
         'body', 'keyup', (event) => this.inputHandel.on_key_up(event));
 
@@ -50,8 +50,8 @@ export class DashboardComponent implements OnInit {
 
     let light_direction = vec3.fromValues(-10, 0, -1);
     let light_color = vec4.fromValues(1, 1, 1, 1);
-    let camera_pos = vec3.fromValues(-3, 6, 6);
-    let cameraAim = vec3.fromValues(0, 0, -5);
+    let camera_pos = vec3.fromValues(-15, 8, 16);
+    let cameraAim = vec3.fromValues(0, 5, -5);
     let cameraUp = vec3.fromValues(0, 1, 0);
     let cameraInfo = [Math.PI / 3, glc.width / glc.height, 0.01, 100];
 
@@ -150,7 +150,8 @@ export class DashboardComponent implements OnInit {
     donghnut1.setInfo(this.scenes, (tran: Transform) => {
       tran.position = vec3.fromValues(1, 3, 2);
       tran.Mesh[0].material.setUniformI1i(
-          'tex', sb.Tranforms['skybox'].Mesh[0].material.uniforms['tex'].value, thegl);
+          'tex', sb.Tranforms['skybox'].Mesh[0].material.uniforms['tex'].value,
+          thegl);
     });
     donghnut1.setEarlyDraw(
         (transform: Transform, gl: WebGLRenderingContext) => {
@@ -161,14 +162,100 @@ export class DashboardComponent implements OnInit {
           transform.Mesh[0].material.setUniform_1f(
               'smoothness', smoothness, thegl);
           transform.set_rz(Date.now() / 2000);
-          transform.set_rx(Date.now() / 1000);
         });
+
+    let donghnut2 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    donghnut2.setInfo(this.scenes, (tran: Transform) => {
+      tran.position = vec3.fromValues(4, 4, 2);
+      tran.scale = vec3.fromValues(0.5, 0.5, 0.5);
+      tran.Mesh[0].material.setUniformI1i(
+          'tex', sb.Tranforms['skybox'].Mesh[0].material.uniforms['tex'].value,
+          thegl);
+    });
+    donghnut2.setParent(donghnut1);
+    donghnut2.setEarlyDraw(
+        (transform: Transform, gl: WebGLRenderingContext) => {
+          let metalless = this.rangebox.Metaless;
+          let smoothness = this.rangebox.Smoothness;
+          transform.Mesh[0].material.setUniform_1f(
+              'metalless', metalless, thegl);
+          transform.Mesh[0].material.setUniform_1f(
+              'smoothness', smoothness, thegl);
+          transform.set_rx(Date.now() / 2000);
+          transform.set_ry(Date.now() / 2000);
+        });
+
+    let donghnut3 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    donghnut3.setInfo(this.scenes, (tran: Transform) => {
+      tran.position = vec3.fromValues(2, 2, 2);
+      tran.scale = vec3.fromValues(0.2, 1, 0.2);
+      tran.Mesh[0].material.setUniformI1i(
+          'tex', sb.Tranforms['skybox'].Mesh[0].material.uniforms['tex'].value,
+          thegl);
+    });
+    donghnut3.setParent(donghnut2);
+    donghnut3.setEarlyDraw(
+        (transform: Transform, gl: WebGLRenderingContext) => {
+          let metalless = this.rangebox.Metaless;
+          let smoothness = this.rangebox.Smoothness;
+          transform.Mesh[0].material.setUniform_1f(
+              'metalless', metalless, thegl);
+          transform.Mesh[0].material.setUniform_1f(
+              'smoothness', smoothness, thegl);
+          transform.set_rx(Date.now() / 2000);
+          transform.set_ry(Date.now() / 2000);
+        });
+    let donghnut4 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    donghnut4.setInfo(this.scenes, (tran: Transform) => {
+      tran.position = vec3.fromValues(5, 5, 5);
+      tran.Mesh[0].material.setUniformI1i(
+          'tex', sb.Tranforms['skybox'].Mesh[0].material.uniforms['tex'].value,
+          thegl);
+    });
+    donghnut4.setParent(donghnut3);
+    donghnut4.setEarlyDraw(
+        (transform: Transform, gl: WebGLRenderingContext) => {
+          let metalless = this.rangebox.Metaless;
+          let smoothness = this.rangebox.Smoothness;
+          transform.Mesh[0].material.setUniform_1f(
+              'metalless', metalless, thegl);
+          transform.Mesh[0].material.setUniform_1f(
+              'smoothness', smoothness, thegl);
+          transform.set_rx(Date.now() / 2000);
+          transform.set_ry(Date.now() / 2000);
+        });
+
     let teapot = objLoader(
         `${resPath}models/teapot/`, 'teapot.obj', this.scenes.mtllib,
         this.scenes.GL, 'text_phone', resMgr);
+    teapot.setInfo(this.scenes, (tran) => {
+      tran.position = vec3.fromValues(0, -5, -5);
+      tran.scale = vec3.fromValues(0.3, 0.3, 0.3);
+    });
+
+    let teapot2 = objLoader(
+        `${resPath}models/teapot/`, 'teapot.obj', this.scenes.mtllib,
+        this.scenes.GL, 'reflect_mat', resMgr);
+    teapot2.setInfo(this.scenes, (tran) => {
+      tran.position = vec3.fromValues(-5, -5, -5);
+      tran.scale = vec3.fromValues(0.3, 0.3, 0.3);
+    });
+
+    let teapot3 = objLoader(
+        `${resPath}models/teapot/`, 'teapot.obj', this.scenes.mtllib,
+        this.scenes.GL, 'refract_mat', resMgr);
+    teapot3.setInfo(this.scenes, (tran) => {
+      tran.position = vec3.fromValues(5, -5, -5);
+      tran.scale = vec3.fromValues(0.3, 0.3, 0.3);
+    });
 
     this.messageService.endLoadingMSG(loading);
-    this.scenes.LoadSence([sb, donghnut1, teapot]);
+    this.scenes.LoadSence([
+      sb, donghnut1, donghnut2, donghnut3, donghnut4, teapot, teapot2, teapot3
+    ]);
+    this.scenes.update = (s: Scenes) => {
+      this.inputHandel.moveCtrl();
+    };
     this.scenes.Run();
   }
 
@@ -231,6 +318,7 @@ export class DashboardComponent implements OnInit {
   //     tran.Mesh[0].material.set_uniform(MTL_TYPE._1f, 'ratio', 1 / 1.52,
   //     thegl.gl); tran.set_pos(0, 0, 6);
   //   });
+
 
   // }
 

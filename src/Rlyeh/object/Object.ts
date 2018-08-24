@@ -19,6 +19,14 @@ export class RObject {
     this.Tranforms[name].add_mesh(mesh);
   }
 
+  setParent(value: RObject) {
+    let k = Object.keys(value.Tranforms)[0];
+    for (let key in this.Tranforms) {
+      if (this.Tranforms[key] as Transform) {
+        this.Tranforms[key].parent = value.Tranforms[k];
+      }
+    }
+  }
   init(scene: Scenes) {
     for (let key in this.Tranforms) {
       if (this.Tranforms[key] as Transform) {

@@ -1,17 +1,19 @@
 export class ResManager {
+  pool: {[key: string]: string|HTMLImageElement};
 
-    pool: { [key: string]: string | HTMLImageElement };
+  constructor() {
+    this.pool = {};
+  }
 
-    constructor() {
-        this.pool = {};
+  add(path: string, res: string|HTMLImageElement) {
+    this.pool[path] = res;
+  }
+
+  get(path: string) {
+    if (!this.pool[path]) {
+      console.error('resManagr', 'indivial path' + path);
+    } else {
+      return this.pool[path];
     }
-
-    add(path: string, res: string | HTMLImageElement) {
-        this.pool[path] = res;
-    }
-
-    get(path: string) {
-        let ret = this.pool[path];
-        return ret;
-    }
+  }
 }

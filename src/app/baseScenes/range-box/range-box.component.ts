@@ -18,7 +18,7 @@ export class RangeBoxComponent implements OnInit {
     this.LightDirectionY = 0;
     this.LightDirectionZ = 1;
     this.Smoothness = 32;
-    this.Metaless = 0.0;
+    this.Metaless = 0.5;
   }
 
   ngOnInit() {

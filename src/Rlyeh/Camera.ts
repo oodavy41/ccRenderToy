@@ -110,10 +110,12 @@ export class Camera extends CTransform {
   }
 
   movectrl(movement: boolean[]) {
-    const abf = glm.vec3.create(), abr = glm.vec3.create();
+    let abf = glm.vec3.create(), abr = glm.vec3.create();
+    let front = glm.vec3.create();
+    glm.vec3.sub(front, this.cameraAim, this.position);
     const wasd = [
-      this.cameraAim, glm.vec3.scale(abr, this.cameraRight, -1),
-      glm.vec3.scale(abf, this.cameraAim, -1), this.cameraRight
+      front, glm.vec3.scale(abr, this.cameraRight, -1),
+      glm.vec3.scale(abf, front, -1), this.cameraRight
     ];
 
     const ret = glm.vec3.fromValues(0, 0, 0);
@@ -129,5 +131,7 @@ export class Camera extends CTransform {
     glm.vec3.scale(ret, ret, set.MoveSpeed);
 
     glm.vec3.add(this.position, this.position, ret);
+    glm.vec3.add(this.cameraAim, this.cameraAim, ret);
+    this.makemvp();
   }
 }
