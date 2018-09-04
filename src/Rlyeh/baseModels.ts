@@ -1,6 +1,6 @@
 
 import {att_c, att_n, att_p} from './GLOBAL/GLOBAL';
-import {Material, MTL_TYPE} from './object/Material';
+import {AMaterial, MTL_TYPE} from './object/Material';
 import {Mesh} from './object/Mesh';
 import {RObject} from './object/Object';
 import {CubeTexture} from './object/Texture';
@@ -41,7 +41,7 @@ export function donghnut(
   const ret = new Transform();
   const mesh = new Mesh();
   mesh.set_mesh([[att_p, pos, 3], [att_c, col, 4], [att_n, nor, 3], idx]);
-  const mat = new Material(
+  const mat = new basep(
       'assets/resource/shaders/base_phone.vert',
       'assets/resource/shaders/base_phone.frag', gl, resManager);
   mesh.set_mat(mat);

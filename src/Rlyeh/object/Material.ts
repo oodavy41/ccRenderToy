@@ -1,10 +1,10 @@
 
-import {mat3, mat4, vec3, vec4} from 'gl-matrix';
-
 import {create_program, create_shader} from '../GLCore/glfuncs';
 import {ResManager} from '../ResManager';
 
 import {CubeTexture, Texture} from './Texture';
+import { Transform } from './Transform';
+import { Scenes } from '../Scenes';
 
 export enum MTL_TYPE {
   M4f,
@@ -16,7 +16,7 @@ export enum MTL_TYPE {
   _1b,
 }
 
-export class Material {
+export abstract class AMaterial {
   vs: WebGLShader;
   fs: WebGLShader;
   textures: Array<any>;
@@ -36,6 +36,9 @@ export class Material {
     this.textures = [];
     this.uniforms = {};
   }
+
+  abstract init(scene: Scenes, tran: Transform): void;
+  abstract draw(): void;
 
   setUniformM4f(name: string, value: Float32Array, gl: WebGLRenderingContext) {
     if (!this.uniforms[name]) {

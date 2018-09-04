@@ -34,7 +34,8 @@ export class DashboardComponent implements OnInit {
   async ngOnInit() {
     let glc = <HTMLCanvasElement>this.glCanvas.nativeElement;
 
-    let resMgr = new ResManager();
+    let resMgr =
+        new ResManager('assets/resource/', 'models/', 'shaders/', 'skyboxs/');
     this.scenes = new Scenes(glc, resMgr);
     this.inputHandel = new KeyBoardCtrl(this.scenes);
     let thegl = this.scenes.GL;
@@ -258,69 +259,6 @@ export class DashboardComponent implements OnInit {
     };
     this.scenes.Run();
   }
-
-  // objsss() {
-  //   let thegl = this.scenes.GL;
-  //   let resPath = '';
-  //   let sb = [];
-  //   // ----------------------------------
-
-  //   let objs1 = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib,
-  //   thegl.gl, 'anim_phone', thegl.resManager);
-
-  //   let objs11 = objLoader(resPath + 'models/mwzz/', 'mwzz.obj',
-  //   thegl.mtllib, thegl.gl, 'anim_edge_phone', thegl.resManager);
-  //   objs11.setEarlyDraw((transform: Transform, gl: WebGLRenderingContext) =>
-  //   {
-  //     gl.cullFace(gl.FRONT);
-  //   });
-  //   objs11.setLateDraw((transform: Transform, gl: WebGLRenderingContext) => {
-  //     gl.cullFace(gl.BACK);
-  //   });
-
-
-  //   // ----------------------------------
-
-  //   let objs2 = objLoader(resPath + 'models/mwzz/', 'mwzz.obj', thegl.mtllib,
-  //   thegl.gl, 'text_phone', thegl.resManager); objs2.setInfo((tran:
-  //   Transform) => {
-  //     tran.set_pos(0, 0, 2);
-  //   });
-
-
-  //   // ----------------------------------
-
-
-  //   let objsrefl = objLoader(resPath + 'models/mwzz/', 'mwzz.obj',
-  //   thegl.mtllib, thegl.gl, 'reflect_mat', thegl.resManager);
-  //   objsrefl.setInfo((tran: Transform) => {
-  //     tran.Mesh[0].material.set_uniform(
-  //       MTL_TYPE.I1i,
-  //       'tex',
-  //       sb[0].Mesh[0].material.uniforms['tex'].value,
-  //       thegl.gl
-  //     );
-  //     tran.set_pos(0, 0, 4);
-  //   });
-
-
-  //   // ----------------------------------
-
-  //   let objsrefr = objLoader(resPath + 'models/mwzz/', 'mwzz.obj',
-  //   thegl.mtllib, thegl.gl, 'refract_mat', thegl.resManager);
-  //   objsrefr.setInfo((tran: Transform) => {
-  //     tran.Mesh[0].material.set_uniform(
-  //       MTL_TYPE.I1i,
-  //       'tex',
-  //       sb[0].Mesh[0].material.uniforms['tex'].value,
-  //       thegl.gl
-  //     );
-  //     tran.Mesh[0].material.set_uniform(MTL_TYPE._1f, 'ratio', 1 / 1.52,
-  //     thegl.gl); tran.set_pos(0, 0, 6);
-  //   });
-
-
-  // }
 
 
   onClickCanvas(event: any) {

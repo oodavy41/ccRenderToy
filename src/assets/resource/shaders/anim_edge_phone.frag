@@ -4,21 +4,6 @@ varying vec4 fpos;
 varying vec2 fcoord;
 varying vec3 fnormal;
 
-uniform mat3 normalMatrix;
-
-uniform vec3 lightDirection;
-uniform vec4 lightColor;
-uniform vec3 cameraPos;
-
-
-uniform vec3 ambient;
-uniform vec3 diffuse;
-uniform vec3 specular;
-uniform float powup;
-
-
-uniform bool usetex;
-uniform sampler2D tex;
 
 void main(void)
 {

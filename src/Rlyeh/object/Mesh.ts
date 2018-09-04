@@ -1,12 +1,12 @@
 
 
-import { Material } from './Material';
+import { AMaterial } from './Material';
 import { upload_array_att, create_ibo } from '../GLCore/glfuncs';
 
 export class Mesh {
 
     arrs: Array<Array<any>>;
-    material: Material;
+    material: AMaterial;
     arr_bkup = {};
     index_buffer: WebGLBuffer;
     index_length: number;
@@ -24,7 +24,7 @@ export class Mesh {
     set_mesh(arr: Array<Array<any>>) {
         this.arrs = arr;
     }
-    set_mat(mat: Material) {
+    set_mat(mat: AMaterial) {
         this.material = mat;
     }
 
