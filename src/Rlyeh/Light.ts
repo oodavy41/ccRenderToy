@@ -1,6 +1,6 @@
 
 import { vec4, vec3 } from 'gl-matrix';
-import { CTransform } from './component/Ctransform';
+import { CTransform } from './component/CTransform';
 
 export enum LIGHT_TYPE { POINT, SPOT, DIRECTION }
 

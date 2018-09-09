@@ -48,7 +48,6 @@ export class Mesh {
     }
 
     draw(gl: WebGLRenderingContext) {
-        this.material.use(gl);
         for (let i = 0, l = this.arrs.length - 1; i < l; i++) {
             const arr = this.arrs[i];
             if (this.arr_bkup[arr[0]]) {

@@ -1,84 +1,79 @@
 
-import { ResManager } from '../ResManager';
-import { Material } from './Material';
+import {ResManager} from '../ResManager';
+import {AMaterial} from './Material';
 
 export class Texture {
+  img: HTMLImageElement;
+  texture: WebGLTexture;
 
-    index: number;
-    img: HTMLImageElement;
-    texture: WebGLTexture;
+  constructor(path: string, gl: WebGLRenderingContext, res: ResManager) {
+    this.img = <HTMLImageElement>res.get(path);
 
-    constructor(path: string, gl: WebGLRenderingContext, mat: Material, res: ResManager) {
-        this.index = mat.textures.length;
-        mat.textures.push(this);
-        this.img = <HTMLImageElement>res.get(path);
+    this.texture = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE0);
+    console.log('tex', ':' + path);
+    gl.bindTexture(gl.TEXTURE_2D, this.texture);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texImage2D(
+        gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.img);
+    gl.texParameteri(
+        gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+    gl.texParameteri(
+        gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
 
-        this.texture = gl.createTexture();
-        gl.activeTexture(gl.TEXTURE0 + this.index);
-        console.log('tex', this.index + ':' + path);
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-        gl.texImage2D(
-            gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.img);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    gl.bindTexture(gl.TEXTURE_2D, null);
+  }
 
-        gl.generateMipmap(gl.TEXTURE_2D);
-        gl.bindTexture(gl.TEXTURE_2D, null);
-
-    }
-
-    bind(gl: WebGLRenderingContext) {
-        gl.activeTexture(gl.TEXTURE0 + this.index);
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
-    }
+  bind(gl: WebGLRenderingContext, index: number) {
+    gl.activeTexture(gl.TEXTURE0 + index);
+    gl.bindTexture(gl.TEXTURE_2D, this.texture);
+  }
 }
 
 export class CubeTexture {
+  img: HTMLImageElement[];
+  texture: WebGLTexture;
+  cubePromise: number;
 
-    index: number;
-    img: HTMLImageElement[];
-    texture: WebGLTexture;
-    cubePromise: number;
+  /** src : [+x, -x, +y, -y, +z, -z ]*/
+  constructor(src: string[], gl: WebGLRenderingContext, res: ResManager) {
+    let imgs = this.img = [];
+    src.forEach((path, index) => {
+      imgs[index] = res.get(path);
+    });
+    this.cubePromise = 0;
 
-    /** src : [+x, -x, +y, -y, +z, -z ]*/
-    constructor(src: string[], gl: WebGLRenderingContext, mat: Material, res: ResManager) {
-        this.index = mat.textures.length;
-        mat.textures.push(this);
-        let imgs = this.img = [];
-        src.forEach((path, index) => {
-            imgs[index] = res.get(path);
-        });
-        this.cubePromise = 0;
-        console.log('cubemap', this.index);
+    this.texture = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE0);
+    console.log('tex', ':' + src[0]);
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.texture);
 
-        this.texture = gl.createTexture();
-        gl.activeTexture(gl.TEXTURE0 + this.index);
-        gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.texture);
+    const targets = [
+      gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
+      gl.TEXTURE_CUBE_MAP_POSITIVE_Y, gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
+      gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z
+    ];
 
-        const targets = [
-            gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-            gl.TEXTURE_CUBE_MAP_POSITIVE_Y, gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-            gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z
-        ];
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
 
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-
-        for (let i = 0; i < 6; i++) {
-            gl.texImage2D(targets[i], 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.img[i]);
-            gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        }
-
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-
-        gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
-
+    for (let i = 0; i < 6; i++) {
+      gl.texImage2D(
+          targets[i], 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.img[i]);
+      gl.texParameteri(
+          gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(
+          gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     }
 
-    bind(gl) {
-        gl.activeTexture(gl.TEXTURE0 + this.index);
-        gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.texture);
-    }
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+    gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
+  }
+
+  bind(gl: WebGLRenderingContext, index: number) {
+    gl.activeTexture(gl.TEXTURE0 + index);
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.texture);
+  }
 }
-

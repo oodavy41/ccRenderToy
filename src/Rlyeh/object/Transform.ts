@@ -22,17 +22,10 @@ export class Transform extends CTransform {
 
   init(scene: Scenes) {
     let light = scene.lights['Main'];
+    let thisTran = this;
     this.Mesh.forEach(mesh => {
+      mesh.material.init(scene, thisTran);
       mesh.init(scene.GL);
-      mesh.material.use(scene.GL);
-      mesh.material.setUniformV3f(
-          'lightDirection', light.lightDirection, scene.GL);
-      mesh.material.setUniformV4f('lightColor', light.lightColor, scene.GL);
-      mesh.material.setUniformV3f(
-          'cameraPos', scene.mainCamera.position, scene.GL);
-      mesh.material.setUniformM4f('mvpMatrix', scene.mainCamera.mvp, scene.GL);
-      mesh.material.setUniformM4f('modelMatrix', this.m, scene.GL);
-      mesh.material.setUniformM3f('normalMatrix', this.nm, scene.GL);
     });
   }
 
@@ -42,15 +35,9 @@ export class Transform extends CTransform {
     });
 
     let light = scene.lights['Main'];
+    let thisTran = this;
     this.Mesh.forEach(mesh => {
-      mesh.material.use(scene.GL);
-      mesh.material.setUniformV3f(
-          'lightDirection', light.lightDirection, scene.GL);
-      mesh.material.setUniformV3f(
-          'cameraPos', scene.mainCamera.position, scene.GL);
-      mesh.material.setUniformM4f('mvpMatrix', scene.mainCamera.mvp, scene.GL);
-      mesh.material.setUniformM4f('modelMatrix', this.m, scene.GL);
-      mesh.material.setUniformM3f('normalMatrix', this.nm, scene.GL);
+      mesh.material.draw();
       mesh.draw(scene.GL);
     });
 

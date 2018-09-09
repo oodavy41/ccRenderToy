@@ -5,35 +5,26 @@ import {AMaterial} from '../Material';
 import {CubeTexture} from '../Texture';
 import {Transform} from '../Transform';
 
-export class BasePhoneMat extends AMaterial {
-  private tex: CubeTexture;
-  metalless: number;
-  smoothness: number;
-
+export class RefractMat extends AMaterial {
+  tex: CubeTexture;
+  ratio: number;
   constructor(GL: WebGLRenderingContext, res: ResManager, tex?: CubeTexture) {
     let path = res.resRoot + res.shadersPath;
-    super(path + 'base_phone.vert', path + 'base_phone.frag', GL, res);
-    this.metalless = 0;
-    this.smoothness = 0;
+    super(path + 'refract_mat.vert', path + 'refract_mat.frag', GL, res);
     if (tex) {
       this.setTex(tex);
     }
+    this.ratio = 1.0 / 2.4;
   }
 
   draw() {
     super.draw();
     this.setUniformV3f(
-        'lightDirection', this.scene.lights['Main'].lightDirection,
-        this.scene.GL);
-    this.setUniformV4f(
-        'lightColor', this.scene.lights['Main'].lightColor, this.scene.GL);
-    this.setUniformV3f(
         'cameraPos', this.scene.mainCamera.position, this.scene.GL);
     this.setUniformM4f('mvpMatrix', this.scene.mainCamera.mvp, this.scene.GL);
     this.setUniformM4f('modelMatrix', this.transform.m, this.scene.GL);
     this.setUniformM3f('normalMatrix', this.transform.nm, this.scene.GL);
-    this.setUniform_1f('metalless', this.metalless, this.scene.GL);
-    this.setUniform_1f('smoothness', this.smoothness, this.scene.GL);
+    this.setUniform_1f('ratio', this.ratio, this.scene.GL);
 
     if (!this.tex) {
       console.error('NO TEXTURE BINDED!');

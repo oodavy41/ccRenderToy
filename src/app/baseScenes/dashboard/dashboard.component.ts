@@ -7,6 +7,10 @@ import {donghnut, skybox} from '../../../Rlyeh/baseModels';
 import {KeyBoardCtrl} from '../../../Rlyeh/handle';
 import {Light, LIGHT_TYPE} from '../../../Rlyeh/Light';
 import {objLoader} from '../../../Rlyeh/loader';
+import {BasePhoneMat} from '../../../Rlyeh/object/materials/BasePhoneMat';
+import {ReflectMat} from '../../../Rlyeh/object/materials/ReflectMat';
+import {RefractMat} from '../../../Rlyeh/object/materials/RefractMat';
+import {TexPhoneMat} from '../../../Rlyeh/object/materials/TexPhoneMat';
 import {Transform} from '../../../Rlyeh/object/Transform';
 import {ResManager} from '../../../Rlyeh/ResManager';
 import {Scenes} from '../../../Rlyeh/Scenes';
@@ -144,86 +148,70 @@ export class DashboardComponent implements OnInit {
     sb.setLateDraw((transform: Transform, gl: WebGLRenderingContext) => {
       gl.cullFace(gl.BACK);
     });
-
-
+    this.scenes.skybox = sb.Tranforms['skybox'];
+    let sbTex = sb.Tranforms['skybox'].Mesh[0].material['tex'];
 
     let donghnut1 = donghnut(30, 36, 1, 3, thegl, resMgr);
     donghnut1.setInfo(this.scenes, (tran: Transform) => {
+      (tran.Mesh[0].material as TexPhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(1, 3, 2);
-      tran.Mesh[0].material.setUniformI1i(
-          'tex', sb.Tranforms['skybox'].Mesh[0].material.uniforms['tex'].value,
-          thegl);
     });
     donghnut1.setEarlyDraw(
         (transform: Transform, gl: WebGLRenderingContext) => {
-          let metalless = this.rangebox.Metaless;
-          let smoothness = this.rangebox.Smoothness;
-          transform.Mesh[0].material.setUniform_1f(
-              'metalless', metalless, thegl);
-          transform.Mesh[0].material.setUniform_1f(
-              'smoothness', smoothness, thegl);
-          transform.set_rz(Date.now() / 2000);
+          (transform.Mesh[0].material as BasePhoneMat).metalless =
+              this.rangebox.Metaless;
+          (transform.Mesh[0].material as BasePhoneMat).smoothness =
+              this.rangebox.Smoothness;
+          transform.set_rz(Date.now() / 5000);
         });
 
     let donghnut2 = donghnut(30, 36, 1, 3, thegl, resMgr);
     donghnut2.setInfo(this.scenes, (tran: Transform) => {
+      (tran.Mesh[0].material as TexPhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(4, 4, 2);
       tran.scale = vec3.fromValues(0.5, 0.5, 0.5);
-      tran.Mesh[0].material.setUniformI1i(
-          'tex', sb.Tranforms['skybox'].Mesh[0].material.uniforms['tex'].value,
-          thegl);
     });
     donghnut2.setParent(donghnut1);
     donghnut2.setEarlyDraw(
         (transform: Transform, gl: WebGLRenderingContext) => {
-          let metalless = this.rangebox.Metaless;
-          let smoothness = this.rangebox.Smoothness;
-          transform.Mesh[0].material.setUniform_1f(
-              'metalless', metalless, thegl);
-          transform.Mesh[0].material.setUniform_1f(
-              'smoothness', smoothness, thegl);
-          transform.set_rx(Date.now() / 2000);
-          transform.set_ry(Date.now() / 2000);
+          (transform.Mesh[0].material as BasePhoneMat).metalless =
+              this.rangebox.Metaless;
+          (transform.Mesh[0].material as BasePhoneMat).smoothness =
+              this.rangebox.Smoothness;
+          transform.set_rx(-Date.now() / 2000);
+          transform.set_ry(-Date.now() / 2000);
         });
 
     let donghnut3 = donghnut(30, 36, 1, 3, thegl, resMgr);
     donghnut3.setInfo(this.scenes, (tran: Transform) => {
+      (tran.Mesh[0].material as TexPhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(2, 2, 2);
       tran.scale = vec3.fromValues(0.2, 1, 0.2);
-      tran.Mesh[0].material.setUniformI1i(
-          'tex', sb.Tranforms['skybox'].Mesh[0].material.uniforms['tex'].value,
-          thegl);
     });
     donghnut3.setParent(donghnut2);
     donghnut3.setEarlyDraw(
         (transform: Transform, gl: WebGLRenderingContext) => {
-          let metalless = this.rangebox.Metaless;
-          let smoothness = this.rangebox.Smoothness;
-          transform.Mesh[0].material.setUniform_1f(
-              'metalless', metalless, thegl);
-          transform.Mesh[0].material.setUniform_1f(
-              'smoothness', smoothness, thegl);
-          transform.set_rx(Date.now() / 2000);
+          (transform.Mesh[0].material as BasePhoneMat).metalless =
+              this.rangebox.Metaless;
+          (transform.Mesh[0].material as BasePhoneMat).smoothness =
+              this.rangebox.Smoothness;
+          transform.set_rz(Date.now() / 2000);
           transform.set_ry(Date.now() / 2000);
         });
     let donghnut4 = donghnut(30, 36, 1, 3, thegl, resMgr);
     donghnut4.setInfo(this.scenes, (tran: Transform) => {
+      (tran.Mesh[0].material as TexPhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(5, 5, 5);
-      tran.Mesh[0].material.setUniformI1i(
-          'tex', sb.Tranforms['skybox'].Mesh[0].material.uniforms['tex'].value,
-          thegl);
     });
     donghnut4.setParent(donghnut3);
     donghnut4.setEarlyDraw(
         (transform: Transform, gl: WebGLRenderingContext) => {
-          let metalless = this.rangebox.Metaless;
-          let smoothness = this.rangebox.Smoothness;
-          transform.Mesh[0].material.setUniform_1f(
-              'metalless', metalless, thegl);
-          transform.Mesh[0].material.setUniform_1f(
-              'smoothness', smoothness, thegl);
+          (transform.Mesh[0].material as BasePhoneMat).metalless =
+              this.rangebox.Metaless;
+          (transform.Mesh[0].material as BasePhoneMat).smoothness =
+              this.rangebox.Smoothness;
           transform.set_rx(Date.now() / 2000);
-          transform.set_ry(Date.now() / 2000);
+          transform.set_rz(Date.now() / 2000);
         });
 
     let teapot = objLoader(
@@ -238,6 +226,7 @@ export class DashboardComponent implements OnInit {
         `${resPath}models/teapot/`, 'teapot.obj', this.scenes.mtllib,
         this.scenes.GL, 'reflect_mat', resMgr);
     teapot2.setInfo(this.scenes, (tran) => {
+      (tran.Mesh[0].material as ReflectMat).setTex(sbTex);
       tran.position = vec3.fromValues(-5, -5, -5);
       tran.scale = vec3.fromValues(0.3, 0.3, 0.3);
     });
@@ -246,6 +235,7 @@ export class DashboardComponent implements OnInit {
         `${resPath}models/teapot/`, 'teapot.obj', this.scenes.mtllib,
         this.scenes.GL, 'refract_mat', resMgr);
     teapot3.setInfo(this.scenes, (tran) => {
+      (tran.Mesh[0].material as RefractMat).setTex(sbTex);
       tran.position = vec3.fromValues(5, -5, -5);
       tran.scale = vec3.fromValues(0.3, 0.3, 0.3);
     });
@@ -256,6 +246,9 @@ export class DashboardComponent implements OnInit {
     ]);
     this.scenes.update = (s: Scenes) => {
       this.inputHandel.moveCtrl();
+      this.scenes.lights['Main'].lightDirection = vec3.fromValues(
+          this.rangebox.LightDirectionX, this.rangebox.LightDirectionY,
+          this.rangebox.LightDirectionZ);
     };
     this.scenes.Run();
   }

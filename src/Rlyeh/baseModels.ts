@@ -1,6 +1,8 @@
 
 import {att_c, att_n, att_p} from './GLOBAL/GLOBAL';
 import {AMaterial, MTL_TYPE} from './object/Material';
+import {BasePhoneMat} from './object/materials/BasePhoneMat';
+import {SkyBoxMat} from './object/materials/SkyBoxMat';
 import {Mesh} from './object/Mesh';
 import {RObject} from './object/Object';
 import {CubeTexture} from './object/Texture';
@@ -41,9 +43,7 @@ export function donghnut(
   const ret = new Transform();
   const mesh = new Mesh();
   mesh.set_mesh([[att_p, pos, 3], [att_c, col, 4], [att_n, nor, 3], idx]);
-  const mat = new basep(
-      'assets/resource/shaders/base_phone.vert',
-      'assets/resource/shaders/base_phone.frag', gl, resManager);
+  const mat = new BasePhoneMat(gl, resManager);
   mesh.set_mat(mat);
   ret.add_mesh(mesh);
   return new RObject({
@@ -108,12 +108,8 @@ export function skybox(
   const ret = new Transform();
   const mesh = new Mesh();
   mesh.set_mesh([[att_p, m[0], 3], m[3]]);
-  const mat = new Material(
-      'assets/resource/shaders/skybox.vert',
-      'assets/resource/shaders/skybox.frag', gl, resManager);
-  const tex = new CubeTexture(srcs, gl, mat, resManager);
-  mat.setUniformI1i('tex', tex, gl);
-  mat.setUniform_1b('usetex', true, gl);
+  const tex = new CubeTexture(srcs, gl, resManager);
+  const mat = new SkyBoxMat(gl, resManager, tex);
   mesh.set_mat(mat);
   ret.add_mesh(mesh);
   return new RObject({

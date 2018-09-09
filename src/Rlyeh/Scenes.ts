@@ -4,7 +4,7 @@ import {donghnut, skybox} from './baseModels';
 import {Camera} from './Camera';
 import {glclear, initgl} from './GLCore/glfuncs';
 import {Light, LIGHT_TYPE} from './Light';
-import {Material} from './object/Material';
+import {AMaterial} from './object/Material';
 import {RObject} from './object/Object';
 import {Transform} from './object/Transform';
 import {ResManager} from './ResManager';
@@ -17,8 +17,9 @@ export class Scenes {
   mainCamera: Camera;
   cameras: {[key: string]: Camera};
   lights: {[key: string]: Light};  // todo: lights feature
+  skybox: Transform;
   resManager: ResManager;
-  mtllib: {[key: string]: Material};
+  mtllib: {[key: string]: AMaterial};
   Time: number;
   deltaTime: number;
   state: number;
