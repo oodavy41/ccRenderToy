@@ -101,26 +101,3 @@ export function upload_array_att(array: number[], att_name: string, program: Web
         'vbo': vbo
     };
 }
-
-// export function static_uni(arr:number[], smvp:mat4) {
-//     let ret = vec4.create();
-//     vec4.transformMat4(ret, arr, smvp);
-//     return [ret[0], ret[1], ret[2]];
-// }
-
-export function create_texture(src: string, gl: WebGLRenderingContext) {
-    const img = new Image();
-    let texture;
-    img.onload = function () {
-        texture = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-        gl.generateMipmap(gl.TEXTURE_2D);
-        gl.bindTexture(gl.TEXTURE_2D, null);
-    };
-    img.src = src;
-    return {
-        'img': img,
-        'tex': texture
-    };
-}

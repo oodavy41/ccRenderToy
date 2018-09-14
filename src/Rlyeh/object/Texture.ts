@@ -34,7 +34,7 @@ export class Texture {
 export class CubeTexture {
   img: HTMLImageElement[];
   texture: WebGLTexture;
-  cubePromise: number;
+
 
   /** src : [+x, -x, +y, -y, +z, -z ]*/
   constructor(src: string[], gl: WebGLRenderingContext, res: ResManager) {
@@ -42,7 +42,6 @@ export class CubeTexture {
     src.forEach((path, index) => {
       imgs[index] = res.get(path);
     });
-    this.cubePromise = 0;
 
     this.texture = gl.createTexture();
     gl.activeTexture(gl.TEXTURE0);
@@ -75,5 +74,34 @@ export class CubeTexture {
   bind(gl: WebGLRenderingContext, index: number) {
     gl.activeTexture(gl.TEXTURE0 + index);
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.texture);
+  }
+}
+
+export class FrameTexture {
+  frameBuffer: WebGLFramebuffer;
+  texture: WebGLTexture;
+
+  constructor(gl: WebGLRenderingContext, width: number, height: number) {
+    this.texture = gl.createTexture();
+    gl.texImage2D(
+        gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE,
+        null);
+
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+    this.frameBuffer = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.frameBuffer);
+    gl.framebufferTexture2D(
+        gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.texture, 0);
+  }
+
+  bind(gl: WebGLRenderingContext, index: number) {
+    gl.activeTexture(gl.TEXTURE0 + index);
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.texture);
+  }
+  unbind(gl:WebGLRenderingContext){
+    
   }
 }

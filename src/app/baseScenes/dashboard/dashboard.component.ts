@@ -53,7 +53,8 @@ export class DashboardComponent implements OnInit {
 
     let loading = this.messageService.createLoadingMSG('loading');
 
-    let light_direction = vec3.fromValues(-10, 0, -1);
+    let light_pos = vec3.fromValues(10, 0, 1);
+    let light_aim = vec3.fromValues(0, 0, 0);
     let light_color = vec4.fromValues(1, 1, 1, 1);
     let camera_pos = vec3.fromValues(-15, 8, 16);
     let cameraAim = vec3.fromValues(0, 5, -5);
@@ -61,7 +62,7 @@ export class DashboardComponent implements OnInit {
     let cameraInfo = [Math.PI / 3, glc.width / glc.height, 0.01, 100];
 
     this.scenes.lights['Main'] =
-        new Light(LIGHT_TYPE.DIRECTION, light_direction, light_color);
+        new Light(LIGHT_TYPE.DIRECTION, light_pos, light_aim, light_color);
     this.scenes.mainCamera.position = camera_pos;
     this.scenes.mainCamera.cameraAim = cameraAim;
     this.scenes.mainCamera.cameraUp = cameraUp;
@@ -69,37 +70,37 @@ export class DashboardComponent implements OnInit {
 
     let resPath = 'assets/resource/';
     let imgPath = [
-      // skybox
-      'skyboxs/bs2/X.png',
-      'skyboxs/bs2/-X.png',
-      'skyboxs/bs2/Y.png',
-      'skyboxs/bs2/-Y.png',
-      'skyboxs/bs2/Z.png',
-      'skyboxs/bs2/-Z.png',
-      // models
-      'models/teapot/default.jpg',
+        // skybox
+        'skyboxs/bs2/X.png',
+        'skyboxs/bs2/-X.png',
+        'skyboxs/bs2/Y.png',
+        'skyboxs/bs2/-Y.png',
+        'skyboxs/bs2/Z.png',
+        'skyboxs/bs2/-Z.png',
+        // models
+        'models/teapot/default.jpg',
     ];
     let textPath = [
-      // shaders
-      'shaders/anim_edge_phone.frag',
-      'shaders/anim_edge_phone.vert',
-      'shaders/anim_phone.frag',
-      'shaders/anim_phone.vert',
-      'shaders/base_phone.frag',
-      'shaders/base_phone.vert',
-      'shaders/reflect_mat.frag',
-      'shaders/reflect_mat.vert',
-      'shaders/refract_mat.frag',
-      'shaders/refract_mat.vert',
-      'shaders/shadow_only.frag',
-      'shaders/shadow_only.vert',
-      'shaders/skybox.frag',
-      'shaders/skybox.vert',
-      'shaders/text_phone.frag',
-      'shaders/text_phone.vert',
-      // texture
-      'models/teapot/teapot.mtl',
-      'models/teapot/teapot.obj',
+        // shaders
+        'shaders/anim_edge_phone.frag',
+        'shaders/anim_edge_phone.vert',
+        'shaders/anim_phone.frag',
+        'shaders/anim_phone.vert',
+        'shaders/base_phone.frag',
+        'shaders/base_phone.vert',
+        'shaders/reflect_mat.frag',
+        'shaders/reflect_mat.vert',
+        'shaders/refract_mat.frag',
+        'shaders/refract_mat.vert',
+        'shaders/shadow_only.frag',
+        'shaders/shadow_only.vert',
+        'shaders/skybox.frag',
+        'shaders/skybox.vert',
+        'shaders/text_phone.frag',
+        'shaders/text_phone.vert',
+        // texture
+        'models/teapot/default.mtl',
+        'models/teapot/teapot.obj',
     ];
 
     let imagePromise =
@@ -153,7 +154,7 @@ export class DashboardComponent implements OnInit {
 
     let donghnut1 = donghnut(30, 36, 1, 3, thegl, resMgr);
     donghnut1.setInfo(this.scenes, (tran: Transform) => {
-      (tran.Mesh[0].material as TexPhoneMat).setTex(sbTex);
+      (tran.Mesh[0].material as BasePhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(1, 3, 2);
     });
     donghnut1.setEarlyDraw(
@@ -167,7 +168,7 @@ export class DashboardComponent implements OnInit {
 
     let donghnut2 = donghnut(30, 36, 1, 3, thegl, resMgr);
     donghnut2.setInfo(this.scenes, (tran: Transform) => {
-      (tran.Mesh[0].material as TexPhoneMat).setTex(sbTex);
+      (tran.Mesh[0].material as BasePhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(4, 4, 2);
       tran.scale = vec3.fromValues(0.5, 0.5, 0.5);
     });
@@ -184,7 +185,7 @@ export class DashboardComponent implements OnInit {
 
     let donghnut3 = donghnut(30, 36, 1, 3, thegl, resMgr);
     donghnut3.setInfo(this.scenes, (tran: Transform) => {
-      (tran.Mesh[0].material as TexPhoneMat).setTex(sbTex);
+      (tran.Mesh[0].material as BasePhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(2, 2, 2);
       tran.scale = vec3.fromValues(0.2, 1, 0.2);
     });
@@ -200,7 +201,7 @@ export class DashboardComponent implements OnInit {
         });
     let donghnut4 = donghnut(30, 36, 1, 3, thegl, resMgr);
     donghnut4.setInfo(this.scenes, (tran: Transform) => {
-      (tran.Mesh[0].material as TexPhoneMat).setTex(sbTex);
+      (tran.Mesh[0].material as BasePhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(5, 5, 5);
     });
     donghnut4.setParent(donghnut3);
@@ -219,7 +220,7 @@ export class DashboardComponent implements OnInit {
         this.scenes.GL, 'text_phone', resMgr);
     teapot.setInfo(this.scenes, (tran) => {
       tran.position = vec3.fromValues(0, -5, -5);
-      tran.scale = vec3.fromValues(0.3, 0.3, 0.3);
+      tran.scale = vec3.fromValues(40, 40, 40);
     });
 
     let teapot2 = objLoader(
@@ -228,7 +229,7 @@ export class DashboardComponent implements OnInit {
     teapot2.setInfo(this.scenes, (tran) => {
       (tran.Mesh[0].material as ReflectMat).setTex(sbTex);
       tran.position = vec3.fromValues(-5, -5, -5);
-      tran.scale = vec3.fromValues(0.3, 0.3, 0.3);
+      tran.scale = vec3.fromValues(40, 40, 40);
     });
 
     let teapot3 = objLoader(
@@ -237,7 +238,7 @@ export class DashboardComponent implements OnInit {
     teapot3.setInfo(this.scenes, (tran) => {
       (tran.Mesh[0].material as RefractMat).setTex(sbTex);
       tran.position = vec3.fromValues(5, -5, -5);
-      tran.scale = vec3.fromValues(0.3, 0.3, 0.3);
+      tran.scale = vec3.fromValues(40, 40, 40);
     });
 
     this.messageService.endLoadingMSG(loading);

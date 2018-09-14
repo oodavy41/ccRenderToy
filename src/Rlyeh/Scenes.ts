@@ -28,6 +28,11 @@ export class Scenes {
   initFuns: Function[];
   updtFuns: Function[];
 
+  private _shadow: boolean;
+  get shadow() {
+    return this._shadow;
+  }
+
   constructor(canvas: HTMLCanvasElement, resMgr: ResManager) {
     this.SELF = this;
     this.state = 0;
@@ -66,6 +71,15 @@ export class Scenes {
 
   AddObj(obj: RObject) {
     this.OBJs.push(obj);
+  }
+
+  EnableShadow(width, height) {
+    this.lights['Main'].enableShadow(this, width, height);
+    this._shadow = true;
+  }
+  DisableShadow() {
+    this.lights['Main'].disableShadow();
+    this._shadow = false;
   }
 
   Run() {

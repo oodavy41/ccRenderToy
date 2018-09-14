@@ -5,15 +5,22 @@ attribute vec3 normal;
 uniform mat4 mvpMatrix;
 uniform mat4 modelMatrix;
 
-
 varying vec4 fcolor;
 varying vec3 fnormal;
-varying mat4 fmvp;
 varying vec4 fpos;
 
-void main(void){
-    fpos = modelMatrix* vec4(position,1.0);
-    gl_Position = mvpMatrix * fpos;
-    fcolor=color;
-    fnormal=normal;
+uniform bool shadow;
+uniform mat4 lightMVP;
+
+varying vec4 lpos;
+
+void main(void) {
+  vec4 modelPos = modelMatrix * vec4(position, 1.0);
+  fpos = mvpMatrix * modelPos;
+  if (shadow) {
+    lpos = lightMVP * modelPos;
+  }
+  gl_Position = fpos;
+  fcolor = color;
+  fnormal = normal;
 }

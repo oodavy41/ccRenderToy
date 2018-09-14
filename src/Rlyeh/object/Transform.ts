@@ -36,6 +36,15 @@ export class Transform extends CTransform {
 
     let light = scene.lights['Main'];
     let thisTran = this;
+    if (scene.shadow) {
+      scene.GL.bindFramebuffer(
+          scene.GL.FRAMEBUFFER, light.depthFrame.frameBuffer);
+      this.Mesh.forEach(mesh => {
+        light.depthMat.drawS(light.lightMVP, thisTran.m);
+        mesh.draw(scene.GL);
+      });
+      scene.GL.bindFramebuffer(scene.GL.FRAMEBUFFER, null);
+    }
     this.Mesh.forEach(mesh => {
       mesh.material.draw();
       mesh.draw(scene.GL);

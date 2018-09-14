@@ -1,0 +1,12 @@
+<canvas #print width="512em" height="512em"></canvas>
+<div>Light Angle
+  <nz-row>
+    <nz-col nzSpan="12">
+      <nz-slider [nzMin]="0" [nzMax]="360" [(ngModel)]="lightAngle"></nz-slider>
+    </nz-col>
+    <div nz-col nzSpan="4">
+      <nz-input-number [nzMin]="0" [nzMax]="360" [ngStyle]="{ 'marginLeft': '16px' }" [(ngModel)]="lightAngle"></nz-input-number>
+    </div>
+  </nz-row>
+</div>
+<canvas #frame width="512em" height="512em"></canvas>
