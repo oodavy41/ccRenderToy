@@ -70,37 +70,37 @@ export class DashboardComponent implements OnInit {
 
     let resPath = 'assets/resource/';
     let imgPath = [
-        // skybox
-        'skyboxs/bs2/X.png',
-        'skyboxs/bs2/-X.png',
-        'skyboxs/bs2/Y.png',
-        'skyboxs/bs2/-Y.png',
-        'skyboxs/bs2/Z.png',
-        'skyboxs/bs2/-Z.png',
-        // models
-        'models/teapot/default.jpg',
+      // skybox
+      'skyboxs/bs2/X.png',
+      'skyboxs/bs2/-X.png',
+      'skyboxs/bs2/Y.png',
+      'skyboxs/bs2/-Y.png',
+      'skyboxs/bs2/Z.png',
+      'skyboxs/bs2/-Z.png',
+      // models
+      'models/teapot/default.jpg',
     ];
     let textPath = [
-        // shaders
-        'shaders/anim_edge_phone.frag',
-        'shaders/anim_edge_phone.vert',
-        'shaders/anim_phone.frag',
-        'shaders/anim_phone.vert',
-        'shaders/base_phone.frag',
-        'shaders/base_phone.vert',
-        'shaders/reflect_mat.frag',
-        'shaders/reflect_mat.vert',
-        'shaders/refract_mat.frag',
-        'shaders/refract_mat.vert',
-        'shaders/shadow_only.frag',
-        'shaders/shadow_only.vert',
-        'shaders/skybox.frag',
-        'shaders/skybox.vert',
-        'shaders/text_phone.frag',
-        'shaders/text_phone.vert',
-        // texture
-        'models/teapot/default.mtl',
-        'models/teapot/teapot.obj',
+      // shaders
+      'shaders/anim_edge_phone.frag',
+      'shaders/anim_edge_phone.vert',
+      'shaders/anim_phone.frag',
+      'shaders/anim_phone.vert',
+      'shaders/base_phone.frag',
+      'shaders/base_phone.vert',
+      'shaders/reflect_mat.frag',
+      'shaders/reflect_mat.vert',
+      'shaders/refract_mat.frag',
+      'shaders/refract_mat.vert',
+      'shaders/shadow_only.frag',
+      'shaders/shadow_only.vert',
+      'shaders/skybox.frag',
+      'shaders/skybox.vert',
+      'shaders/text_phone.frag',
+      'shaders/text_phone.vert',
+      // texture
+      'models/teapot/default.mtl',
+      'models/teapot/teapot.obj',
     ];
 
     let imagePromise =
@@ -152,7 +152,7 @@ export class DashboardComponent implements OnInit {
     this.scenes.skybox = sb.Tranforms['skybox'];
     let sbTex = sb.Tranforms['skybox'].Mesh[0].material['tex'];
 
-    let donghnut1 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    let donghnut1 = donghnut(30, 36, 1, 3, thegl, resMgr, false);
     donghnut1.setInfo(this.scenes, (tran: Transform) => {
       (tran.Mesh[0].material as BasePhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(1, 3, 2);
@@ -166,7 +166,7 @@ export class DashboardComponent implements OnInit {
           transform.set_rz(Date.now() / 5000);
         });
 
-    let donghnut2 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    let donghnut2 = donghnut(30, 36, 1, 3, thegl, resMgr, false);
     donghnut2.setInfo(this.scenes, (tran: Transform) => {
       (tran.Mesh[0].material as BasePhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(4, 4, 2);
@@ -183,7 +183,7 @@ export class DashboardComponent implements OnInit {
           transform.set_ry(-Date.now() / 2000);
         });
 
-    let donghnut3 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    let donghnut3 = donghnut(30, 36, 1, 3, thegl, resMgr, false);
     donghnut3.setInfo(this.scenes, (tran: Transform) => {
       (tran.Mesh[0].material as BasePhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(2, 2, 2);
@@ -199,7 +199,7 @@ export class DashboardComponent implements OnInit {
           transform.set_rz(Date.now() / 2000);
           transform.set_ry(Date.now() / 2000);
         });
-    let donghnut4 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    let donghnut4 = donghnut(30, 36, 1, 3, thegl, resMgr, false);
     donghnut4.setInfo(this.scenes, (tran: Transform) => {
       (tran.Mesh[0].material as BasePhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(5, 5, 5);

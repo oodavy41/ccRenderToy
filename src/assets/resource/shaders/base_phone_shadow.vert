@@ -10,11 +10,15 @@ varying vec3 fnormal;
 varying vec4 fpos;
 
 
+uniform mat4 lightMVP;
+
 varying vec4 lpos;
 
 void main(void) {
   vec4 modelPos = modelMatrix * vec4(position, 1.0);
   fpos = mvpMatrix * modelPos;
+
+  lpos = lightMVP * modelPos;
 
   gl_Position = fpos;
   fcolor = color;

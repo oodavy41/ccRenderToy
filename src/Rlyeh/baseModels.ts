@@ -2,6 +2,7 @@
 import {att_c, att_n, att_p} from './GLOBAL/GLOBAL';
 import {AMaterial, MTL_TYPE} from './object/Material';
 import {BasePhoneMat} from './object/materials/BasePhoneMat';
+import {BasePhoneShadowMat} from './object/materials/basePhoneShadowMat';
 import {SkyBoxMat} from './object/materials/SkyBoxMat';
 import {Mesh} from './object/Mesh';
 import {RObject} from './object/Object';
@@ -11,7 +12,7 @@ import {ResManager} from './ResManager';
 
 export function donghnut(
     row: number, column: number, irad: number, rad: number,
-    gl: WebGLRenderingContext, resManager: ResManager) {
+    gl: WebGLRenderingContext, resManager: ResManager, shadowFlag: boolean) {
   const pos = new Array(), nor = new Array(), col = new Array(),
 
         idx = new Array();
@@ -43,7 +44,9 @@ export function donghnut(
   const ret = new Transform();
   const mesh = new Mesh();
   mesh.set_mesh([[att_p, pos, 3], [att_c, col, 4], [att_n, nor, 3], idx]);
-  const mat = new BasePhoneMat(gl, resManager);
+
+  const mat = shadowFlag ? new BasePhoneShadowMat(gl, resManager) :
+                           new BasePhoneMat(gl, resManager);
   mesh.set_mat(mat);
   ret.add_mesh(mesh);
   return new RObject({
@@ -114,5 +117,24 @@ export function skybox(
   ret.add_mesh(mesh);
   return new RObject({
     skybox: ret,
+  });
+}
+
+export function panel(
+    s: number, gl: WebGLRenderingContext, resManager: ResManager) {
+  const m = [
+    [-s, 0, -s, -s, 0, s, s, 0, s, s, 0, -s],
+    [0.2, 0.2, 0.2, 1, 0.2, 0.2, 0.2, 1, 0.2, 0.2, 0.2, 1, 0.2, 0.2, 0.2, 1],
+    [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0], [0, 1, 2, 0, 2, 3]
+  ];
+
+  const ret = new Transform();
+  const mesh = new Mesh();
+  mesh.set_mesh([[att_p, m[0], 3], [att_c, m[1], 4], [att_n, m[2], 3], m[3]]);
+  const mat = new BasePhoneShadowMat(gl, resManager);
+  mesh.set_mat(mat);
+  ret.add_mesh(mesh);
+  return new RObject({
+    panel: ret,
   });
 }

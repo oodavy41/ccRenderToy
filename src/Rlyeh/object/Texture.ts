@@ -79,29 +79,39 @@ export class CubeTexture {
 
 export class FrameTexture {
   frameBuffer: WebGLFramebuffer;
+  renderBuffer: WebGLRenderbuffer;
   texture: WebGLTexture;
 
   constructor(gl: WebGLRenderingContext, width: number, height: number) {
     this.texture = gl.createTexture();
+    this.frameBuffer = gl.createFramebuffer();
+    this.renderBuffer = gl.createRenderbuffer();
+
+    gl.bindTexture(gl.TEXTURE_2D, this.texture);
     gl.texImage2D(
         gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE,
         null);
-
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
-    this.frameBuffer = gl.createFramebuffer();
     gl.bindFramebuffer(gl.FRAMEBUFFER, this.frameBuffer);
     gl.framebufferTexture2D(
         gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.texture, 0);
+
+    gl.bindRenderbuffer(gl.RENDERBUFFER, this.renderBuffer);
+    gl.renderbufferStorage(
+        gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height);
+
+    gl.framebufferRenderbuffer(
+        gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER,
+        this.renderBuffer);
+
+    if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
+      console.error('FrameTexture', 'FrameBuffer Preparing Failed');
+    }
   }
 
   bind(gl: WebGLRenderingContext, index: number) {
     gl.activeTexture(gl.TEXTURE0 + index);
-    gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.texture);
-  }
-  unbind(gl:WebGLRenderingContext){
-    
+    gl.bindTexture(gl.TEXTURE_2D, this.texture);
   }
 }

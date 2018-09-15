@@ -3,7 +3,7 @@ import {vec3, vec4} from 'gl-matrix';
 import {forkJoin, Observable} from 'rxjs';
 
 import {EventManager} from '../../../node_modules/@angular/platform-browser';
-import {donghnut, skybox} from '../../Rlyeh/baseModels';
+import {donghnut, panel, skybox} from '../../Rlyeh/baseModels';
 import {KeyBoardCtrl} from '../../Rlyeh/handle';
 import {Light, LIGHT_TYPE} from '../../Rlyeh/Light';
 import {objLoader} from '../../Rlyeh/loader';
@@ -32,7 +32,9 @@ export class ShadowboardComponent implements OnInit {
 
   constructor(
       private heroService: HeroService, private messageService: MessageService,
-      private eventMgr: EventManager) {}
+      private eventMgr: EventManager) {
+    this.lightAngle = 15;
+  }
 
 
   async ngOnInit() {
@@ -46,11 +48,11 @@ export class ShadowboardComponent implements OnInit {
 
     let loading = this.messageService.createLoadingMSG('loading');
 
-    let light_pos = vec3.fromValues(10, 0, 10);
+    let light_pos = vec3.fromValues(5, 0, 5);
     let light_aim = vec3.fromValues(0, 0, 0);
     let light_color = vec4.fromValues(1, 1, 1, 1);
     let camera_pos = vec3.fromValues(-15, 8, 16);
-    let cameraAim = vec3.fromValues(0, 5, -5);
+    let cameraAim = vec3.fromValues(0, 0, 0);
     let cameraUp = vec3.fromValues(0, 1, 0);
     let cameraInfo = [Math.PI / 3, glc.width / glc.height, 0.01, 100];
 
@@ -62,42 +64,15 @@ export class ShadowboardComponent implements OnInit {
     this.scenes.mainCamera.cameraInfo = cameraInfo;
 
     let resPath = 'assets/resource/';
-    let imgPath = [
-      // models
-      'models/teapot/default.jpg',
-    ];
     let textPath = [
       // shaders
-      'shaders/base_phone.frag',
-      'shaders/base_phone.vert',
+      'shaders/base_phone_shadow.frag',
+      'shaders/base_phone_shadow.vert',
       'shaders/shadow_only.frag',
       'shaders/shadow_only.vert',
       'shaders/text_phone.frag',
       'shaders/text_phone.vert',
-      // texture
-      'models/teapot/default.mtl',
-      'models/teapot/teapot.obj',
     ];
-
-    let imagePromise =
-        await forkJoin(
-            imgPath.map<Observable<Blob>>(
-                value => this.heroService.getBlob(`${resPath}${value}`)))
-            .toPromise();
-    for (let i = 0; i < imagePromise.length; i++) {
-      let value = imagePromise[i];
-      let rx = new Observable<HTMLImageElement>((ob) => {
-        let im = new Image();
-        im.onload = () => {
-          window.URL.revokeObjectURL(im.src);
-          ob.next(im);
-          ob.complete();
-        };
-        im.src = window.URL.createObjectURL(value);
-      });
-      let image = await rx.toPromise();
-      resMgr.add(`${resPath}${imgPath[i]}`, image);
-    }
 
     let textPromise =
         await forkJoin(
@@ -109,7 +84,7 @@ export class ShadowboardComponent implements OnInit {
     });
 
     this.scenes.EnableShadow(512, 512);
-    let donghnut1 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    let donghnut1 = donghnut(30, 36, 1, 3, thegl, resMgr, true);
     donghnut1.setInfo(this.scenes, (tran: Transform) => {
       (tran.Mesh[0].material as BasePhoneMat).metalless = 0.2;
       (tran.Mesh[0].material as BasePhoneMat).smoothness = 4;
@@ -120,7 +95,7 @@ export class ShadowboardComponent implements OnInit {
           transform.set_rz(Date.now() / 5000);
         });
 
-    let donghnut2 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    let donghnut2 = donghnut(30, 36, 1, 3, thegl, resMgr, true);
     donghnut2.setInfo(this.scenes, (tran: Transform) => {
       (tran.Mesh[0].material as BasePhoneMat).metalless = 0.2;
       (tran.Mesh[0].material as BasePhoneMat).smoothness = 4;
@@ -134,7 +109,7 @@ export class ShadowboardComponent implements OnInit {
           transform.set_ry(-Date.now() / 2000);
         });
 
-    let donghnut3 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    let donghnut3 = donghnut(30, 36, 1, 3, thegl, resMgr, true);
     donghnut3.setInfo(this.scenes, (tran: Transform) => {
       (tran.Mesh[0].material as BasePhoneMat).metalless = 0.2;
       (tran.Mesh[0].material as BasePhoneMat).smoothness = 4;
@@ -147,7 +122,7 @@ export class ShadowboardComponent implements OnInit {
           transform.set_rz(Date.now() / 2000);
           transform.set_ry(Date.now() / 2000);
         });
-    let donghnut4 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    let donghnut4 = donghnut(30, 36, 1, 3, thegl, resMgr, true);
     donghnut4.setInfo(this.scenes, (tran: Transform) => {
       (tran.Mesh[0].material as BasePhoneMat).metalless = 0.2;
       (tran.Mesh[0].material as BasePhoneMat).smoothness = 4;
@@ -160,10 +135,8 @@ export class ShadowboardComponent implements OnInit {
           transform.set_rz(Date.now() / 2000);
         });
 
-    let teapot = objLoader(
-        `${resPath}models/teapot/`, 'teapot.obj', this.scenes.mtllib,
-        this.scenes.GL, 'text_phone', resMgr);
-    teapot.setInfo(this.scenes, (tran) => {
+    let ground = panel(1000, thegl, resMgr);
+    ground.setInfo(this.scenes, (tran) => {
       tran.position = vec3.fromValues(0, -5, -5);
       tran.scale = vec3.fromValues(40, 40, 40);
     });
@@ -174,9 +147,13 @@ export class ShadowboardComponent implements OnInit {
       donghnut2,
       donghnut3,
       donghnut4,
-      teapot,
+      ground,
     ]);
-    this.scenes.update = (s: Scenes) => {};
+    this.scenes.update = (s: Scenes) => {
+      this.scenes.lights['Main'].position = vec3.fromValues(
+          Math.sin(this.lightAngle / 180 * Math.PI), 0,
+          Math.cos(this.lightAngle / 180 * Math.PI));
+    };
     this.scenes.Run();
   }
 }

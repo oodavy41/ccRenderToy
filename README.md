@@ -18,13 +18,14 @@ some design and implementation reference to [three.js](https://threejs.org)
 
 todo:
 
+- [x] 资源管理器
 - [x] 冯氏光照模型
-- [x] 事件系统
+- [x] 简单事件系统
 - [x] obj模型载入
 - [ ] dae模型载入
 - [ ] 法线贴图
 - [x] 天空盒
-- [·] 层次模型与动画系统
+- [x] 层次模型与初级动画系统
 - [x] 非真实渲染
 - [x] 阴影渲染
 - [x] 延迟渲染

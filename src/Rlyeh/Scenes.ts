@@ -39,7 +39,8 @@ export class Scenes {
     this.initFuns = [];
     this.updtFuns = [];
     this.resManager = resMgr;
-
+    this._shadow = false;
+    
     this.cameras = {};
     this.lights = {};
     this.mainCamera = this.cameras['Main'] = new Camera();
