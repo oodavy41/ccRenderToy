@@ -24,37 +24,28 @@ export class Transform extends CTransform {
     let light = scene.lights['Main'];
     let thisTran = this;
 
-    if (scene.shadow) {
-      light.depthMat.init(scene, thisTran);
-    }
-
     this.Mesh.forEach(mesh => {
       mesh.material.init(scene, thisTran);
       mesh.init(scene.GL);
     });
   }
 
-  draw(scene: Scenes) {
+  draw(scene: Scenes, noMat: boolean = false) {
+    let light = scene.lights['Main'];
+    let thisTran = this;
+
     this.earlyDarwFuncs.forEach(element => {
       element(this, scene.GL);
     });
 
-    let light = scene.lights['Main'];
-    let thisTran = this;
 
-    if (scene.shadow) {
-      scene.GL.bindFramebuffer(
-          scene.GL.FRAMEBUFFER, light.depthFrame.frameBuffer);
-      scene.GL.clear(scene.GL.COLOR_BUFFER_BIT | scene.GL.DEPTH_BUFFER_BIT);
-
-      this.Mesh.forEach(mesh => {
+    this.Mesh.forEach(mesh => {
+      if (!noMat) {
+        mesh.material.draw();
+      } else {
         light.depthMat.drawS(light.lightMVP, thisTran.m);
         mesh.draw(scene.GL);
-      });
-      scene.GL.bindFramebuffer(scene.GL.FRAMEBUFFER, null);
-    }
-    this.Mesh.forEach(mesh => {
-      mesh.material.draw();
+      }
       mesh.draw(scene.GL);
     });
 

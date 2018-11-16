@@ -1,4 +1,7 @@
 
+import {vec4} from 'gl-matrix';
+
+import {LIGHT_TYPE} from '../../Light';
 import {ResManager} from '../../ResManager';
 import {Scenes} from '../../Scenes';
 import {AMaterial} from '../Material';
@@ -22,9 +25,15 @@ export class BasePhoneMat extends AMaterial {
 
   draw() {
     super.draw();
-    this.setUniformV3f(
-        'lightDirection', this.scene.lights['Main'].lightDirection,
-        this.scene.GL);
+    let lightVector: vec4;
+    if (this.scene.lights['Main'].type === LIGHT_TYPE.DIRECTION) {
+      let dir = this.scene.lights['Main'].lightDirection;
+      lightVector = vec4.fromValues(dir[0], dir[1], dir[2], 0);
+    } else {
+      let pos = this.scene.lights['Main'].position;
+      lightVector = vec4.fromValues(pos[0], pos[1], pos[2], 1);
+    }
+    this.setUniformV4f('lightVector', lightVector, this.scene.GL);
     this.setUniformV4f(
         'lightColor', this.scene.lights['Main'].lightColor, this.scene.GL);
     this.setUniformV3f(
@@ -36,7 +45,6 @@ export class BasePhoneMat extends AMaterial {
     this.setUniform_1f('smoothness', this.smoothness, this.scene.GL);
 
     this.setUniformI1i('tex', this.tex, this.scene.GL, 0);
-
   }
 
   setTex(tex: CubeTexture) {

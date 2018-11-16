@@ -35,10 +35,10 @@ export class RObject {
     }
   }
 
-  draw(scene: Scenes) {
+  draw(scene: Scenes, noMat: boolean = false) {
     for (let key in this.Tranforms) {
       if (this.Tranforms[key] as Transform) {
-        this.Tranforms[key].draw(scene);
+        this.Tranforms[key].draw(scene, noMat);
       }
     }
   }

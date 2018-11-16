@@ -13,7 +13,7 @@ import {ResManager} from './ResManager';
 export class Scenes {
   SELF: Scenes;
   GL: WebGLRenderingContext;
-  update: (s: Scenes) => void;
+  update: (context) => void;
   mainCamera: Camera;
   cameras: {[key: string]: Camera};
   lights: {[key: string]: Light};  // todo: lights feature
@@ -40,7 +40,7 @@ export class Scenes {
     this.updtFuns = [];
     this.resManager = resMgr;
     this._shadow = false;
-    
+
     this.cameras = {};
     this.lights = {};
     this.mainCamera = this.cameras['Main'] = new Camera();
@@ -94,8 +94,14 @@ export class Scenes {
 
   private _Init() {
     this.Time = Date.now();
+
     for (let i = 0, l = this.OBJs.length; i < l; i++) {
       this.OBJs[i].init(this);
+    }
+
+    let light = this.lights['Main'];
+    if (this.shadow) {
+      light.depthMat.initS(this);
     }
     this.state++;
   }
@@ -107,6 +113,23 @@ export class Scenes {
     // ===========================render cycle
 
     glclear(this.GL);
+
+    if (this.shadow) {
+      let light = this.lights['Main'];
+      this.GL.bindFramebuffer(
+          this.GL.FRAMEBUFFER, light.depthFrame.frameBuffer);
+      this.GL.clear(this.GL.COLOR_BUFFER_BIT | this.GL.DEPTH_BUFFER_BIT);
+
+      for (let i = 0, l = this.OBJs.length; i < l; i++) {
+        this.OBJs[i].draw(this, true);
+      }
+
+      this.GL.readPixels(
+          0, 0, light.depthFrame.width, light.depthFrame.height, this.GL.RGBA,
+          this.GL.UNSIGNED_BYTE, light.depthFrame.textData);
+
+      this.GL.bindFramebuffer(this.GL.FRAMEBUFFER, null);
+    }
 
     for (let i = 0, l = this.OBJs.length; i < l; i++) {
       this.OBJs[i].draw(this);

@@ -8,6 +8,7 @@ import {KeyBoardCtrl} from '../../Rlyeh/handle';
 import {Light, LIGHT_TYPE} from '../../Rlyeh/Light';
 import {objLoader} from '../../Rlyeh/loader';
 import {BasePhoneMat} from '../../Rlyeh/object/materials/BasePhoneMat';
+import {DepthMat} from '../../Rlyeh/object/materials/depthMat';
 import {ReflectMat} from '../../Rlyeh/object/materials/ReflectMat';
 import {RefractMat} from '../../Rlyeh/object/materials/RefractMat';
 import {TexPhoneMat} from '../../Rlyeh/object/materials/TexPhoneMat';
@@ -26,7 +27,7 @@ export class ShadowboardComponent implements OnInit {
   @ViewChild('print') printCanvas: ElementRef;
   @ViewChild('frame') frameCanvas: ElementRef;
   lightAngle: number;
-
+  framectx: CanvasRenderingContext2D;
   private scenes: Scenes;
   private time: Date;
 
@@ -38,21 +39,24 @@ export class ShadowboardComponent implements OnInit {
 
 
   async ngOnInit() {
-    let glc = <HTMLCanvasElement>this.printCanvas.nativeElement;
     let frame = <HTMLCanvasElement>this.frameCanvas.nativeElement;
+    this.framectx = frame.getContext('2d') as CanvasRenderingContext2D;
+
+    let glc = <HTMLCanvasElement>this.printCanvas.nativeElement;
 
     let resMgr =
         new ResManager('assets/resource/', 'models/', 'shaders/', 'skyboxs/');
     this.scenes = new Scenes(glc, resMgr);
     let thegl = this.scenes.GL;
+    this.scenes['framectx'] = this.framectx;
 
     let loading = this.messageService.createLoadingMSG('loading');
 
-    let light_pos = vec3.fromValues(5, 0, 5);
+    let light_pos = vec3.fromValues(25, 20, 25);
     let light_aim = vec3.fromValues(0, 0, 0);
     let light_color = vec4.fromValues(1, 1, 1, 1);
-    let camera_pos = vec3.fromValues(-15, 8, 16);
-    let cameraAim = vec3.fromValues(0, 0, 0);
+    let camera_pos = vec3.fromValues(3, 40, 40);
+    let cameraAim = vec3.fromValues(0, -20, 0);
     let cameraUp = vec3.fromValues(0, 1, 0);
     let cameraInfo = [Math.PI / 3, glc.width / glc.height, 0.01, 100];
 
@@ -86,8 +90,7 @@ export class ShadowboardComponent implements OnInit {
     this.scenes.EnableShadow(512, 512);
     let donghnut1 = donghnut(30, 36, 1, 3, thegl, resMgr, true);
     donghnut1.setInfo(this.scenes, (tran: Transform) => {
-      (tran.Mesh[0].material as BasePhoneMat).metalless = 0.2;
-      (tran.Mesh[0].material as BasePhoneMat).smoothness = 4;
+      (tran.Mesh[0].material as BasePhoneMat).smoothness = 1;
       tran.position = vec3.fromValues(1, 3, 2);
     });
     donghnut1.setEarlyDraw(
@@ -97,8 +100,7 @@ export class ShadowboardComponent implements OnInit {
 
     let donghnut2 = donghnut(30, 36, 1, 3, thegl, resMgr, true);
     donghnut2.setInfo(this.scenes, (tran: Transform) => {
-      (tran.Mesh[0].material as BasePhoneMat).metalless = 0.2;
-      (tran.Mesh[0].material as BasePhoneMat).smoothness = 4;
+      (tran.Mesh[0].material as BasePhoneMat).smoothness = 1;
       tran.position = vec3.fromValues(4, 4, 2);
       tran.scale = vec3.fromValues(0.5, 0.5, 0.5);
     });
@@ -111,8 +113,7 @@ export class ShadowboardComponent implements OnInit {
 
     let donghnut3 = donghnut(30, 36, 1, 3, thegl, resMgr, true);
     donghnut3.setInfo(this.scenes, (tran: Transform) => {
-      (tran.Mesh[0].material as BasePhoneMat).metalless = 0.2;
-      (tran.Mesh[0].material as BasePhoneMat).smoothness = 4;
+      (tran.Mesh[0].material as BasePhoneMat).smoothness = 1;
       tran.position = vec3.fromValues(2, 2, 2);
       tran.scale = vec3.fromValues(0.2, 1, 0.2);
     });
@@ -124,8 +125,7 @@ export class ShadowboardComponent implements OnInit {
         });
     let donghnut4 = donghnut(30, 36, 1, 3, thegl, resMgr, true);
     donghnut4.setInfo(this.scenes, (tran: Transform) => {
-      (tran.Mesh[0].material as BasePhoneMat).metalless = 0.2;
-      (tran.Mesh[0].material as BasePhoneMat).smoothness = 4;
+      (tran.Mesh[0].material as BasePhoneMat).smoothness = 1;
       tran.position = vec3.fromValues(5, 5, 5);
     });
     donghnut4.setParent(donghnut3);
@@ -135,10 +135,10 @@ export class ShadowboardComponent implements OnInit {
           transform.set_rz(Date.now() / 2000);
         });
 
-    let ground = panel(1000, thegl, resMgr);
+    let ground = panel(40, thegl, resMgr);
     ground.setInfo(this.scenes, (tran) => {
-      tran.position = vec3.fromValues(0, -5, -5);
-      tran.scale = vec3.fromValues(40, 40, 40);
+      tran.position = vec3.fromValues(0, -10, 0);
+      (tran.Mesh[0].material as BasePhoneMat).smoothness = 1;
     });
 
     this.messageService.endLoadingMSG(loading);
@@ -151,8 +151,13 @@ export class ShadowboardComponent implements OnInit {
     ]);
     this.scenes.update = (s: Scenes) => {
       this.scenes.lights['Main'].position = vec3.fromValues(
-          Math.sin(this.lightAngle / 180 * Math.PI), 0,
-          Math.cos(this.lightAngle / 180 * Math.PI));
+          Math.sin(this.lightAngle / 180 * Math.PI) * 25, 20,
+          Math.cos(this.lightAngle / 180 * Math.PI) * 25);
+      let img = new ImageData(
+          new Uint8ClampedArray(
+              this.scenes.lights['Main'].depthFrame.textData.buffer),
+          512, 512);
+      this.framectx.putImageData(img, 0, 0);
     };
     this.scenes.Run();
   }

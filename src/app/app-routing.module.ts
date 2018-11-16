@@ -8,7 +8,7 @@ import { ShadowboardComponent } from './shadowboard/shadowboard.component';
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'shadowboard', component: ShadowboardComponent },
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/shadowboard', pathMatch: 'full' },
 ];
 
 @NgModule({

@@ -57,7 +57,7 @@ export class DashboardComponent implements OnInit {
     let light_aim = vec3.fromValues(0, 0, 0);
     let light_color = vec4.fromValues(1, 1, 1, 1);
     let camera_pos = vec3.fromValues(-15, 8, 16);
-    let cameraAim = vec3.fromValues(0, 5, -5);
+    let cameraAim = vec3.fromValues(0, 0, -5);
     let cameraUp = vec3.fromValues(0, 1, 0);
     let cameraInfo = [Math.PI / 3, glc.width / glc.height, 0.01, 100];
 
@@ -219,7 +219,7 @@ export class DashboardComponent implements OnInit {
         `${resPath}models/teapot/`, 'teapot.obj', this.scenes.mtllib,
         this.scenes.GL, 'text_phone', resMgr);
     teapot.setInfo(this.scenes, (tran) => {
-      tran.position = vec3.fromValues(0, -5, -5);
+      tran.position = vec3.fromValues(5, -5, 0);
       tran.scale = vec3.fromValues(40, 40, 40);
     });
 
@@ -228,7 +228,7 @@ export class DashboardComponent implements OnInit {
         this.scenes.GL, 'reflect_mat', resMgr);
     teapot2.setInfo(this.scenes, (tran) => {
       (tran.Mesh[0].material as ReflectMat).setTex(sbTex);
-      tran.position = vec3.fromValues(-5, -5, -5);
+      tran.position = vec3.fromValues(0, -5, 0);
       tran.scale = vec3.fromValues(40, 40, 40);
     });
 
@@ -237,7 +237,7 @@ export class DashboardComponent implements OnInit {
         this.scenes.GL, 'refract_mat', resMgr);
     teapot3.setInfo(this.scenes, (tran) => {
       (tran.Mesh[0].material as RefractMat).setTex(sbTex);
-      tran.position = vec3.fromValues(5, -5, -5);
+      tran.position = vec3.fromValues(0, -5, 5);
       tran.scale = vec3.fromValues(40, 40, 40);
     });
 
@@ -247,7 +247,7 @@ export class DashboardComponent implements OnInit {
     ]);
     this.scenes.update = (s: Scenes) => {
       this.inputHandel.moveCtrl();
-      this.scenes.lights['Main'].lightDirection = vec3.fromValues(
+      this.scenes.lights['Main'].position = vec3.fromValues(
           this.rangebox.LightDirectionX, this.rangebox.LightDirectionY,
           this.rangebox.LightDirectionZ);
     };

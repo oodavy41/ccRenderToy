@@ -58,17 +58,15 @@ export class Light extends CTransform {
     }
     this.type = type;
     this._lightDirection = vec3.create();
-    vec3.sub(this._lightDirection, lightAim, position);
     this.position = position;
     this.lightAim = lightAim;
     this.lightColor = lightCol;
     this.depthFrame = undefined;
   }
   makemvp() {
-    let cameraInfo = [Math.PI / 3, 1, 0.01, 100];
+    let cameraInfo = [-30, 30, -30, 30, 0.01, 80];
     vec3.sub(this._lightDirection, this.lightAim, this.position);
     if (this.position && this.lightAim) {
-      this.modifyFLAG = false;
       this.lightMVP = makeMvp(
           [this.position, this.lightAim, vec3.fromValues(0, 1, 0)], cameraInfo);
     }

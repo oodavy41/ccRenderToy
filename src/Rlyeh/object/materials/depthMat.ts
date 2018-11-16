@@ -11,7 +11,9 @@ export class DepthMat extends AMaterial {
     let path = res.resRoot + res.shadersPath;
     super(path + 'shadow_only.vert', path + 'shadow_only.frag', GL, res);
   }
-
+  initS(scene: Scenes) {
+    this.scene = scene;
+  }
   drawS(mvpM: mat4, modelM: mat4) {
     super.draw();
     this.setUniformM4f('mvpMatrix', mvpM, this.scene.GL);
