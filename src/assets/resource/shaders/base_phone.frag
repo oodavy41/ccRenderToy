@@ -34,7 +34,7 @@ void main(void) {
   //阴影处理
   bool underShadow = false;
 
-  //高光光照                                   镜面次幂 ↓
+  //高光光照                                  
   float hlight =
       dot(mvpLD, Mnormal) > 0.0 && !underShadow
           ? pow(max(dot(Mnormal, normalize(mvpLD + camDir)), 0.0), smoothness)

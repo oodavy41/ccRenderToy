@@ -4,6 +4,7 @@ attribute vec3 normal;
 
 uniform mat4 mvpMatrix;
 uniform mat4 modelMatrix;
+uniform mat3 normalMatrix;
 
 uniform vec4 lightVector;
 
@@ -24,7 +25,8 @@ void main(void) {
 
   lpos = lightMVP * modelPos;
 
+
   gl_Position = fpos;
   fcolor = color;
-  fnormal = normal;
+  fnormal = normalize(normalMatrix * normal);
 }

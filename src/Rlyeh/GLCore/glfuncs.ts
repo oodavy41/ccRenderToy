@@ -1,7 +1,7 @@
-import {mat4, vec3} from 'gl-matrix';
+import { mat4, vec3 } from 'gl-matrix';
 
-import {Transform} from '../object/Transform';
-import {ResManager} from '../ResManager';
+import { Transform } from '../object/Transform';
+import { ResManager } from '../ResManager';
 
 export function initgl(glc: HTMLCanvasElement) {
   const gl: WebGLRenderingContext = glc.getContext('webgl');
@@ -10,7 +10,7 @@ export function initgl(glc: HTMLCanvasElement) {
     alert('no support for Webgl in this browser\nWEBGL无法在此浏览器初始化');
     return;
   }
-  gl.clearColor(0.3, 0.3, 0.3, 1);
+  gl.clearColor(0, 0, 0, 1);
   gl.clearDepth(1);
   gl.enable(gl.DEPTH_TEST);
   gl.enable(gl.CULL_FACE);
@@ -28,7 +28,7 @@ export function glclear(gl: WebGLRenderingContext) {
 
 
 export function create_shader(
-    source: string, gl: WebGLRenderingContext, type: number, res: ResManager) {
+  source: string, gl: WebGLRenderingContext, type: number, res: ResManager) {
   let shader;
   shader = gl.createShader(type);
   gl.shaderSource(shader, source);
@@ -42,7 +42,7 @@ export function create_shader(
 }
 
 export function create_program(
-    vs: WebGLShader, fs: WebGLShader, gl: WebGLRenderingContext) {
+  vs: WebGLShader, fs: WebGLShader, gl: WebGLRenderingContext) {
   const program = gl.createProgram();
 
   gl.attachShader(program, vs);
@@ -86,7 +86,7 @@ export function makeMvp(view3v: vec3[], pers4f: number[]) {
 
   } else {
     mat4.ortho(
-        pMat, pers4f[0], pers4f[1], pers4f[2], pers4f[3], pers4f[4], pers4f[5]);
+      pMat, pers4f[0], pers4f[1], pers4f[2], pers4f[3], pers4f[4], pers4f[5]);
   }
 
   mat4.multiply(mvp, pMat, vMat);
@@ -94,8 +94,8 @@ export function makeMvp(view3v: vec3[], pers4f: number[]) {
 }
 
 export function upload_array_att(
-    array: number[], att_name: string, program: WebGLProgram,
-    gl: WebGLRenderingContext) {
+  array: number[], att_name: string, program: WebGLProgram,
+  gl: WebGLRenderingContext) {
   const att = gl.getAttribLocation(program, att_name);
   if (att === -1) {
     console.log('no attribute called:' + att_name);
@@ -103,5 +103,5 @@ export function upload_array_att(
   }
   const vbo = create_vbo(array, gl);
   gl.enableVertexAttribArray(att);
-  return {'att': att, 'vbo': vbo};
+  return { 'att': att, 'vbo': vbo };
 }

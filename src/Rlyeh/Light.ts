@@ -1,11 +1,10 @@
+import { mat4, vec3, vec4 } from "gl-matrix";
 
-import {mat4, vec3, vec4} from 'gl-matrix';
-
-import {CTransform} from './component/CTransform';
-import {makeMvp} from './GLCore/glfuncs';
-import {DepthMat} from './object/materials/depthMat';
-import {FrameTexture} from './object/Texture';
-import {Scenes} from './Scenes';
+import { CTransform } from "./component/CTransform";
+import { makeMvp } from "./GLCore/glfuncs";
+import { DepthMat } from "./object/materials/depthMat";
+import { FrameTexture } from "./object/Texture";
+import { Scenes } from "./Scenes";
 
 export enum LIGHT_TYPE {
   POINT,
@@ -49,12 +48,10 @@ export class Light extends CTransform {
   }
   depthFrame: FrameTexture;
 
-  constructor(
-      type: LIGHT_TYPE, position: vec3, lightAim: vec3, lightCol: vec4,
-      angel?: number) {
+  constructor(type: LIGHT_TYPE, position: vec3, lightAim: vec3, lightCol: vec4, angel?: number) {
     super();
     if (type === LIGHT_TYPE.SPOT && angel === undefined) {
-      console.error('define an spot light without angel!');
+      console.error("define an spot light without angel!");
     }
     this.type = type;
     this._lightDirection = vec3.create();
@@ -64,11 +61,18 @@ export class Light extends CTransform {
     this.depthFrame = undefined;
   }
   makemvp() {
-    let cameraInfo = [-30, 30, -30, 30, 0.01, 80];
+    let cameraInfo: number[];
+    switch (this.type) {
+      case LIGHT_TYPE.DIRECTION:
+        cameraInfo = [-30, 30, -30, 30, 1, 100];
+        break;
+      case LIGHT_TYPE.POINT:
+        cameraInfo = [80, 1, 1, 100];
+        break;
+    }
     vec3.sub(this._lightDirection, this.lightAim, this.position);
     if (this.position && this.lightAim) {
-      this.lightMVP = makeMvp(
-          [this.position, this.lightAim, vec3.fromValues(0, 1, 0)], cameraInfo);
+      this.lightMVP = makeMvp([this.position, this.lightAim, vec3.fromValues(0, 1, 0)], cameraInfo);
     }
     super.make_transform();
   }

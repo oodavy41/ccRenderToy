@@ -1,27 +1,33 @@
-
-import {att_c, att_n, att_p} from './GLOBAL/GLOBAL';
-import {AMaterial, MTL_TYPE} from './object/Material';
-import {BasePhoneMat} from './object/materials/BasePhoneMat';
-import {BasePhoneShadowMat} from './object/materials/basePhoneShadowMat';
-import {SkyBoxMat} from './object/materials/SkyBoxMat';
-import {Mesh} from './object/Mesh';
-import {RObject} from './object/Object';
-import {CubeTexture} from './object/Texture';
-import {Transform} from './object/Transform';
-import {ResManager} from './ResManager';
+import { att_c, att_n, att_p } from "./GLOBAL/GLOBAL";
+import { AMaterial, MTL_TYPE } from "./object/Material";
+import { BasePhoneMat } from "./object/materials/BasePhoneMat";
+import { BasePhoneShadowMat } from "./object/materials/basePhoneShadowMat";
+import { SkyBoxMat } from "./object/materials/SkyBoxMat";
+import { Mesh } from "./object/Mesh";
+import { RObject } from "./object/Object";
+import { CubeTexture } from "./object/Texture";
+import { Transform } from "./object/Transform";
+import { ResManager } from "./ResManager";
 
 export function donghnut(
-    row: number, column: number, irad: number, rad: number,
-    gl: WebGLRenderingContext, resManager: ResManager, shadowFlag: boolean) {
-  const pos = new Array(), nor = new Array(), col = new Array(),
-
-        idx = new Array();
+  row: number,
+  column: number,
+  irad: number,
+  rad: number,
+  gl: WebGLRenderingContext,
+  resManager: ResManager,
+  shadowFlag: boolean
+) {
+  const pos = new Array(),
+    nor = new Array(),
+    col = new Array(),
+    idx = new Array();
   for (let i = 0; i <= row; i++) {
-    const r = Math.PI * 2 / row * i;
+    const r = ((Math.PI * 2) / row) * i;
     const rr = Math.cos(r);
     const ry = Math.sin(r);
     for (let ii = 0; ii <= column; ii++) {
-      const tr = Math.PI * 2 / column * ii;
+      const tr = ((Math.PI * 2) / column) * ii;
       const tx = (rr * irad + rad) * Math.cos(tr);
       const ty = ry * irad;
       const tz = (rr * irad + rad) * Math.sin(tr);
@@ -29,7 +35,7 @@ export function donghnut(
       const rz = rr * Math.sin(tr);
       pos.push(tx, ty, tz);
       nor.push(rx, ry, rz);
-      const tc = hsva(360 / column * ii, 1, 1, 1);
+      const tc = hsva((360 / column) * ii, 1, 1, 1);
       col.push(tc[0], tc[1], tc[2], tc[3]);
     }
   }
@@ -45,12 +51,11 @@ export function donghnut(
   const mesh = new Mesh();
   mesh.set_mesh([[att_p, pos, 3], [att_c, col, 4], [att_n, nor, 3], idx]);
 
-  const mat = shadowFlag ? new BasePhoneShadowMat(gl, resManager) :
-                           new BasePhoneMat(gl, resManager);
+  const mat = shadowFlag ? new BasePhoneShadowMat(gl, resManager) : new BasePhoneMat(gl, resManager);
   mesh.set_mat(mat);
   ret.add_mesh(mesh);
   return new RObject({
-    donghnut: ret,
+    donghnut: ret
   });
 }
 
@@ -104,8 +109,7 @@ export function cube(side) {
   return [coords, texCoords, normals, indices];
 }
 
-export function skybox(
-    srcs: string[], gl: WebGLRenderingContext, resManager: ResManager) {
+export function skybox(srcs: string[], gl: WebGLRenderingContext, resManager: ResManager) {
   const m = cube(50);
 
   const ret = new Transform();
@@ -116,25 +120,25 @@ export function skybox(
   mesh.set_mat(mat);
   ret.add_mesh(mesh);
   return new RObject({
-    skybox: ret,
+    skybox: ret
   });
 }
 
-export function panel(
-    s: number, gl: WebGLRenderingContext, resManager: ResManager) {
+export function panel(s: number, gl: WebGLRenderingContext, shadowFlag, resManager: ResManager) {
   const m = [
     [-s, 0, -s, -s, 0, s, s, 0, s, s, 0, -s],
     [0.5, 0.5, 0.5, 1, 0.5, 0.5, 0.5, 1, 0.5, 0.5, 0.5, 1, 0.5, 0.5, 0.5, 1],
-    [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0], [0, 1, 2, 0, 2, 3]
+    [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0],
+    [0, 1, 2, 0, 2, 3]
   ];
 
   const ret = new Transform();
   const mesh = new Mesh();
   mesh.set_mesh([[att_p, m[0], 3], [att_c, m[1], 4], [att_n, m[2], 3], m[3]]);
-  const mat = new BasePhoneShadowMat(gl, resManager);
+  const mat = shadowFlag ? new BasePhoneShadowMat(gl, resManager) : new BasePhoneMat(gl, resManager);
   mesh.set_mat(mat);
   ret.add_mesh(mesh);
   return new RObject({
-    panel: ret,
+    panel: ret
   });
 }
