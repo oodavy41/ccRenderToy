@@ -3,10 +3,10 @@ precision mediump float;
 varying vec4 fpos;
 varying vec2 fcoord;
 varying vec3 fnormal;
+varying vec4 flight;
 
 uniform mat3 normalMatrix;
 
-uniform vec3 lightDirection;
 uniform vec4 lightColor;
 uniform vec3 cameraPos;
 
@@ -19,6 +19,7 @@ uniform bool usetex;
 uniform sampler2D tex;
 
 void main(void) {
+  vec3 lightDirection = flight.w == 0.0 ? flight.xyz : fpos.xyz - flight.xyz;
   vec3 mvpLD = normalize(lightDirection);
 
   //法线

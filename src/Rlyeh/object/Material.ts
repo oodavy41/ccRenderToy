@@ -3,7 +3,7 @@ import {create_program, create_shader} from '../GLCore/glfuncs';
 import {ResManager} from '../ResManager';
 import {Scenes} from '../Scenes';
 
-import {CubeTexture, Texture} from './Texture';
+import {CubeTexture, Texture, FrameTexture} from './Texture';
 import {Transform} from './Transform';
 
 export enum MTL_TYPE {
@@ -94,7 +94,7 @@ export abstract class AMaterial {
     this.uniforms[name].value = value;
   }
   setUniformI1i(
-      name: string, value: Texture|CubeTexture, gl: WebGLRenderingContext,
+      name: string, value: Texture|CubeTexture|FrameTexture, gl: WebGLRenderingContext,
       index: number) {
     if (!this.uniforms[name]) {
       let uniform = gl.getUniformLocation(this.prog, name);

@@ -1,18 +1,19 @@
-import * as glm from 'gl-matrix';
+import * as glm from "gl-matrix";
 
-import {formatNumber} from '../../node_modules/@angular/common';
+import { formatNumber } from "../../node_modules/@angular/common";
 
-import {CTransform} from './component/CTransform';
-import {makeMvp} from './GLCore/glfuncs';
-import {RLSettings} from './GLOBAL/setting';
+import { CTransform } from "./component/CTransform";
+import { makeMvp } from "./GLCore/glfuncs";
+import { RLSettings } from "./GLOBAL/setting";
 
 const set = RLSettings;
 export class Camera extends CTransform {
+  private _cameraModified = true;
   private _cameraUp: glm.vec3;
   set cameraUp(value: glm.vec3) {
     glm.vec3.normalize(value, value);
     this._cameraUp = value;
-    this.reset();
+    this._cameraModified = true;
   }
   get cameraUp(): glm.vec3 {
     return this._cameraUp;
@@ -20,7 +21,7 @@ export class Camera extends CTransform {
   private _cameraAim: glm.vec3;
   set cameraAim(value: glm.vec3) {
     this._cameraAim = value;
-    this.reset();
+    this._cameraModified = true;
   }
   get cameraAim(): glm.vec3 {
     return this._cameraAim;
@@ -30,7 +31,23 @@ export class Camera extends CTransform {
 
   cameraInfo: number[];
 
-  mvp: glm.mat4;
+  private _mvp: glm.mat4;
+
+  get mvp() {
+    if (this._cameraModified) {
+      this.reset();
+    }
+    return this._mvp;
+  }
+
+  set position(value: glm.vec3) {
+    this._position = value;
+    this.modifyFLAG = true;
+    this._cameraModified = true;
+  }
+  get position() {
+    return this._position;
+  }
 
   constructor() {
     super();
@@ -38,9 +55,9 @@ export class Camera extends CTransform {
     this.cameraRight = glm.vec3.fromValues(1, 0, 0);
     this.cameraAim = glm.vec3.fromValues(0, 0, -1);
     this.cameraUp = glm.vec3.fromValues(0, 1, 0);
-    this.cameraInfo = [Math.PI / 3, 9 / 16, 0.01, 100];
+    this.cameraInfo = [Math.PI / 3, 9 / 16, 0.01, 10000];
 
-    this.mvp = null;
+    this._mvp = null;
   }
 
   private reset() {
@@ -52,25 +69,21 @@ export class Camera extends CTransform {
       glm.vec3.cross(this.cameraRight, camera_front, this.cameraUp);
 
       this.elevation =
-          glm.vec3.angle(
-              glm.vec3.sub(glm.vec3.create(), this.cameraAim, this.position),
-              this.cameraUp) /
-          Math.PI * 180;
+        (glm.vec3.angle(glm.vec3.sub(glm.vec3.create(), this.cameraAim, this.position), this.cameraUp) / Math.PI) * 180;
       if (this.elevation < set.FPSZeroElevation) {
-        console.error('camera', 'camera aim to high');
+        console.error("camera", "camera aim to high");
         return;
       }
       this.makemvp();
     }
   }
 
-
   makemvp() {
     if (this.position && this.cameraAim && this.cameraUp && this.cameraInfo) {
       // todo: aim rotate/aim modify
-      this.mvp = makeMvp(
-          [this.position, this.cameraAim, this.cameraUp], this.cameraInfo);
+      this._mvp = makeMvp([this.position, this.cameraAim, this.cameraUp], this.cameraInfo);
     }
+    this._cameraModified = false;
   }
 
   // movement:boolean[]=[w,a,s,d];
@@ -88,8 +101,8 @@ export class Camera extends CTransform {
     ret[0] = Math.min(ret[0], set.FPSraid);
     ret[1] = Math.min(ret[1], set.FPSraid);
 
-    let angx = Math.asin(ret[0] / set.FPSraid) / Math.PI * 180;
-    let angy = Math.asin(ret[1] / set.FPSraid) / Math.PI * 180;
+    let angx = (Math.asin(ret[0] / set.FPSraid) / Math.PI) * 180;
+    let angy = (Math.asin(ret[1] / set.FPSraid) / Math.PI) * 180;
 
     let matx = glm.mat4.create();
     let maty = glm.mat4.create();
@@ -97,9 +110,8 @@ export class Camera extends CTransform {
     this.elevation += angx;
     this.elevation = Math.min(this.elevation, 180 - set.FPSZeroElevation);
     this.elevation = Math.max(this.elevation, set.FPSZeroElevation);
-    glm.mat4.rotate(
-        matx, matx, -this.elevation / 180 * Math.PI, this.cameraRight);
-    glm.mat4.rotate(maty, maty, angy / 180 * Math.PI, this.cameraUp);
+    glm.mat4.rotate(matx, matx, (-this.elevation / 180) * Math.PI, this.cameraRight);
+    glm.mat4.rotate(maty, maty, (angy / 180) * Math.PI, this.cameraUp);
     glm.vec3.transformMat4(newFront, newFront, matx);
     glm.vec3.transformMat4(newFront, newFront, maty);
 
@@ -110,13 +122,11 @@ export class Camera extends CTransform {
   }
 
   movectrl(movement: boolean[]) {
-    let abf = glm.vec3.create(), abr = glm.vec3.create();
+    let abf = glm.vec3.create(),
+      abr = glm.vec3.create();
     let front = glm.vec3.create();
     glm.vec3.sub(front, this.cameraAim, this.position);
-    const wasd = [
-      front, glm.vec3.scale(abr, this.cameraRight, -1),
-      glm.vec3.scale(abf, front, -1), this.cameraRight
-    ];
+    const wasd = [front, glm.vec3.scale(abr, this.cameraRight, -1), glm.vec3.scale(abf, front, -1), this.cameraRight];
 
     const ret = glm.vec3.fromValues(0, 0, 0);
 

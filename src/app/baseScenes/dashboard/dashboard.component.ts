@@ -53,15 +53,16 @@ export class DashboardComponent implements OnInit {
 
     let loading = this.messageService.createLoadingMSG('loading');
 
-    let light_direction = vec3.fromValues(-10, 0, -1);
+    let light_pos = vec3.fromValues(10, 0, 1);
+    let light_aim = vec3.fromValues(0, 0, 0);
     let light_color = vec4.fromValues(1, 1, 1, 1);
     let camera_pos = vec3.fromValues(-15, 8, 16);
-    let cameraAim = vec3.fromValues(0, 5, -5);
+    let cameraAim = vec3.fromValues(0, 0, -5);
     let cameraUp = vec3.fromValues(0, 1, 0);
     let cameraInfo = [Math.PI / 3, glc.width / glc.height, 0.01, 100];
 
     this.scenes.lights['Main'] =
-        new Light(LIGHT_TYPE.DIRECTION, light_direction, light_color);
+        new Light(LIGHT_TYPE.DIRECTION, light_pos, light_aim, light_color);
     this.scenes.mainCamera.position = camera_pos;
     this.scenes.mainCamera.cameraAim = cameraAim;
     this.scenes.mainCamera.cameraUp = cameraUp;
@@ -98,7 +99,7 @@ export class DashboardComponent implements OnInit {
       'shaders/text_phone.frag',
       'shaders/text_phone.vert',
       // texture
-      'models/teapot/teapot.mtl',
+      'models/teapot/default.mtl',
       'models/teapot/teapot.obj',
     ];
 
@@ -151,9 +152,9 @@ export class DashboardComponent implements OnInit {
     this.scenes.skybox = sb.Tranforms['skybox'];
     let sbTex = sb.Tranforms['skybox'].Mesh[0].material['tex'];
 
-    let donghnut1 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    let donghnut1 = donghnut(30, 36, 1, 3, thegl, resMgr, false);
     donghnut1.setInfo(this.scenes, (tran: Transform) => {
-      (tran.Mesh[0].material as TexPhoneMat).setTex(sbTex);
+      (tran.Mesh[0].material as BasePhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(1, 3, 2);
     });
     donghnut1.setEarlyDraw(
@@ -165,9 +166,9 @@ export class DashboardComponent implements OnInit {
           transform.set_rz(Date.now() / 5000);
         });
 
-    let donghnut2 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    let donghnut2 = donghnut(30, 36, 1, 3, thegl, resMgr, false);
     donghnut2.setInfo(this.scenes, (tran: Transform) => {
-      (tran.Mesh[0].material as TexPhoneMat).setTex(sbTex);
+      (tran.Mesh[0].material as BasePhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(4, 4, 2);
       tran.scale = vec3.fromValues(0.5, 0.5, 0.5);
     });
@@ -182,9 +183,9 @@ export class DashboardComponent implements OnInit {
           transform.set_ry(-Date.now() / 2000);
         });
 
-    let donghnut3 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    let donghnut3 = donghnut(30, 36, 1, 3, thegl, resMgr, false);
     donghnut3.setInfo(this.scenes, (tran: Transform) => {
-      (tran.Mesh[0].material as TexPhoneMat).setTex(sbTex);
+      (tran.Mesh[0].material as BasePhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(2, 2, 2);
       tran.scale = vec3.fromValues(0.2, 1, 0.2);
     });
@@ -198,9 +199,9 @@ export class DashboardComponent implements OnInit {
           transform.set_rz(Date.now() / 2000);
           transform.set_ry(Date.now() / 2000);
         });
-    let donghnut4 = donghnut(30, 36, 1, 3, thegl, resMgr);
+    let donghnut4 = donghnut(30, 36, 1, 3, thegl, resMgr, false);
     donghnut4.setInfo(this.scenes, (tran: Transform) => {
-      (tran.Mesh[0].material as TexPhoneMat).setTex(sbTex);
+      (tran.Mesh[0].material as BasePhoneMat).setTex(sbTex);
       tran.position = vec3.fromValues(5, 5, 5);
     });
     donghnut4.setParent(donghnut3);
@@ -218,8 +219,8 @@ export class DashboardComponent implements OnInit {
         `${resPath}models/teapot/`, 'teapot.obj', this.scenes.mtllib,
         this.scenes.GL, 'text_phone', resMgr);
     teapot.setInfo(this.scenes, (tran) => {
-      tran.position = vec3.fromValues(0, -5, -5);
-      tran.scale = vec3.fromValues(0.3, 0.3, 0.3);
+      tran.position = vec3.fromValues(5, -5, 0);
+      tran.scale = vec3.fromValues(40, 40, 40);
     });
 
     let teapot2 = objLoader(
@@ -227,8 +228,8 @@ export class DashboardComponent implements OnInit {
         this.scenes.GL, 'reflect_mat', resMgr);
     teapot2.setInfo(this.scenes, (tran) => {
       (tran.Mesh[0].material as ReflectMat).setTex(sbTex);
-      tran.position = vec3.fromValues(-5, -5, -5);
-      tran.scale = vec3.fromValues(0.3, 0.3, 0.3);
+      tran.position = vec3.fromValues(0, -5, 0);
+      tran.scale = vec3.fromValues(40, 40, 40);
     });
 
     let teapot3 = objLoader(
@@ -236,8 +237,8 @@ export class DashboardComponent implements OnInit {
         this.scenes.GL, 'refract_mat', resMgr);
     teapot3.setInfo(this.scenes, (tran) => {
       (tran.Mesh[0].material as RefractMat).setTex(sbTex);
-      tran.position = vec3.fromValues(5, -5, -5);
-      tran.scale = vec3.fromValues(0.3, 0.3, 0.3);
+      tran.position = vec3.fromValues(0, -5, 5);
+      tran.scale = vec3.fromValues(40, 40, 40);
     });
 
     this.messageService.endLoadingMSG(loading);
@@ -246,7 +247,7 @@ export class DashboardComponent implements OnInit {
     ]);
     this.scenes.update = (s: Scenes) => {
       this.inputHandel.moveCtrl();
-      this.scenes.lights['Main'].lightDirection = vec3.fromValues(
+      this.scenes.lights['Main'].position = vec3.fromValues(
           this.rangebox.LightDirectionX, this.rangebox.LightDirectionY,
           this.rangebox.LightDirectionZ);
     };

@@ -7,8 +7,8 @@ import { Component } from '@angular/core';
 })
 export class LayoutComponent {
   navItems = [
-    { name: 'info', icon: 'anticon-right', link: '/detail/11' },
-    { name: 'dash', icon: 'anticon-right', link: '/dashboard' },
+    { name: 'Normal Rendering', icon: 'anticon-right', link: '/dashboard' },
+    { name: 'Shadow Rendering', icon: 'anticon-right', link: '/shadowboard' },
   ];
   isCollapsed = true;
 

@@ -23,21 +23,29 @@ export class Transform extends CTransform {
   init(scene: Scenes) {
     let light = scene.lights['Main'];
     let thisTran = this;
+
     this.Mesh.forEach(mesh => {
       mesh.material.init(scene, thisTran);
       mesh.init(scene.GL);
     });
   }
 
-  draw(scene: Scenes) {
+  draw(scene: Scenes, noMat: boolean = false) {
+    let light = scene.lights['Main'];
+    let thisTran = this;
+
     this.earlyDarwFuncs.forEach(element => {
       element(this, scene.GL);
     });
 
-    let light = scene.lights['Main'];
-    let thisTran = this;
+
     this.Mesh.forEach(mesh => {
-      mesh.material.draw();
+      if (!noMat) {
+        mesh.material.draw();
+      } else {
+        light.depthMat.drawS(light.lightMVP, thisTran.m);
+        mesh.draw(scene.GL);
+      }
       mesh.draw(scene.GL);
     });
 
